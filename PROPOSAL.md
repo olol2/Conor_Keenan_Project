@@ -9,6 +9,7 @@ Data: Football-Data (results, closing odds), lineups (starts vs subs), injury/su
 ### Method:
 **Proxy 1 — Rotation Elasticity:**  
 Mixed-effects logistic model for “player starts this match,” with fixed effects for opponent strength (odds), venue, days-rest; random effects for club and player. High elasticity in high-stakes fixtures ⇒ higher value.
+
 **Proxy 2 — Injury/suspension DiD:**
  Within club-season, estimate ATT on xPts from odds for matches with vs without Player X using two-way FE (opponent & date), clustered SEs; exclude multi-injury/suspension spells.
 
