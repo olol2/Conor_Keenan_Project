@@ -11,3 +11,6 @@ See [PROPOSAL.md](PROPOSAL.md).
 - Docs: `docs/`
 - Examples: `examples/`
 - Results/figures: `results/`
+
+## Additions of details of project
+Will be on 5 seasons 19-20, 20-21, 21-22, 22-23, 23-24 and then tested on season N°6: 24-25
