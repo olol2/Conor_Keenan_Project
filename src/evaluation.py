@@ -11,8 +11,17 @@ RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def save_core_results(results: Dict):
-    """Save any result tables / figures to the results/ folder."""
+    """Save result tables / figures to the results/ folder."""
 
-    summary = results.get("standings_summary")
-    if isinstance(summary, (pd.Series, pd.DataFrame)):
-        summary.to_csv(RESULTS_DIR / "standings_summary.csv")
+    # Save injury summaries if present
+    by_season = results.get("injury_summary_by_season")
+    if isinstance(by_season, (pd.Series, pd.DataFrame)):
+        out_path = RESULTS_DIR / "injury_summary_by_season.csv"
+        by_season.to_csv(out_path, index=False)
+        print(f"Saved {out_path}")
+
+    overall = results.get("injury_summary_overall")
+    if isinstance(overall, (pd.Series, pd.DataFrame)):
+        out_path = RESULTS_DIR / "injury_summary_overall.csv"
+        overall.to_csv(out_path, index=False)
+        print(f"Saved {out_path}")

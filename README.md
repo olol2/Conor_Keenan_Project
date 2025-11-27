@@ -15,6 +15,9 @@ See [PROPOSAL.md](PROPOSAL.md).
 ## Additions of details of project
 Will be on 5 seasons 19-20, 20-21, 21-22, 22-23, 23-24 and then tested on season N°6: 24-25
 
+For seasons 24-25, it is not possible to download the injury data, which is not that much of a problem
+This isn't crucial but a nice to have
+
 ## Deroulement du projet
 
 06.11.2025: Accepted Project Proposal 
