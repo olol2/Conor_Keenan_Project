@@ -15,8 +15,7 @@ See [PROPOSAL.md](PROPOSAL.md).
 ## Additions of details of project
 Will be on 5 seasons 19-20, 20-21, 21-22, 22-23, 23-24 and then tested on season N°6: 24-25
 
-For seasons 24-25, it is not possible to download the injury data, which is not that much of a problem
-This isn't crucial but a nice to have
+I could only scrape the injury data from transfermarkt from Pycharm and not nuvolos, taking about 15 minutes to create a csv file per season
 
 ## Deroulement du projet
 
@@ -32,3 +31,4 @@ This isn't crucial but a nice to have
 27.11.2025: Created PL table of each season through the file of each
             season and each game.
             Manually created a PL prize money file
+            
