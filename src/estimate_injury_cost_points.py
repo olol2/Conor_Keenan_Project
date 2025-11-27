@@ -11,19 +11,38 @@ OUT_FILE = ROOT_DIR / "data" / "processed" / "injury_cost_points.csv"
 
 
 def load_injured_players_coef() -> float:
+    """
+    Load the regression coefficient on injured_players from
+    results/injury_regression_coefficients.csv.
+    """
+    if not COEF_FILE.exists():
+        raise FileNotFoundError(
+            f"{COEF_FILE} not found. "
+            "Run `python main.py` first to fit the regression."
+        )
+
     coef_df = pd.read_csv(COEF_FILE)
     row = coef_df.loc[coef_df["term"] == "injured_players"]
     if row.empty:
-        raise ValueError("Could not find 'injured_players' term in regression coefficients.")
+        raise ValueError(
+            "Could not find 'injured_players' term in regression coefficients. "
+            "Check results/injury_regression_coefficients.csv."
+        )
     return float(row["coef"].iloc[0])
 
 
 def main():
     # 1) Load matches with injuries
+    if not MATCHES_FILE.exists():
+        raise FileNotFoundError(
+            f"{MATCHES_FILE} not found. "
+            "Run `python src/add_injuries_to_matches.py` first."
+        )
+
     matches = pd.read_csv(MATCHES_FILE, parse_dates=["Date"])
 
-    # Drop 2024-2025 for now (no reliable injury data)
-    matches = matches[matches["Season"] != "2024-2025"].copy()
+    # Keep all seasons, including 2024-2025 now that injuries_2025 exists
+    # (no Season filter here)
 
     # 2) Load regression coefficient
     beta_inj = load_injured_players_coef()
@@ -44,7 +63,10 @@ def main():
         .reset_index()
     )
 
-    # Interpret as "points lost" (multiply by -1 so positive = cost)
+    # Extra info: flag whether we actually ever saw an injury for this team-season
+    grp["has_any_injury_data"] = grp["total_injured_players"] > 0
+
+    # Interpret as "points lost" (positive = cost)
     grp["points_lost_due_to_injuries"] = -grp["total_injury_effect_pts_minus_xpts"]
 
     # 5) Save
