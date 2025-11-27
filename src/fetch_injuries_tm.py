@@ -9,6 +9,12 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from dateutil.parser import parse as dtparse
 
+#**********************************************************************
+# This code fetches player injury and suspension data from transfermarkt.com
+# for specified seasons and saves the data into CSV files. The csv files are stored in the data/processed directory.
+#**********************************************************************
+
+
 OUT_DIR = Path("data/processed"); OUT_DIR.mkdir(parents=True, exist_ok=True)
 URL_DIR = Path("data/raw/injuries/urls")   # where your *_tm_urls.csv files live
 HEADERS = {

@@ -26,3 +26,6 @@ Will be on 5 seasons 19-20, 20-21, 21-22, 22-23, 23-24 and then tested on season
             on github)
             Added injuries dates datasets -transfermarkt
 
+27.11.2025: Created PL table of each season through the file of each
+            season and each game.
+            Manually created a PL prize money file

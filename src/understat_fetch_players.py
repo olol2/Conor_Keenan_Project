@@ -5,6 +5,10 @@ from aiohttp import ClientSession
 from understat import Understat
 import numpy as np
 
+#**********************************************************************
+# This code fetches player match data from understat.com for specified seasons
+# and saves the data into CSV files. the csv files are stored in the data/processed directory.
+#**********************************************************************
 SEASONS = sys.argv[1:] or ["2019","2020","2021","2022","2023","2024"]
 OUT = Path("data/processed"); OUT.mkdir(parents=True, exist_ok=True)
 
