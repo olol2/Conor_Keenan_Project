@@ -63,3 +63,5 @@ PROJECT 1: team-level injury
 Need to verify consistency in code with different team names (e.g. Man Utd, Manchester Utd, Man United, Manchester United)
 
 Could maybe make interactive plots, to see which players are where in plots
+
+
