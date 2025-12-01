@@ -47,9 +47,19 @@ PROJECT 1: team-level injury
        Did a regression and created many different tables, plots for these findings
        -> can show much more, analysis yet to be done
        
-28.11: Start Proxy 2 - Injury DiD
+01.12: Start Proxy 2 - Injury DiD
+    "Within club-season, estimate ATT on xPts from odds for matches with vs without Player X using two-way FE (opponent & date), clustered SEs; exclude multi-injury/suspension spells."
+
+    1 problem occured:
+    “In the baseline specification we allow matches with multiple injured players. The DiD coefficient should therefore be interpreted as the marginal effect of the focal player within the realised injury environment.” decide to not exclude multi-injury/suspesnion spells.
+
+    Created build_injury_panel that allowed to create the proxy in proxies folder under name proxy2...
+
+01.12: Start Proxy 1 - Rotation Elasticity
 
 
+### Analysis
 
-30.11: Start Proxy 1 - Rotation Elasticity
+Need to verify consistency in code with different team names (e.g. Man Utd, Manchester Utd, Man United, Manchester United)
 
+Could maybe make interactive plots, to see which players are where in plots
