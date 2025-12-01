@@ -64,4 +64,50 @@ Need to verify consistency in code with different team names (e.g. Man Utd, Manc
 
 Could maybe make interactive plots, to see which players are where in plots
 
+## Data
+
+The project uses public football data from several sources. All files needed to reproduce the results are included in the repository. Some data has been scraped using API's or other personal features. main.py only uses the csv files created from scraping the data from external sources.
+
+### Raw data (`data/raw/`)
+
+These are external inputs that are **not** created by `main.py`:
+
+- `data/raw/Odds/results/*/E0.csv`  
+  Premier League match odds and results from [football-data.co.uk].  
+  One CSV per season (2019–2020 to 2024–2025).
+  ->mainly used for ranking difficulty of games for each team and obviously results.
+
+- `data/raw/understat_player_matches/understat_player_matches_*.csv`  
+  Per-player, per-match statistics (minutes, xG, xA, goals, assists) scraped from Understat **once** using a separate script.  
+  The scraping code is not part of the main pipeline; the cleaned CSVs are provided here as starting data.
+
+- `data/raw/pl_prize_money.csv`  
+  Data was manually imported from the official Premier League website, showing a table of rankings and prize money per year.
+
+### Processed inputs (`data/processed/`)
+
+These files are cleaned / curated versions of the raw data that the analysis builds on:
+
+- `data/processed/injuries/injuries_20xx.csv`  
+  Player injury/suspension spells by season, collected from Transfermarkt and manually cleaned.  
+  The scraping step was done in a separate environment; the final per-season CSVs are included here.
+
+- `data/processed/matches/*.csv`  
+  Team-match level data for each season, including xPts derived from betting odds and injury counts.
+
+- `data/processed/points_to_pounds/*.csv`  
+  Mapping from league points to GBP value for each season.
+
+- `data/processed/standings/*.csv`  
+  Final league tables (position, points) for each season.
+
+- `data/processed/panel_injury.parquet`  
+  Player–match–season panel used for the injury DiD proxy.
+
+- `data/processed/panel_rotation.parquet`  
+  Player–match–season panel used for the rotation elasticity proxy.
+
+`main.py` assumes that all of the above files are present. It does **not** re-download or re-scrape any external data; it starts from these CSV/parquet files and reproduces all panels, proxies, and figures.
+
+The scripts for data_collection which can not be done manually have been included in the src/data_collection folder.
 
