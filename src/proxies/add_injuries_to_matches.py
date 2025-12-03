@@ -1,5 +1,8 @@
 # src/add_injuries_to_matches.py
+""" This script takes injuries from data/processed/injuries and merges (adds two columns) to data/processed/matches/matches_all_seasons.csv.
+The output is saved to data/processed/matches/matches_with_injuries_all_seasons.csv
 
+"""
 from pathlib import Path
 import re
 import pandas as pd
@@ -56,7 +59,7 @@ def standardise_team(name: str) -> str:
 # Paths
 # -------------------------------------------------------------------
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 
 MATCHES_DIR = ROOT_DIR / "data" / "processed" / "matches"
 INJURIES_DIR = ROOT_DIR / "data" / "processed" / "injuries"

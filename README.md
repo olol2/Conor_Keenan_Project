@@ -90,7 +90,7 @@ These files are cleaned / curated versions of the raw data that the analysis bui
 
 - `data/processed/injuries/injuries_20xx.csv`  
   Player injury/suspension spells by season, collected from Transfermarkt and manually cleaned.  
-  The scraping step was done in a separate environment; the final per-season CSVs are included here.
+  The scraping step was done in a separate environment (pycharm) at first it worked in nuvolos, but when testing again, it only worked in pycharm; the final per-season CSVs are included here.
 
 - `data/processed/matches/*.csv`  
   Team-match level data for each season, including xPts derived from betting odds and injury counts.

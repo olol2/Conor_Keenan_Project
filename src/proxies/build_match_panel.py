@@ -1,9 +1,13 @@
 # src/build_match_panel.py
+""" This script takes raw match results with betting odds and builds a
+team–match panel dataset with expected points based on implied probabilities
+from the odds.
 
+"""
 from pathlib import Path
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 
 RAW_RESULTS_DIR = ROOT_DIR / "data" / "raw" / "Odds" / "results"
 OUTPUT_DIR = ROOT_DIR / "data" / "processed" / "matches"

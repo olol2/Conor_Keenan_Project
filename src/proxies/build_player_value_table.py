@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 RESULTS_DIR = ROOT / "results"
 COMBINED_FILE = RESULTS_DIR / "proxies_combined.csv"
 

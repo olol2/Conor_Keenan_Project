@@ -1,4 +1,11 @@
 from __future__ import annotations
+"""
+This script builds a player–team–match injury panel dataset by combining:
+  - team–match data with expected points (xPts) and injury counts
+  - injury spells per player–team–season
+  - Understat per-player match minutes & starting info (if available)
+The output is saved as a parquet file in data/processed/panel_injury.parquet. Saved as parquet for efficiency.
+"""
 
 from pathlib import Path
 
@@ -28,7 +35,7 @@ TEAM_NAME_MAP = {
 # ---------------------------------------------------------------------
 
 # Project root: /files/Conor_Keenan_Project
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 DATA_PROCESSED = ROOT / "data" / "processed"
 DATA_PROCESSED.mkdir(parents=True, exist_ok=True)

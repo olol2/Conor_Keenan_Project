@@ -1,10 +1,12 @@
 # scripts/PL_table_creator.py
-
+""" This script processes raw Premier League match results
+and computes the final league standings for each season.
+"""
 import pandas as pd
 from pathlib import Path
 
 # -------- paths --------
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 
 RESULTS_DIR = ROOT_DIR / "data/raw/Odds/results"
 OUTPUT_DIR = ROOT_DIR / "data/processed/standings"

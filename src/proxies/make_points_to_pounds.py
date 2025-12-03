@@ -2,9 +2,13 @@
 
 import pandas as pd
 from pathlib import Path
-
+"""
+    This script computes the value of Premier League points in GBP
+    based on final league standings and prize money data.
+    It outputs CSV files mapping points to pounds for each season.
+"""
 # ---------- paths ----------
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 
 STANDINGS_DIR = ROOT_DIR / "data/processed/standings"
 PRIZE_FILE = ROOT_DIR / "data/raw/pl_prize_money.csv"

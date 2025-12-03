@@ -1,9 +1,15 @@
 # src/estimate_injury_cost_points.py
 
+""" This script estimates the cost of injuries in terms of Premier League points lost
+per team-season, based on the regression coefficient for injured players
+from the injury impact regression.
+It outputs a CSV file mapping team-seasons to estimated points lost due to injuries. These csv is stored in data/processed/injury_cost_points.csv
+"""
+
 from pathlib import Path
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 
 MATCHES_FILE = ROOT_DIR / "data" / "processed" / "matches" / "matches_with_injuries_all_seasons.csv"
 COEF_FILE = ROOT_DIR / "results" / "injury_regression_coefficients.csv"

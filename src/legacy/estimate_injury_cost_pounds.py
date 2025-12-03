@@ -1,9 +1,15 @@
 # src/estimate_injury_cost_pounds.py
+""" This script estimates the cost of injuries in terms of GBP lost
+per team-season, based on the estimated points lost due to injuries
+and the value of Premier League points in GBP.
+It outputs a CSV file mapping team-seasons to estimated GBP lost due to injuries. The csv just adds two columns to data/processed/injury_cost_points.csv
+and is stored in data/processed/injury_cost_pounds.csv.
+"""
 
 from pathlib import Path
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 PROC_DIR = ROOT_DIR / "data" / "processed"
 
 INJURY_POINTS_FILE = PROC_DIR / "injury_cost_points.csv"
