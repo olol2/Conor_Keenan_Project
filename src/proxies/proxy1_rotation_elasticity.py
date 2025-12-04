@@ -17,7 +17,6 @@ DATA_PROCESSED = ROOT / "data" / "processed"
 RESULTS_DIR = ROOT / "results"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-
 PANEL_ROTATION_FILE = DATA_PROCESSED / "panel_rotation.parquet"
 
 
@@ -60,16 +59,18 @@ def load_panel_rotation() -> pd.DataFrame:
 
 def add_stakes_category(df: pd.DataFrame) -> pd.DataFrame:
     """
-    For each season, classify matches into:
-      - 'hard' (bottom 1/3 of xpts)
+    For each *team-season*, classify matches into:
+      - 'hard'   (bottom 1/3 of that team’s xPts that season)
       - 'medium'
-      - 'easy' (top 1/3 of xpts)
+      - 'easy'   (top 1/3 of that team’s xPts that season)
 
-    We use the team's own xpts for that match.
+    This makes sense for weak teams like Norwich / West Brom, who rarely
+    have truly high xPts at league level but *do* have relatively easier
+    games compared to their own baseline.
     """
     df = df.copy()
 
-    def season_stakes(sub: pd.DataFrame) -> pd.DataFrame:
+    def team_season_stakes(sub: pd.DataFrame) -> pd.DataFrame:
         q_low = sub["xpts"].quantile(1 / 3)
         q_high = sub["xpts"].quantile(2 / 3)
 
@@ -84,7 +85,8 @@ def add_stakes_category(df: pd.DataFrame) -> pd.DataFrame:
         sub["stakes"] = sub["xpts"].apply(categorize)
         return sub
 
-    df = df.groupby("season", group_keys=False).apply(season_stakes)
+    # 🔁 now group by team *and* season
+    df = df.groupby(["team_id", "season"], group_keys=False).apply(team_season_stakes)
 
     return df
 
@@ -93,11 +95,16 @@ def add_stakes_category(df: pd.DataFrame) -> pd.DataFrame:
 # Compute per-player-season rotation elasticity
 # ---------------------------------------------------------------------
 
-def compute_rotation_elasticity(df: pd.DataFrame) -> pd.DataFrame:
+def compute_rotation_elasticity(
+    df: pd.DataFrame,
+    min_matches: int = 3,
+    min_hard: int = 1,
+    min_easy: int = 1,
+) -> pd.DataFrame:
     """
     For each player-season, compute:
 
-      - n_matches: number of matches where the player appeared (Understat)
+      - n_matches: number of matches where the player appeared
       - n_starts, start_rate_all
       - start_rate_hard = start rate in 'hard' matches
       - start_rate_easy = start rate in 'easy' matches
@@ -149,14 +156,22 @@ def compute_rotation_elasticity(df: pd.DataFrame) -> pd.DataFrame:
         .reset_index()
     )
 
-    # Filter out very small samples (optional but recommended)
+    # Apply more lenient filters so we don't lose whole teams
     grouped["keep"] = (
-        (grouped["n_matches"] >= 5)
-        & (grouped["n_hard"] >= 2)
-        & (grouped["n_easy"] >= 2)
+        (grouped["n_matches"] >= min_matches)
+        & (grouped["n_hard"] >= min_hard)
+        & (grouped["n_easy"] >= min_easy)
+        & grouped["rotation_elasticity"].notna()
     )
-    filtered = grouped[grouped["keep"]].drop(columns=["keep"])
 
+    # Diagnostics: see which teams survive the filter
+    teams_before = sorted(grouped["team_id"].unique())
+    teams_after = sorted(grouped.loc[grouped["keep"], "team_id"].unique())
+    print("Teams in rotation panel (before filter):", teams_before)
+    print("Teams in rotation proxy  (after filter):", teams_after)
+    print(f"Number of teams before: {len(teams_before)}, after: {len(teams_after)}")
+
+    filtered = grouped[grouped["keep"]].drop(columns=["keep"])
     return filtered
 
 

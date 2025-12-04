@@ -4,7 +4,9 @@ This script builds a player–team–match injury panel dataset by combining:
   - team–match data with expected points (xPts) and injury counts
   - injury spells per player–team–season
   - Understat per-player match minutes & starting info (if available)
-The output is saved as a parquet file in data/processed/panel_injury.parquet. Saved as parquet for efficiency.
+
+The output is saved as a parquet file in:
+    data/processed/panel_injury.parquet
 """
 
 from pathlib import Path
@@ -12,22 +14,48 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-TEAM_NAME_MAP = {
-    # Long -> short (canonical)
-    "Manchester City": "Man City",
-    "Manchester Utd": "Man Utd",           # if it appears
-    "Manchester United": "Man Utd",
-    "Sheffield United": "Sheffield Utd",
-    "Wolverhampton Wanderers": "Wolves",
-    "Brighton and Hove Albion": "Brighton",
-    "Brighton & Hove Albion": "Brighton",
-    "Newcastle United": "Newcastle",
-    "West Ham United": "West Ham",
-    "Tottenham Hotspur": "Tottenham",
-    "Nottingham Forest": "Nottm Forest",   # if your matches use this
-    # add more once you see what’s in Understat
-}
 
+TEAM_NAME_MAP = {
+    # Premier League canonical short names -> matches file uses these
+    # Long / alternative -> short canonical
+
+    # Basic “FC” variants
+    "Arsenal FC": "Arsenal",
+    "Chelsea FC": "Chelsea",
+    "Everton FC": "Everton",
+    "Liverpool FC": "Liverpool",
+    "Fulham FC": "Fulham",
+    "Burnley FC": "Burnley",
+    "Brentford FC": "Brentford",
+    "Watford FC": "Watford",
+    "Southampton FC": "Southampton",
+
+    # Bournemouth / West Brom variants
+    "AFC Bournemouth": "Bournemouth",
+    "West Bromwich Albion": "West Brom",
+
+    # Town / City / United variants
+    "Ipswich Town": "Ipswich",
+    "Luton Town": "Luton",
+    "Leicester City": "Leicester",
+    "Norwich City": "Norwich",
+    "Leeds United": "Leeds",
+    "Newcastle United": "Newcastle",
+    "Manchester City": "Man City",
+    "Manchester Utd": "Man United",   # defensive
+    "Manchester United": "Man United",
+    "Nottingham Forest": "Nott'm Forest",
+    "Sheffield United": "Sheffield Utd",
+
+    # “& Hove Albion”, “Wanderers”, “Hotspur”
+    "Brighton & Hove Albion": "Brighton",
+    "Brighton and Hove Albion": "Brighton",
+    "Wolverhampton Wanderers": "Wolves",
+    "Tottenham Hotspur": "Tottenham",
+
+    # West Ham
+    "West Ham United": "West Ham",
+}
 
 
 # ---------------------------------------------------------------------
@@ -40,14 +68,13 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_PROCESSED = ROOT / "data" / "processed"
 DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
 
-# 🟢 1) MATCHES file (team–match with xPts)
-# Adjust ONLY the filename if needed (inside data/processed/matches/)
+# 1) MATCHES file (team–match with xPts)
 MATCHES_FILE = DATA_PROCESSED / "matches" / "matches_with_injuries_all_seasons.csv"
 
-# 🟢 2) INJURIES directory (contains per-season parquet / csv from Transfermarkt)
+# 2) INJURIES directory (contains per-season parquet / csv from Transfermarkt)
 INJURIES_DIR = DATA_PROCESSED / "injuries"
 
-# 🟢 3) UNDERSTAT minutes directory (your understat_player_matches_2019.csv etc.)
+# 3) UNDERSTAT minutes directory (your understat_player_matches_2019.csv etc.)
 UNDERSTAT_DIR = ROOT / "data" / "raw" / "understat_player_matches"
 
 
@@ -63,7 +90,7 @@ def load_matches() -> pd.DataFrame:
       Season, MatchID, Date, Team, Opponent, is_home, xPts,
       injured_players, injury_spells, ...
     """
-    path = DATA_PROCESSED / "matches" / "matches_with_injuries_all_seasons.csv"
+    path = MATCHES_FILE
     df = pd.read_csv(path)
 
     df = df.rename(
@@ -79,10 +106,10 @@ def load_matches() -> pd.DataFrame:
     )
 
     df["date"] = pd.to_datetime(df["date"])
-    # "2019-2020" -> 2019
+    # "2019-2020" -> 2019 (first year of the season)
     df["season"] = df["season"].astype(str).str.slice(0, 4).astype(int)
 
-    # 🔧 standardise team names to canonical short forms
+    # Standardise team names to canonical short forms
     df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
     df["opponent_id"] = df["opponent_id"].astype(str).replace(TEAM_NAME_MAP)
 
@@ -100,7 +127,6 @@ def load_matches() -> pd.DataFrame:
         raise ValueError(f"Missing columns in matches file: {missing}")
 
     return df[needed].copy()
-
 
 
 # ---------------------------------------------------------------------
@@ -196,7 +222,53 @@ def load_injury_spells() -> pd.DataFrame:
     if "season" not in df.columns:
         df["season"] = df["start_date"].dt.year
 
-    df["season"] = df["season"].astype(int)
+    def _parse_season_to_int(val):
+        """
+        Convert season values like '2019-2020' or '2019' to an integer year.
+
+        For '2019-2020' we take the FIRST year (2019),
+        to match load_matches(), which also uses the first year.
+        """
+        if pd.isna(val):
+            return np.nan
+
+        s = str(val).strip()
+        if s == "":
+            return np.nan
+
+        if "-" in s:
+            # e.g. '2019-2020' -> '2019'
+            parts = s.split("-")
+            year_str = parts[0]
+        else:
+            year_str = s
+
+        try:
+            return int(year_str)
+        except ValueError:
+            # e.g. junk strings like 'Unknown'
+            return np.nan
+
+    # First pass: parse season strings
+    parsed = df["season"].map(_parse_season_to_int)
+
+    # Second pass: for any NaNs, fall back to start_date year
+    mask_na = parsed.isna()
+    if mask_na.any():
+        parsed.loc[mask_na] = df.loc[mask_na, "start_date"].dt.year
+
+    # Third pass: if still NaN, drop those rows with a warning
+    mask_na2 = parsed.isna()
+    if mask_na2.any():
+        n_drop = int(mask_na2.sum())
+        print(f"⚠️ Dropping {n_drop} injury rows with unparseable season.")
+        df = df.loc[~mask_na2].copy()
+        parsed = parsed.loc[~mask_na2]
+
+    df["season"] = parsed.astype(int)
+
+    # Standardise team names in injuries to match matches
+    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
 
     # Keep only useful columns
     return df[["player_id", "team_id", "start_date", "end_date", "season"]].copy()
@@ -250,6 +322,9 @@ def load_player_minutes() -> pd.DataFrame:
 
     df["date"] = pd.to_datetime(df["date"])
     df["season"] = df["season"].astype(int)
+
+    # Standardise team names to canonical short forms
+    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
 
     # started can be boolean or 'True'/'False' strings
     if df["started"].dtype == object:
@@ -305,7 +380,9 @@ def build_panel() -> pd.DataFrame:
     pts = spells[["player_id", "team_id", "season"]].drop_duplicates()
 
     # Step 2: all matches for each team–season
-    tsm = matches[["match_id", "team_id", "season", "date", "opponent_id", "xpts", "n_injured_squad"]]
+    tsm = matches[
+        ["match_id", "team_id", "season", "date", "opponent_id", "xpts", "n_injured_squad"]
+    ]
 
     # Cross-join player–team–season with that team's matches
     panel = pts.merge(

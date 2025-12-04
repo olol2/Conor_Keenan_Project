@@ -1,10 +1,13 @@
+# src/proxies/build_rotation_panel.py
 from __future__ import annotations
 """
-This script builds a player–team–match injury panel dataset by combining:
-  - team–match data with expected points (xPts) and injury counts
-  - injury spells per player–team–season
-  - Understat per-player match minutes & starting info (if available)
-The output is saved as a parquet file in data/processed/panel_injury.parquet. Saved as parquet for efficiency. 
+Build a player–team–match rotation panel using:
+
+  - league matches with expected points (xPts)
+  - Understat per-player match minutes & starting info
+
+Output: data/processed/panel_rotation.parquet
+(one row per player–team–match)
 """
 
 from pathlib import Path
@@ -13,21 +16,46 @@ import numpy as np
 import pandas as pd
 
 TEAM_NAME_MAP = {
-    # Long -> short (canonical)
-    "Manchester City": "Man City",
-    "Manchester Utd": "Man Utd",           # if it appears
-    "Manchester United": "Man Utd",
-    "Sheffield United": "Sheffield Utd",
-    "Wolverhampton Wanderers": "Wolves",
-    "Brighton and Hove Albion": "Brighton",
-    "Brighton & Hove Albion": "Brighton",
-    "Newcastle United": "Newcastle",
-    "West Ham United": "West Ham",
-    "Tottenham Hotspur": "Tottenham",
-    "Nottingham Forest": "Nottm Forest",   # if your matches use this
-    # add more once you see what’s in Understat
-}
+    # Premier League canonical short names -> matches file uses these
+    # Long / alternative -> short canonical
 
+    # Basic “FC” variants
+    "Arsenal FC": "Arsenal",
+    "Chelsea FC": "Chelsea",
+    "Everton FC": "Everton",
+    "Liverpool FC": "Liverpool",
+    "Fulham FC": "Fulham",
+    "Burnley FC": "Burnley",
+    "Brentford FC": "Brentford",
+    "Watford FC": "Watford",
+    "Southampton FC": "Southampton",
+
+    # Bournemouth / West Brom variants
+    "AFC Bournemouth": "Bournemouth",
+    "West Bromwich Albion": "West Brom",
+
+    # Town / City / United variants
+    "Ipswich Town": "Ipswich",
+    "Luton Town": "Luton",
+    "Leicester City": "Leicester",
+    "Norwich City": "Norwich",
+    "Leeds United": "Leeds",
+    "Newcastle United": "Newcastle",
+    "Manchester City": "Man City",
+    "Manchester Utd": "Man United",   # defensive
+    "Manchester United": "Man United",
+    "Nottingham Forest": "Nott'm Forest",
+    "Sheffield United": "Sheffield Utd",
+
+    # “& Hove Albion”, “Wanderers”, “Hotspur”
+    "Brighton & Hove Albion": "Brighton",
+    "Brighton and Hove Albion": "Brighton",
+    "Wolverhampton Wanderers": "Wolves",
+    "Tottenham Hotspur": "Tottenham",
+
+    # West Ham
+    "West Ham United": "West Ham",
+}
 
 
 # ---------------------------------------------------------------------
@@ -38,7 +66,7 @@ ROOT = Path(__file__).resolve().parents[2]  # /files/Conor_Keenan_Project
 DATA_PROCESSED = ROOT / "data" / "processed"
 DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
 
-# Same matches file you used for injuries – adjust filename if needed
+# Same matches file you used for injuries
 MATCHES_FILE = DATA_PROCESSED / "matches" / "matches_with_injuries_all_seasons.csv"
 
 # Understat per-player match files like understat_player_matches_2019.csv, ...
@@ -71,10 +99,10 @@ def load_matches() -> pd.DataFrame:
     )
 
     df["date"] = pd.to_datetime(df["date"])
-    # "2019-2020" -> 2019
+    # "2019-2020" -> 2019 (first year of season, same as proxy2)
     df["season"] = df["season"].astype(str).str.slice(0, 4).astype(int)
 
-    # 🔧 standardise team names
+    # standardise team names
     df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
     df["opponent_id"] = df["opponent_id"].astype(str).replace(TEAM_NAME_MAP)
 
@@ -126,7 +154,7 @@ def load_understat_minutes() -> pd.DataFrame:
     df = df.rename(
         columns={
             "season": "season",
-            "Date": "date",      # some files may have 'Date'
+            "Date": "date",
             "team": "team_id",
             "player_id": "player_id",
             "player_name": "player_name",
@@ -135,15 +163,15 @@ def load_understat_minutes() -> pd.DataFrame:
         }
     )
 
-    # 🔧 Important: if some files already had a 'date' column in lowercase,
-    # the rename above will create duplicate 'date' columns.
-    # This drops duplicate-named columns, keeping the first occurrence.
+    # If some files already had 'date' column, avoid duplicate-named columns
     df = df.loc[:, ~df.columns.duplicated()]
 
     df["date"] = pd.to_datetime(df["date"])
     df["season"] = df["season"].astype(int)
-    df["team_id"] = df["team_id"].astype(str)
-    df["team_id"] = df["team_id"].replace(TEAM_NAME_MAP)
+
+    # standardise team names to canonical short forms
+    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
+
     # started can be boolean or 'True'/'False' strings
     if df["started"].dtype == object:
         df["started"] = (
@@ -163,6 +191,7 @@ def load_understat_minutes() -> pd.DataFrame:
         raise ValueError(f"Missing columns in Understat minutes: {missing}")
 
     return df[needed + ["player_name"]].copy()
+
 
 # ---------------------------------------------------------------------
 # Build rotation panel
@@ -190,7 +219,7 @@ def build_rotation_panel() -> pd.DataFrame:
     panel = under.merge(
         matches,
         on=["season", "date", "team_id"],
-        how="inner",              # 👈 inner join: keep only matches present in our league data
+        how="inner",              # keep only league matches in our dataset
         validate="many_to_one",
     )
     after = len(panel)
@@ -200,14 +229,12 @@ def build_rotation_panel() -> pd.DataFrame:
 
     # Compute days_rest for each player (days since last appearance)
     panel = panel.sort_values(["player_id", "date"])
-    panel["days_rest"] = (
-        panel.groupby("player_id")["date"].diff().dt.days
-    )
+    panel["days_rest"] = panel.groupby("player_id")["date"].diff().dt.days
 
     # First appearance will have NaN days_rest -> treat as large rest, e.g. 30
     panel["days_rest"] = panel["days_rest"].fillna(30).astype(float)
 
-    # Cap extreme values to avoid weird leverage
+    # Cap extreme values
     panel["days_rest"] = panel["days_rest"].clip(lower=0, upper=30)
 
     panel = panel[

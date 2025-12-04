@@ -68,6 +68,49 @@ def plot_top10_rotation(df: pd.DataFrame) -> None:
     plt.close()
     print(f"Saved {out_path}")
 
+def plot_team_boxplot_rotation(df: pd.DataFrame) -> None:
+    # Only keep player-seasons with a valid elasticity
+    sub = df.dropna(subset=["rotation_elasticity"]).copy()
+
+    # Order teams by median elasticity (nicely sorted x-axis)
+    med = sub.groupby("team_id")["rotation_elasticity"].median().sort_values()
+    ordered_teams = med.index.tolist()
+    sub["team_id"] = pd.Categorical(sub["team_id"], categories=ordered_teams, ordered=True)
+
+    plt.figure(figsize=(12, 6))
+    sub.boxplot(column="rotation_elasticity", by="team_id")
+    plt.xticks(rotation=60, ha="right")
+    plt.ylabel("Rotation elasticity (hard - easy)")
+    plt.title("Rotation elasticity by team")
+    plt.suptitle("")  # remove pandas’ automatic super title
+    plt.tight_layout()
+
+    out_path = FIG_DIR / "proxy1_team_boxplot_rotation_elasticity.png"
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"Saved {out_path}")
+
+def plot_rotation_trend_by_season(df: pd.DataFrame) -> None:
+    sub = df.dropna(subset=["rotation_elasticity"]).copy()
+    season_mean = (
+        sub.groupby("season")["rotation_elasticity"]
+           .mean()
+           .reset_index()
+    )
+
+    plt.figure(figsize=(7, 4))
+    plt.plot(season_mean["season"], season_mean["rotation_elasticity"], marker="o")
+    plt.xlabel("Season (first year)")
+    plt.ylabel("Average rotation elasticity")
+    plt.title("League-wide trend in rotation elasticity by season")
+    plt.tight_layout()
+
+    out_path = FIG_DIR / "proxy1_trend_rotation_elasticity_by_season.png"
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"Saved {out_path}")
+
+
 
 def main() -> None:
     df = load_rotation_proxy()
@@ -75,6 +118,7 @@ def main() -> None:
 
     plot_hist_rotation_elasticity(df)
     plot_top10_rotation(df)
+    plot_rotation_trend_by_season(df)   # 👈 call function 2 here
 
 
 if __name__ == "__main__":
