@@ -1,8 +1,6 @@
 # src/analysis/combine_proxies.py
 
 from __future__ import annotations
-""" NEED TO KNOW WHAT THIS SCRIPT DOES
-"""
 
 from pathlib import Path
 import pandas as pd
@@ -12,21 +10,42 @@ RESULTS_DIR = ROOT / "results"
 
 ROT_FILE = RESULTS_DIR / "proxy1_rotation_elasticity.csv"
 INJ_FILE = RESULTS_DIR / "proxy2_injury_final_named.csv"
+OUT_FILE = RESULTS_DIR / "proxies_combined.csv"
+
+# Map rotation's short team names to the long names used in the injury proxy / Understat
+NAME_MAP = {
+    "Man City": "Manchester City",
+    "Man United": "Manchester United",
+    "Newcastle": "Newcastle United",
+    "Nott'm Forest": "Nottingham Forest",
+    "Sheffield Utd": "Sheffield United",
+    "West Brom": "West Bromwich Albion",
+    "Wolves": "Wolverhampton Wanderers",
+}
 
 
 def load_rotation() -> pd.DataFrame:
     rot = pd.read_csv(ROT_FILE)
-    rot["season"] = rot["season"].astype(int)
+
+    # Make keys comparable
+    rot["player_id"] = pd.to_numeric(rot["player_id"], errors="coerce").astype("Int64")
+    rot["season"] = pd.to_numeric(rot["season"], errors="coerce").astype("Int64")
     rot["player_name"] = rot["player_name"].astype(str)
-    rot["team_id"] = rot["team_id"].astype(str)
+
+    # Standardise team names to long versions
+    rot["team_id"] = rot["team_id"].astype(str).replace(NAME_MAP)
+
     return rot
 
 
 def load_injury() -> pd.DataFrame:
     inj = pd.read_csv(INJ_FILE)
-    inj["season"] = inj["season"].astype(int)
+
+    inj["player_id"] = pd.to_numeric(inj["player_id"], errors="coerce").astype("Int64")
+    inj["season"] = pd.to_numeric(inj["season"], errors="coerce").astype("Int64")
     inj["player_name"] = inj["player_name"].astype(str)
     inj["team_id"] = inj["team_id"].astype(str)
+
     return inj
 
 
@@ -34,40 +53,64 @@ def main() -> None:
     rot = load_rotation()
     inj = load_injury()
 
-    # keep only the columns we really need from each side
+    # Columns to keep from each side
     rot_keep = [
-        "player_id", "player_name", "team_id", "season",
-        "n_matches", "n_starts", "start_rate_all",
-        "start_rate_hard", "start_rate_easy",
+        "player_id",
+        "player_name",
+        "team_id",
+        "season",
+        "n_matches",
+        "n_starts",
+        "start_rate_all",
+        "start_rate_hard",
+        "start_rate_easy",
         "rotation_elasticity",
     ]
     rot = rot[rot_keep]
 
     inj_keep = [
-        "player_name", "team_id", "season",
-        "beta_unavailable",            # DiD coefficient (missing vs present)
+        "player_id",
+        "player_name",
+        "team_id",
+        "season",
+        "beta_unavailable",
         "xpts_per_match_present",
         "xpts_season_total",
-        "value_gbp_season_total",      # £ impact from injuries
+        "value_gbp_season_total",
     ]
-    # only keep cols that actually exist
     inj_keep = [c for c in inj_keep if c in inj.columns]
     inj = inj[inj_keep]
 
+    # Merge on IDs + season + team
     combined = rot.merge(
         inj,
-        on=["player_name", "team_id", "season"],
+        on=["player_id", "season", "team_id"],
         how="outer",
         suffixes=("_rot", "_inj"),
     )
 
+    # Build a single player_name column (prefer rotation name, fall back to injury)
+    if "player_name_rot" in combined.columns and "player_name_inj" in combined.columns:
+        combined["player_name"] = combined["player_name_rot"].fillna(
+            combined["player_name_inj"]
+        )
+    elif "player_name_rot" in combined.columns:
+        combined["player_name"] = combined["player_name_rot"]
+    elif "player_name_inj" in combined.columns:
+        combined["player_name"] = combined["player_name_inj"]
+
+    # Convenience flags
     combined["has_rotation"] = ~combined["rotation_elasticity"].isna()
     combined["has_injury"] = ~combined["xpts_season_total"].isna()
 
-    out_path = RESULTS_DIR / "proxies_combined.csv"
-    combined.to_csv(out_path, index=False)
-    print(f"✅ Saved combined proxies to {out_path}")
+    # Optional: create inj_xpts column for the plotting script
+    if "xpts_season_total" in combined.columns and "inj_xpts" not in combined.columns:
+        combined["inj_xpts"] = combined["xpts_season_total"]
+
+    combined.to_csv(OUT_FILE, index=False)
+    print(f"✅ Saved combined proxies to {OUT_FILE}")
     print(f"Rows: {len(combined)}")
+    print("Distinct teams:", combined["team_id"].nunique())
     print(combined.head())
 
 

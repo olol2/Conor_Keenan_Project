@@ -1,0 +1,29 @@
+Validation of rotation proxy vs injury impact
+Number of merged player-seasons: 978
+Correlation: -0.049
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:      xpts_season_total   R-squared:                       0.002
+Model:                            OLS   Adj. R-squared:                  0.001
+Method:                 Least Squares   F-statistic:                     2.338
+Date:                Thu, 04 Dec 2025   Prob (F-statistic):              0.127
+Time:                        13:58:09   Log-Likelihood:                -2952.6
+No. Observations:                 978   AIC:                             5909.
+Df Residuals:                     976   BIC:                             5919.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+=======================================================================================
+                          coef    std err          t      P>|t|      [0.025      0.975]
+---------------------------------------------------------------------------------------
+const                  -2.5389      0.159    -16.004      0.000      -2.850      -2.228
+rotation_elasticity    -0.9914      0.648     -1.529      0.127      -2.264       0.281
+==============================================================================
+Omnibus:                        5.709   Durbin-Watson:                   1.943
+Prob(Omnibus):                  0.058   Jarque-Bera (JB):                6.426
+Skew:                           0.099   Prob(JB):                       0.0402
+Kurtosis:                       3.344   Cond. No.                         4.09
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.

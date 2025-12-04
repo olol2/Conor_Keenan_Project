@@ -21,7 +21,21 @@ def load_did() -> pd.DataFrame:
     df["player_name"] = df["player_id"].astype(str)
     df["team_id"] = df["team_id"].astype(str)
 
+    # Map injuries-style short names to Understat-style long names
+    TEAM_NAME_MAP = {
+        "Man City": "Manchester City",
+        "Man United": "Manchester United",
+        "Newcastle": "Newcastle United",
+        "Nott'm Forest": "Nottingham Forest",
+        "Sheffield Utd": "Sheffield United",
+        "West Brom": "West Bromwich Albion",
+        "Wolves": "Wolverhampton Wanderers",
+    }
+
+    df["team_id"] = df["team_id"].replace(TEAM_NAME_MAP)
+
     return df
+
 
 
 def load_player_lookup() -> pd.DataFrame:
@@ -62,12 +76,23 @@ def main() -> None:
     did = load_did()
     players = load_player_lookup()
 
-    # Merge on player_name + team_id (string), not numeric ID
     did_named = did.merge(
         players, on=["player_name", "team_id"], how="left"
     )
 
-    # Simple ranking by season & xPts season impact
+    # make Understat IDs nice integers
+    did_named["understat_player_id"] = pd.to_numeric(
+        did_named["understat_player_id"], errors="coerce"
+    ).astype("Int64")
+
+    # align with rotation: player_id = Understat id
+    did_named = did_named.rename(
+        columns={
+            "player_id": "injury_player_name_raw",   # original name from injuries
+            "understat_player_id": "player_id",      # Understat ID
+        }
+    )
+
     did_named = did_named.sort_values(
         ["season", "xpts_season_total"], ascending=[True, False]
     )
@@ -75,6 +100,7 @@ def main() -> None:
     out_path = RESULTS_DIR / "proxy2_injury_final_named.csv"
     did_named.to_csv(out_path, index=False)
     print(f"✅ Saved final named injury proxy to {out_path}")
+
 
 
 if __name__ == "__main__":
