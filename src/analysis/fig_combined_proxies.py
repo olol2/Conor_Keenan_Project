@@ -1,6 +1,15 @@
 # src/analysis/fig_combined_proxies_interactive.py
 
 from __future__ import annotations
+"""
+Interactive scatter of the two player-value proxies:
+
+- x-axis: rotation_elasticity (proxy 1)
+- y-axis: season injury impact in xPts (inj_xpts, proxy 2)
+
+Output:
+    results/figures/proxies_scatter_rotation_vs_injury_xpts_interactive.html
+"""
 
 from pathlib import Path
 
@@ -31,7 +40,7 @@ def main() -> None:
 
     df = pd.read_csv(COMBINED_FILE)
 
-    # Same rename logic as your original Matplotlib script
+    # Ensure we have an injury-in-points column called inj_xpts
     if "inj_xpts" not in df.columns and "xpts_season_total" in df.columns:
         df = df.rename(columns={"xpts_season_total": "inj_xpts"})
 
@@ -43,11 +52,19 @@ def main() -> None:
             f"Available columns: {list(df.columns)}"
         )
 
+    # Coerce to numeric just in case
+    df["rotation_elasticity"] = pd.to_numeric(df["rotation_elasticity"], errors="coerce")
+    df["inj_xpts"] = pd.to_numeric(df["inj_xpts"], errors="coerce")
+
     sub = df.dropna(subset=["rotation_elasticity", "inj_xpts"])
     print("Rows with both proxies:", len(sub))
     if len(sub) == 0:
         print("No overlap between proxies; skipping scatter.")
         return
+
+    # Optional: correlation as a quick summary
+    corr = sub["rotation_elasticity"].corr(sub["inj_xpts"])
+    print(f"Correlation (rotation_elasticity vs inj_xpts): {corr:.3f}")
 
     # -----------------------------------------------------------------
     # 2) Build a clean label for hover: 'Player (Team Season)'
@@ -87,7 +104,7 @@ def main() -> None:
     # -----------------------------------------------------------------
     # 4) Plotly scatter
     # -----------------------------------------------------------------
-    color_col = team_col  # colour by team (or use "season" instead)
+    color_col = team_col  # colour by team
 
     fig = px.scatter(
         sub,

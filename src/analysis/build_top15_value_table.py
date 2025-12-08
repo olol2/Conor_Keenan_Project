@@ -44,13 +44,18 @@ def main() -> None:
     # Load the full value table
     tbl = pd.read_csv(value_path)
 
-    # Keep only rows where the combined index is defined
     if "combined_value_z" not in tbl.columns:
         raise ValueError(
             "Column 'combined_value_z' not found. "
             "Make sure build_player_value_table.py created it."
         )
 
+    # Ensure combined_value_z is numeric
+    tbl["combined_value_z"] = pd.to_numeric(
+        tbl["combined_value_z"], errors="coerce"
+    )
+
+    # Keep only rows where the combined index is defined
     tbl = tbl.dropna(subset=["combined_value_z"])
 
     # Sort by combined value (highest first) and take top 15
@@ -61,6 +66,7 @@ def main() -> None:
 
     # Pick nice columns for the report (only keep those that exist)
     cols = [
+        "player_id",          # Understat numeric ID (if present)
         "player_name",
         "team_id",
         "season",

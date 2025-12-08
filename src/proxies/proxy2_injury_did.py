@@ -218,9 +218,16 @@ def main() -> None:
         print("No DiD results to save.")
         return
 
-    out_path = RESULTS_DIR / "proxy2_injury_did.parquet"
-    did_results.to_parquet(out_path, index=False)
-    print(f"✅ Saved {len(did_results)} player-season estimates to {out_path}")
+    out_parquet = RESULTS_DIR / "proxy2_injury_did.parquet"
+    out_csv = RESULTS_DIR / "proxy2_injury_did.csv"
+
+    did_results.to_parquet(out_parquet, index=False)
+    did_results.to_csv(out_csv, index=False)
+
+    print(f"✅ Saved {len(did_results)} player-season estimates to")
+    print(f"   - {out_parquet}")
+    print(f"   - {out_csv}")
+
 
 
 if __name__ == "__main__":

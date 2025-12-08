@@ -29,19 +29,45 @@ INJ_FILE = RESULTS_DIR / "proxy2_injury_final_named.csv"
 
 def load_rotation() -> pd.DataFrame:
     df = pd.read_csv(ROT_FILE)
-    df["season"] = df["season"].astype(int)
+
+    required = {
+        "player_id",
+        "player_name",
+        "team_id",
+        "season",
+        "rotation_elasticity",
+    }
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"Rotation file is missing columns: {missing}")
+
+    df["season"] = pd.to_numeric(df["season"], errors="coerce").astype("Int64")
     df["team_id"] = df["team_id"].astype(str)
     df["player_name"] = df["player_name"].astype(str)
-    df["player_id"] = df["player_id"].astype(str)
+    df["player_id"] = pd.to_numeric(df["player_id"], errors="coerce").astype("Int64")
+
     return df
 
 
 def load_injury() -> pd.DataFrame:
     df = pd.read_csv(INJ_FILE)
-    df["season"] = df["season"].astype(int)
+
+    required = {
+        "player_id",
+        "player_name",
+        "team_id",
+        "season",
+        "xpts_season_total",
+    }
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"Injury file is missing columns: {missing}")
+
+    df["season"] = pd.to_numeric(df["season"], errors="coerce").astype("Int64")
     df["team_id"] = df["team_id"].astype(str)
     df["player_name"] = df["player_name"].astype(str)
-    df["player_id"] = df["player_id"].astype(str)
+    df["player_id"] = pd.to_numeric(df["player_id"], errors="coerce").astype("Int64")
+
     return df
 
 
@@ -50,29 +76,43 @@ def load_injury() -> pd.DataFrame:
 # ---------------------------------------------------------------------
 
 def make_summary_tables(rot: pd.DataFrame, inj: pd.DataFrame) -> None:
+    # Drop rows with missing season/team for summaries
+    rot_clean = rot.dropna(subset=["season", "team_id"]).copy()
+    inj_clean = inj.dropna(subset=["season", "team_id"]).copy()
+
     # Rotation proxy summary
     rot_summary = pd.DataFrame(
         {
-            "n_player_seasons": [len(rot)],
-            "n_players": [rot[["player_id", "player_name"]].drop_duplicates().shape[0]],
-            "n_teams": [rot["team_id"].nunique()],
-            "season_min": [rot["season"].min()],
-            "season_max": [rot["season"].max()],
-            "mean_rotation_elasticity": [rot["rotation_elasticity"].mean()],
-            "sd_rotation_elasticity": [rot["rotation_elasticity"].std()],
+            "n_player_seasons": [len(rot_clean)],
+            "n_players": [
+                rot_clean[["player_id", "player_name"]]
+                .dropna(subset=["player_id"])
+                .drop_duplicates()
+                .shape[0]
+            ],
+            "n_teams": [rot_clean["team_id"].nunique()],
+            "season_min": [rot_clean["season"].min()],
+            "season_max": [rot_clean["season"].max()],
+            "mean_rotation_elasticity": [rot_clean["rotation_elasticity"].mean()],
+            "sd_rotation_elasticity": [rot_clean["rotation_elasticity"].std()],
         }
     )
 
     # Injury proxy summary
     inj_summary = pd.DataFrame(
         {
-            "n_player_seasons": [len(inj)],
-            "n_players": [inj[["player_id", "player_name"]].drop_duplicates().shape[0]],
-            "n_teams": [inj["team_id"].nunique()],
-            "season_min": [inj["season"].min()],
-            "season_max": [inj["season"].max()],
-            "mean_xpts_season_total": [inj["xpts_season_total"].mean()],
-            "sd_xpts_season_total": [inj["xpts_season_total"].std()],
+            "n_player_seasons": [len(inj_clean)],
+            "n_players": [
+                inj_clean[["player_id", "player_name"]]
+                .dropna(subset=["player_id"])
+                .drop_duplicates()
+                .shape[0]
+            ],
+            "n_teams": [inj_clean["team_id"].nunique()],
+            "season_min": [inj_clean["season"].min()],
+            "season_max": [inj_clean["season"].max()],
+            "mean_xpts_season_total": [inj_clean["xpts_season_total"].mean()],
+            "sd_xpts_season_total": [inj_clean["xpts_season_total"].std()],
         }
     )
 
@@ -93,7 +133,11 @@ def make_summary_tables(rot: pd.DataFrame, inj: pd.DataFrame) -> None:
 # ---------------------------------------------------------------------
 
 def merge_rotation_injury(rot: pd.DataFrame, inj: pd.DataFrame) -> pd.DataFrame:
-    # First try merge on player_id + team + season
+    """
+    Merge proxies at player_id–team–season level.
+    With the current pipeline both proxies use the Understat numeric ID
+    and canonical short team names, so a simple inner join is enough.
+    """
     merged = rot.merge(
         inj,
         on=["player_id", "team_id", "season"],
@@ -101,26 +145,6 @@ def merge_rotation_injury(rot: pd.DataFrame, inj: pd.DataFrame) -> pd.DataFrame:
         suffixes=("_rot", "_inj"),
     )
     print(f"Merge on player_id/team/season -> {len(merged)} rows")
-
-    # If very small, fall back to player_name + team + season and union
-    if len(merged) < 100:
-        alt = rot.merge(
-            inj,
-            on=["player_name", "team_id", "season"],
-            how="inner",
-            suffixes=("_rot", "_inj"),
-        )
-        print(f"Merge on player_name/team/season -> {len(alt)} rows")
-
-        # Combine and drop duplicates by ids if both worked
-        if not alt.empty:
-            merged = pd.concat([merged, alt], ignore_index=True)
-            merged = merged.drop_duplicates(
-                subset=["player_id_rot", "player_name_rot", "team_id", "season"],
-                keep="first",
-            )
-            print(f"Combined merged set -> {len(merged)} rows")
-
     return merged
 
 
@@ -130,6 +154,10 @@ def validation_analysis(merged: pd.DataFrame) -> None:
         return
 
     # Keep rows with both variables present
+    if "rotation_elasticity" not in merged.columns or "xpts_season_total" not in merged.columns:
+        print("⚠️ Required columns missing in merged data; skipping validation.")
+        return
+
     sub = merged.dropna(subset=["rotation_elasticity", "xpts_season_total"])
     if sub.empty:
         print("⚠️ No rows with both rotation_elasticity and xpts_season_total.")
@@ -142,7 +170,6 @@ def validation_analysis(merged: pd.DataFrame) -> None:
     X = sub[["rotation_elasticity"]].copy()
     y = sub["xpts_season_total"].copy()
 
-    # Safety check
     if len(X) == 0:
         print("⚠️ No observations left after filtering – skipping regression.")
         return
@@ -168,7 +195,7 @@ def validation_analysis(merged: pd.DataFrame) -> None:
         edgecolor="none",
     )
 
-    # Regression line (using the same sub sample)
+    # Regression line
     m, b = np.polyfit(
         sub["rotation_elasticity"],
         sub["xpts_season_total"],
@@ -191,6 +218,7 @@ def validation_analysis(merged: pd.DataFrame) -> None:
     plt.close()
     print(f"Saved validation scatter plot to {fig_path}")
 
+
 # ---------------------------------------------------------------------
 # 3) Club-level bar chart of total injury impact
 # ---------------------------------------------------------------------
@@ -200,6 +228,10 @@ def plot_club_injury_totals(inj: pd.DataFrame) -> None:
     Sum xPts lost to injury over all seasons for each team.
     Positive values = more points lost.
     """
+    if "xpts_season_total" not in inj.columns:
+        print("⚠️ 'xpts_season_total' not in injury data; skipping club totals plot.")
+        return
+
     sub = inj.dropna(subset=["xpts_season_total"]).copy()
 
     club_totals = (

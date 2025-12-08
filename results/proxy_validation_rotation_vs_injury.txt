@@ -1,28 +1,28 @@
 Validation of rotation proxy vs injury impact
-Number of merged player-seasons: 978
-Correlation: -0.049
+Number of merged player-seasons: 1421
+Correlation: -0.022
 
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:      xpts_season_total   R-squared:                       0.002
-Model:                            OLS   Adj. R-squared:                  0.001
-Method:                 Least Squares   F-statistic:                     2.338
-Date:                Thu, 04 Dec 2025   Prob (F-statistic):              0.127
-Time:                        13:58:09   Log-Likelihood:                -2952.6
-No. Observations:                 978   AIC:                             5909.
-Df Residuals:                     976   BIC:                             5919.
+Dep. Variable:      xpts_season_total   R-squared:                       0.000
+Model:                            OLS   Adj. R-squared:                 -0.000
+Method:                 Least Squares   F-statistic:                    0.6739
+Date:                Mon, 08 Dec 2025   Prob (F-statistic):              0.412
+Time:                        17:33:18   Log-Likelihood:                -4374.8
+No. Observations:                1421   AIC:                             8754.
+Df Residuals:                    1419   BIC:                             8764.
 Df Model:                           1                                         
 Covariance Type:            nonrobust                                         
 =======================================================================================
                           coef    std err          t      P>|t|      [0.025      0.975]
 ---------------------------------------------------------------------------------------
-const                  -2.5389      0.159    -16.004      0.000      -2.850      -2.228
-rotation_elasticity    -0.9914      0.648     -1.529      0.127      -2.264       0.281
+const                  -2.4884      0.140    -17.828      0.000      -2.762      -2.215
+rotation_elasticity    -0.4805      0.585     -0.821      0.412      -1.629       0.668
 ==============================================================================
-Omnibus:                        5.709   Durbin-Watson:                   1.943
-Prob(Omnibus):                  0.058   Jarque-Bera (JB):                6.426
-Skew:                           0.099   Prob(JB):                       0.0402
-Kurtosis:                       3.344   Cond. No.                         4.09
+Omnibus:                       39.366   Durbin-Watson:                   1.972
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               76.758
+Skew:                           0.168   Prob(JB):                     2.15e-17
+Kurtosis:                       4.088   Cond. No.                         4.19
 ==============================================================================
 
 Notes:

@@ -60,8 +60,6 @@ PROJECT 1: team-level injury
 
 ### Analysis
 
-Need to verify consistency in code with different team names (e.g. Man Utd, Manchester Utd, Man United, Manchester United)
-
 Could maybe make interactive plots, to see which players are where in plots
 
 ## Data
@@ -127,3 +125,8 @@ Potential inconsistencies:
  panel_injury.csv transfermarkt will put injury down from x date to recovery date, but in reality some players can come back before their predicted return which would show inconsistencies if a player is "unavailable" but still played the game. just a disagreement between two sourcess.
 
  panel_rotation.csv Understat player-match data were merged to the match panel on season, date and team. A small number of Understat rows (around 2–3k across all seasons) did not have an exact match in the Football-Data results (for example due to date discrepancies) and were dropped. The final rotation panel therefore contains only matches present in both sources.
+
+ ### Main Project code
+  src/proxies
+  ## Proxy 2 : Injury DiD
+  proxy2_injury_summary.py: When aligning the injury-based DiD proxy with the Understat-based rotation proxy, around 18% of player–season observations could not be matched to a numeric Understat ID (based on name + team). These players are excluded from the combined proxy, so the final analysis focuses on players for whom both rotation and injury information are available.

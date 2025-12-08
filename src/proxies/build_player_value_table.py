@@ -2,8 +2,17 @@
 
 from __future__ import annotations
 """
-NEED TO KNOW WHAT THIS SCRIPT DOES
+Build a consolidated player value table from the combined proxies:
+
+- Rotation proxy (rotation_elasticity + usage rates)
+- Injury proxy in points (inj_xpts) and £ (inj_gbp)
+- Z-scores for each proxy
+- A simple combined index: average of rotation_z and injury_xPts_z
+
+Output:
+    results/player_value_table.csv
 """
+
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -16,23 +25,47 @@ COMBINED_FILE = RESULTS_DIR / "proxies_combined.csv"
 def main() -> None:
     df = pd.read_csv(COMBINED_FILE)
 
-    # Keep only rows where we have at least one proxy
     useful = df.copy()
 
-    # Rename for convenience
-    if "xpts_season_total" in useful.columns:
-        useful = useful.rename(columns={"xpts_season_total": "inj_xpts"})
-    if "value_gbp_season_total" in useful.columns:
-        useful = useful.rename(columns={"value_gbp_season_total": "inj_gbp"})
+    # ------------------------------------------------------------------
+    # Make sure injury columns have standard names
+    # ------------------------------------------------------------------
+    # If we don't already have inj_xpts but do have xpts_season_total, create it
+    if "inj_xpts" not in useful.columns and "xpts_season_total" in useful.columns:
+        useful["inj_xpts"] = useful["xpts_season_total"]
 
-    # --- basic cleaning ---
-    useful["season"] = useful["season"].astype(int)
-    useful["player_name"] = useful["player_name"].astype(str)
-    useful["team_id"] = useful["team_id"].astype(str)
+    # If we don't already have inj_gbp but do have value_gbp_season_total, create it
+    if "inj_gbp" not in useful.columns and "value_gbp_season_total" in useful.columns:
+        useful["inj_gbp"] = useful["value_gbp_season_total"]
 
-    # --- standardise continuous proxies (z-scores) ---
+    # ------------------------------------------------------------------
+    # Basic cleaning / typing
+    # ------------------------------------------------------------------
+    useful["season"] = pd.to_numeric(useful["season"], errors="coerce").astype("Int64")
+    if "player_name" in useful.columns:
+        useful["player_name"] = useful["player_name"].astype(str)
+    if "team_id" in useful.columns:
+        useful["team_id"] = useful["team_id"].astype(str)
 
-    def zscore(col):
+    # Ensure key numeric columns are actually numeric
+    for col in ["rotation_elasticity", "inj_xpts", "inj_gbp"]:
+        if col in useful.columns:
+            useful[col] = pd.to_numeric(useful[col], errors="coerce")
+
+    # ------------------------------------------------------------------
+    # Optionally: keep only rows where at least one proxy exists
+    # ------------------------------------------------------------------
+    has_rot = useful["rotation_elasticity"].notna() if "rotation_elasticity" in useful.columns else False
+    has_inj_pts = useful["inj_xpts"].notna() if "inj_xpts" in useful.columns else False
+    has_inj_gbp = useful["inj_gbp"].notna() if "inj_gbp" in useful.columns else False
+
+    mask_keep = has_rot | has_inj_pts | has_inj_gbp
+    useful = useful[mask_keep].copy()
+
+    # ------------------------------------------------------------------
+    # Standardise continuous proxies (z-scores)
+    # ------------------------------------------------------------------
+    def zscore(col: str) -> pd.Series:
         x = useful[col]
         m = x.mean()
         s = x.std()
@@ -47,14 +80,21 @@ def main() -> None:
     if "inj_gbp" in useful.columns:
         useful["inj_gbp_z"] = zscore("inj_gbp")
 
-    # --- simple combined index ---
-    # Example: average of rotation_z and injury_xPts_z where both exist
-    useful["combined_value_z"] = useful[
-        ["rot_z", "inj_xpts_z"]
-    ].mean(axis=1)
+    # ------------------------------------------------------------------
+    # Simple combined index
+    #    combined_value_z = mean of (rot_z, inj_xpts_z)
+    # ------------------------------------------------------------------
+    proxy_cols_for_index = [c for c in ["rot_z", "inj_xpts_z"] if c in useful.columns]
+    if proxy_cols_for_index:
+        useful["combined_value_z"] = useful[proxy_cols_for_index].mean(axis=1)
+    else:
+        useful["combined_value_z"] = np.nan
 
+    # ------------------------------------------------------------------
     # Order columns nicely
+    # ------------------------------------------------------------------
     cols = [
+        "player_id",          # Understat numeric ID (if present)
         "player_name",
         "team_id",
         "season",
@@ -72,7 +112,10 @@ def main() -> None:
         "combined_value_z",
     ]
     cols = [c for c in cols if c in useful.columns]
-    value_table = useful[cols].copy()
+
+    value_table = useful[cols].copy().sort_values(
+        ["season", "team_id", "player_name"]
+    )
 
     out_path = RESULTS_DIR / "player_value_table.csv"
     value_table.to_csv(out_path, index=False)
