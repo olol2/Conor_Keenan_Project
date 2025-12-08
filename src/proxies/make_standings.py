@@ -1,22 +1,19 @@
-# scripts/PL_table_creator.py
-""" This script processes raw Premier League match results
-and computes the final league standings for each season.
-"""
+# src/proxies/make_standings.py
+"""Build Premier League final standings from processed odds_master.csv."""
+
 import pandas as pd
 from pathlib import Path
 
-# -------- paths --------
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
-RESULTS_DIR = ROOT_DIR / "data/raw/Odds/results"
-OUTPUT_DIR = ROOT_DIR / "data/processed/standings"
+ODDS_MASTER_PATH = ROOT_DIR / "data" / "processed" / "odds" / "odds_master.csv"
+OUTPUT_DIR = ROOT_DIR / "data" / "processed" / "standings"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-# -----------------------
 
 
 def build_standings(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
     """
-    df_season: matches for one PL season (football-data format)
+    df_season: matches for one PL season (football-data format columns)
     season_label: e.g. '2019-2020'
     """
 
@@ -68,43 +65,41 @@ def build_standings(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
     return table
 
 
-def season_label_from_folder(folder_name: str) -> str:
-    """
-    '1920' -> '2019-2020'
-    '2021' -> '2020-2021'
-    '2122' -> '2021-2022'
-    etc.
-    """
-    start_short = int(folder_name[:2])   # e.g. 19
-    end_short = int(folder_name[2:])     # e.g. 20
-    start_full = 2000 + start_short      # 2019
-    end_full = 2000 + end_short          # 2020
-    return f"{start_full}-{end_full}"
+def main() -> None:
+    # Read odds master
+    df_all = pd.read_csv(ODDS_MASTER_PATH)
 
+    # We expect at least these columns
+    required = {"season", "home_team", "away_team", "FTHG", "FTAG", "FTR"}
+    missing = required - set(df_all.columns)
+    if missing:
+        raise ValueError(f"Missing columns in odds_master: {missing}")
 
-def main():
-    # loop over season folders: 1920, 2021, 2122, ...
-    for season_dir in sorted(RESULTS_DIR.iterdir()):
-        if not season_dir.is_dir():
-            continue
+    all_standings = []
 
-        csv_path = season_dir / "E0.csv"   # PL file inside that folder
-        if not csv_path.exists():
-            print(f"Skipping {season_dir}, no E0.csv found")
-            continue
+    # Group by season label in odds_master (e.g. '2019-2020')
+    for season_label, df_season_raw in df_all.groupby("season"):
+        print(f"Building standings for {season_label}...")
+        df_season = df_season_raw.rename(
+            columns={
+                "home_team": "HomeTeam",
+                "away_team": "AwayTeam",
+            }
+        ).copy()
 
-        print(f"Processing {csv_path}...")
-        df = pd.read_csv(csv_path)
-
-        # Build a nice season label from folder name
-        season_code = season_dir.name      # e.g. '1920'
-        season_label = season_label_from_folder(season_code)
-
-        standings = build_standings(df, season_label)
+        standings = build_standings(df_season, season_label)
 
         out_path = OUTPUT_DIR / f"standings_{season_label}.csv"
         standings.to_csv(out_path, index=False)
         print(f"Saved {out_path}")
+
+        all_standings.append(standings)
+
+    # Optional combined standings file
+    if all_standings:
+        combined = pd.concat(all_standings, ignore_index=True)
+        combined.to_csv(OUTPUT_DIR / "standings_all_seasons.csv", index=False)
+        print(f"Saved combined standings_all_seasons.csv")
 
 
 if __name__ == "__main__":

@@ -1,62 +1,18 @@
 from __future__ import annotations
 """
-This script builds a player–team–match injury panel dataset by combining:
+Build a player–team–match injury panel dataset by combining:
   - team–match data with expected points (xPts) and injury counts
-  - injury spells per player–team–season
-  - Understat per-player match minutes & starting info (if available)
+  - injury spells per player–team–season (already standardised)
+  - Understat per-player match minutes & starting info (already standardised)
 
-The output is saved as a parquet file in:
-    data/processed/panel_injury.parquet
+Outputs:
+  data/processed/panel_injury.parquet
+  data/processed/panel_injury.csv
 """
 
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
-
-
-TEAM_NAME_MAP = {
-    # Premier League canonical short names -> matches file uses these
-    # Long / alternative -> short canonical
-
-    # Basic “FC” variants
-    "Arsenal FC": "Arsenal",
-    "Chelsea FC": "Chelsea",
-    "Everton FC": "Everton",
-    "Liverpool FC": "Liverpool",
-    "Fulham FC": "Fulham",
-    "Burnley FC": "Burnley",
-    "Brentford FC": "Brentford",
-    "Watford FC": "Watford",
-    "Southampton FC": "Southampton",
-
-    # Bournemouth / West Brom variants
-    "AFC Bournemouth": "Bournemouth",
-    "West Bromwich Albion": "West Brom",
-
-    # Town / City / United variants
-    "Ipswich Town": "Ipswich",
-    "Luton Town": "Luton",
-    "Leicester City": "Leicester",
-    "Norwich City": "Norwich",
-    "Leeds United": "Leeds",
-    "Newcastle United": "Newcastle",
-    "Manchester City": "Man City",
-    "Manchester Utd": "Man United",   # defensive
-    "Manchester United": "Man United",
-    "Nottingham Forest": "Nott'm Forest",
-    "Sheffield United": "Sheffield Utd",
-
-    # “& Hove Albion”, “Wanderers”, “Hotspur”
-    "Brighton & Hove Albion": "Brighton",
-    "Brighton and Hove Albion": "Brighton",
-    "Wolverhampton Wanderers": "Wolves",
-    "Tottenham Hotspur": "Tottenham",
-
-    # West Ham
-    "West Ham United": "West Ham",
-}
-
 
 # ---------------------------------------------------------------------
 # Paths
@@ -68,34 +24,39 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_PROCESSED = ROOT / "data" / "processed"
 DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
 
-# 1) MATCHES file (team–match with xPts)
+# 1) MATCHES file (team–match with xPts and squad injury counts)
 MATCHES_FILE = DATA_PROCESSED / "matches" / "matches_with_injuries_all_seasons.csv"
 
-# 2) INJURIES directory (contains per-season parquet / csv from Transfermarkt)
-INJURIES_DIR = DATA_PROCESSED / "injuries"
+# 2) INJURIES master file (already standardised team names)
+INJURIES_FILE = DATA_PROCESSED / "injuries" / "injuries_2019_2025_all_seasons.csv"
 
-# 3) UNDERSTAT minutes directory (your understat_player_matches_2019.csv etc.)
-UNDERSTAT_DIR = ROOT / "data" / "raw" / "understat_player_matches"
+# 3) UNDERSTAT master file (already standardised team names)
+UNDERSTAT_FILE = DATA_PROCESSED / "understat" / "understat_player_matches_master.csv"
 
 
 # ---------------------------------------------------------------------
-# Load matches (team–match, with xPts)
+# Load matches (team–match, with xPts and squad injuries)
 # ---------------------------------------------------------------------
 
 def load_matches() -> pd.DataFrame:
     """
     Load team–match data with xPts and injury counts for the injury panel.
 
-    Expected columns in the raw CSV:
+    Expected columns in MATCHES_FILE:
       Season, MatchID, Date, Team, Opponent, is_home, xPts,
       injured_players, injury_spells, ...
     """
     path = MATCHES_FILE
+    if not path.exists():
+        raise FileNotFoundError(
+            f"{path} not found. Run build_match_panel.py and add_injuries_to_matches.py first."
+        )
+
     df = pd.read_csv(path)
 
     df = df.rename(
         columns={
-            "Season": "season",
+            "Season": "season_label",
             "MatchID": "match_id",
             "Team": "team_id",
             "Opponent": "opponent_id",
@@ -107,11 +68,7 @@ def load_matches() -> pd.DataFrame:
 
     df["date"] = pd.to_datetime(df["date"])
     # "2019-2020" -> 2019 (first year of the season)
-    df["season"] = df["season"].astype(str).str.slice(0, 4).astype(int)
-
-    # Standardise team names to canonical short forms
-    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
-    df["opponent_id"] = df["opponent_id"].astype(str).replace(TEAM_NAME_MAP)
+    df["season"] = df["season_label"].astype(str).str.slice(0, 4).astype(int)
 
     needed = [
         "match_id",
@@ -135,216 +92,140 @@ def load_matches() -> pd.DataFrame:
 
 def load_injury_spells() -> pd.DataFrame:
     """
-    Load injury/suspension spells from all files in INJURIES_DIR.
+    Load injury/suspension spells from the combined injuries master.
 
-    We expect per-row:
-      - player_id (or player name; we treat as ID)
-      - team_id  (club name; should match Team in matches table)
-      - start_date
-      - end_date
-      - season   (or we derive from start_date year)
+    We expect per-row in INJURIES_FILE:
+      player_name, team, start_date, end_date, season (e.g. '2019-2020'),
+      season_start_year, type, ...
+
+    We return:
+      player_id, team_id, start_date, end_date, season (int, first year)
     """
-
-    if not INJURIES_DIR.exists():
-        raise FileNotFoundError(f"Injuries directory not found: {INJURIES_DIR}")
-
-    parquet_files = sorted(INJURIES_DIR.glob("*.parquet"))
-    csv_files = sorted(INJURIES_DIR.glob("*.csv"))
-
-    files = parquet_files or csv_files
-    if not files:
+    path = INJURIES_FILE
+    if not path.exists():
         raise FileNotFoundError(
-            f"No injury files (.parquet or .csv) found in {INJURIES_DIR}"
+            f"{path} not found. Run build_injuries_all_seasons.py first."
         )
 
-    frames: list[pd.DataFrame] = []
+    df = pd.read_csv(path)
 
-    for path in files:
-        if path.suffix == ".parquet":
-            tmp = pd.read_parquet(path)
-        else:
-            tmp = pd.read_csv(path)
-        tmp["__source_file"] = path.name
-        frames.append(tmp)
-
-    df = pd.concat(frames, ignore_index=True)
-
-    # Try to normalise column names
-    rename_map: dict[str, str] = {}
-
-    # Player ID/name
-    if "player_id" not in df.columns:
-        if "PlayerID" in df.columns:
-            rename_map["PlayerID"] = "player_id"
-        elif "player_name" in df.columns:
-            rename_map["player_name"] = "player_id"
-        elif "Player" in df.columns:
-            rename_map["Player"] = "player_id"
-
-    # Team / club
-    if "team_id" not in df.columns:
-        if "team" in df.columns:
-            rename_map["team"] = "team_id"
-        elif "club" in df.columns:
-            rename_map["club"] = "team_id"
-        elif "Club" in df.columns:
-            rename_map["Club"] = "team_id"
-
-    # Dates
-    if "start_date" not in df.columns:
-        if "from_date" in df.columns:
-            rename_map["from_date"] = "start_date"
-        elif "From" in df.columns:
-            rename_map["From"] = "start_date"
-    if "end_date" not in df.columns:
-        if "to_date" in df.columns:
-            rename_map["to_date"] = "end_date"
-        elif "To" in df.columns:
-            rename_map["To"] = "end_date"
-
-    # Season
-    if "season" not in df.columns and "Season" in df.columns:
-        rename_map["Season"] = "season"
-
-    df = df.rename(columns=rename_map)
-
-    needed = ["player_id", "team_id", "start_date", "end_date"]
-    missing = [c for c in needed if c not in df.columns]
+    required = {"player_name", "team", "start_date", "end_date", "season"}
+    missing = required - set(df.columns)
     if missing:
-        raise ValueError(
-            f"Missing columns in injuries files after rename: {missing}"
-        )
+        raise ValueError(f"Missing columns in injuries master: {missing}")
 
-    df["start_date"] = pd.to_datetime(df["start_date"])
-    df["end_date"] = pd.to_datetime(df["end_date"])
+    spells = pd.DataFrame(
+        {
+            "player_id": df["player_name"],
+            "team_id": df["team"],
+            "start_date": pd.to_datetime(df["start_date"], errors="coerce"),
+            "end_date": pd.to_datetime(df["end_date"], errors="coerce"),
+            "season_label": df["season"].astype(str),
+        }
+    )
 
-    # If season column missing, derive from start_date year
-    if "season" not in df.columns:
-        df["season"] = df["start_date"].dt.year
+    # Drop rows with missing dates
+    spells = spells.dropna(subset=["start_date", "end_date"])
 
-    def _parse_season_to_int(val):
-        """
-        Convert season values like '2019-2020' or '2019' to an integer year.
+    # Ensure start_date <= end_date
+    mask = spells["start_date"] > spells["end_date"]
+    if mask.any():
+        tmp = spells.loc[mask, "start_date"].copy()
+        spells.loc[mask, "start_date"] = spells.loc[mask, "end_date"]
+        spells.loc[mask, "end_date"] = tmp
 
-        For '2019-2020' we take the FIRST year (2019),
-        to match load_matches(), which also uses the first year.
-        """
-        if pd.isna(val):
-            return np.nan
+    # Convert season_label like "2019-2020" -> 2019
+    spells["season"] = spells["season_label"].str.slice(0, 4).astype(int)
 
-        s = str(val).strip()
-        if s == "":
-            return np.nan
-
-        if "-" in s:
-            # e.g. '2019-2020' -> '2019'
-            parts = s.split("-")
-            year_str = parts[0]
-        else:
-            year_str = s
-
-        try:
-            return int(year_str)
-        except ValueError:
-            # e.g. junk strings like 'Unknown'
-            return np.nan
-
-    # First pass: parse season strings
-    parsed = df["season"].map(_parse_season_to_int)
-
-    # Second pass: for any NaNs, fall back to start_date year
-    mask_na = parsed.isna()
-    if mask_na.any():
-        parsed.loc[mask_na] = df.loc[mask_na, "start_date"].dt.year
-
-    # Third pass: if still NaN, drop those rows with a warning
-    mask_na2 = parsed.isna()
-    if mask_na2.any():
-        n_drop = int(mask_na2.sum())
-        print(f"⚠️ Dropping {n_drop} injury rows with unparseable season.")
-        df = df.loc[~mask_na2].copy()
-        parsed = parsed.loc[~mask_na2]
-
-    df["season"] = parsed.astype(int)
-
-    # Standardise team names in injuries to match matches
-    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
-
-    # Keep only useful columns
-    return df[["player_id", "team_id", "start_date", "end_date", "season"]].copy()
+    return spells[["player_id", "team_id", "start_date", "end_date", "season"]].copy()
 
 
 # ---------------------------------------------------------------------
-# Load Understat player minutes
+# Load Understat player minutes (from processed master)
 # ---------------------------------------------------------------------
 
 def load_player_minutes() -> pd.DataFrame:
     """
-    Load per-player match minutes & starting info from Understat files:
+    Load per-player match minutes & starting info from the Understat master:
 
-      data/raw/understat_player_matches/understat_player_matches_2019.csv
-      data/raw/understat_player_matches/understat_player_matches_2020.csv
-      ...
+      data/processed/understat/understat_player_matches_master.csv
 
-    Expected columns in each file:
-      season,Date,team,h_team,a_team,player_id,player_name,Min,started,...
+    We use *player names* as the key (same as in the injuries data).
     """
 
-    if not UNDERSTAT_DIR.exists():
-        raise FileNotFoundError(f"Understat directory not found: {UNDERSTAT_DIR}")
-
-    files = sorted(UNDERSTAT_DIR.glob("understat_player_matches_*.csv"))
-    if not files:
+    path = UNDERSTAT_FILE
+    if not path.exists():
         raise FileNotFoundError(
-            f"No Understat files of the form 'understat_player_matches_*.csv' "
-            f"found in {UNDERSTAT_DIR}"
+            f"{path} not found. Run build_understat_master.py first."
         )
 
-    frames: list[pd.DataFrame] = []
-    for path in files:
-        tmp = pd.read_csv(path)
-        tmp["__source_file"] = path.name
-        frames.append(tmp)
+    df = pd.read_csv(path)
 
-    df = pd.concat(frames, ignore_index=True)
+    # Date column: try 'match_date' first, then 'Date'
+    date_col = None
+    for cand in ["match_date", "Date", "date"]:
+        if cand in df.columns:
+            date_col = cand
+            break
+    if date_col is None:
+        raise ValueError(
+            f"No date column ('match_date'/'Date'/'date') found in {path}. "
+            f"Columns: {list(df.columns)}"
+        )
 
-    df = df.rename(
-        columns={
-            "season": "season",
-            "Date": "date",
-            "team": "team_id",
-            "player_id": "player_id",
-            "player_name": "player_name",
-            "Min": "minutes",
-            "started": "started",
+    # Team column: 'team' in the master
+    if "team" not in df.columns:
+        raise ValueError(
+            f"No 'team' column found in {path}. Columns: {list(df.columns)}"
+        )
+
+    # Season: prefer 'season_start_year', else 'season'
+    if "season_start_year" in df.columns:
+        season_series = df["season_start_year"].astype(int)
+    elif "season" in df.columns:
+        season_series = df["season"].astype(str).str.slice(0, 4).astype(int)
+    else:
+        raise ValueError(
+            f"No season column ('season_start_year' or 'season') in {path}. "
+            f"Columns: {list(df.columns)}"
+        )
+
+    # Player name (we'll use this as the key)
+    if "player_name" not in df.columns:
+        raise ValueError(f"'player_name' column missing in {path}")
+
+    if "Min" not in df.columns:
+        raise ValueError(f"'Min' column (minutes) missing in {path}")
+    if "started" not in df.columns:
+        raise ValueError(f"'started' column missing in {path}")
+
+    out = pd.DataFrame(
+        {
+            "season": season_series,
+            "date": pd.to_datetime(df[date_col], errors="coerce"),
+            "team_id": df["team"].astype(str),
+            # IMPORTANT: use player_name as player_id so it matches injuries
+            "player_id": df["player_name"].astype(str),
+            "minutes": df["Min"],
+            "started": df["started"],
         }
     )
 
-    df["date"] = pd.to_datetime(df["date"])
-    df["season"] = df["season"].astype(int)
-
-    # Standardise team names to canonical short forms
-    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
-
     # started can be boolean or 'True'/'False' strings
-    if df["started"].dtype == object:
-        df["started"] = (
-            df["started"]
+    if out["started"].dtype == object:
+        out["started"] = (
+            out["started"]
             .astype(str)
             .str.strip()
             .str.lower()
             .map({"true": True, "false": False})
         )
-    df["started"] = df["started"].fillna(False).astype(bool)
+    out["started"] = out["started"].fillna(False).astype(bool)
 
-    df["minutes"] = df["minutes"].fillna(0).astype(float)
+    out["minutes"] = pd.to_numeric(out["minutes"], errors="coerce").fillna(0).astype(float)
 
-    needed = ["season", "date", "team_id", "player_id", "minutes", "started"]
-    missing = [c for c in needed if c not in df.columns]
-    if missing:
-        raise ValueError(f"Missing columns in Understat minutes: {missing}")
+    return out
 
-    return df[needed + ["player_name"]].copy()
 
 
 # ---------------------------------------------------------------------
@@ -355,7 +236,7 @@ def build_panel() -> pd.DataFrame:
     """
     Build player–team–match panel using:
 
-      - matches (team_id, opponent_id, date, season, xpts)
+      - matches (team_id, opponent_id, date, season, xpts, n_injured_squad)
       - injury spells (player_id, team_id, start/end, season)
       - Understat minutes (player_id, team_id, date, season, minutes, started)
 
@@ -365,7 +246,6 @@ def build_panel() -> pd.DataFrame:
       2) Mark unavailable = 1 if match date is inside ANY injury spell.
       3) Attach minutes/started info where the player actually played.
     """
-
     matches = load_matches()
     spells = load_injury_spells()
 
@@ -453,9 +333,18 @@ def build_panel() -> pd.DataFrame:
 
 def main() -> None:
     panel = build_panel()
-    out_path = DATA_PROCESSED / "panel_injury.parquet"
-    panel.to_parquet(out_path, index=False)
-    print(f"✅ Saved panel with shape {panel.shape} to {out_path}")
+
+    # Parquet (fast / compact)
+    out_parquet = DATA_PROCESSED / "panel_injury.parquet"
+    panel.to_parquet(out_parquet, index=False)
+
+    # CSV (easy to inspect / submit)
+    out_csv = DATA_PROCESSED / "panel_injury.csv"
+    panel.to_csv(out_csv, index=False)
+
+    print(f"✅ Saved panel with shape {panel.shape} to")
+    print(f"   - {out_parquet}")
+    print(f"   - {out_csv}")
 
 
 if __name__ == "__main__":

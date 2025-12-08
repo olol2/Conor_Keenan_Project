@@ -6,7 +6,10 @@ Build a player–team–match rotation panel using:
   - league matches with expected points (xPts)
   - Understat per-player match minutes & starting info
 
-Output: data/processed/panel_rotation.parquet
+Outputs:
+  data/processed/panel_rotation.parquet
+  data/processed/panel_rotation.csv
+
 (one row per player–team–match)
 """
 
@@ -14,49 +17,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
-TEAM_NAME_MAP = {
-    # Premier League canonical short names -> matches file uses these
-    # Long / alternative -> short canonical
-
-    # Basic “FC” variants
-    "Arsenal FC": "Arsenal",
-    "Chelsea FC": "Chelsea",
-    "Everton FC": "Everton",
-    "Liverpool FC": "Liverpool",
-    "Fulham FC": "Fulham",
-    "Burnley FC": "Burnley",
-    "Brentford FC": "Brentford",
-    "Watford FC": "Watford",
-    "Southampton FC": "Southampton",
-
-    # Bournemouth / West Brom variants
-    "AFC Bournemouth": "Bournemouth",
-    "West Bromwich Albion": "West Brom",
-
-    # Town / City / United variants
-    "Ipswich Town": "Ipswich",
-    "Luton Town": "Luton",
-    "Leicester City": "Leicester",
-    "Norwich City": "Norwich",
-    "Leeds United": "Leeds",
-    "Newcastle United": "Newcastle",
-    "Manchester City": "Man City",
-    "Manchester Utd": "Man United",   # defensive
-    "Manchester United": "Man United",
-    "Nottingham Forest": "Nott'm Forest",
-    "Sheffield United": "Sheffield Utd",
-
-    # “& Hove Albion”, “Wanderers”, “Hotspur”
-    "Brighton & Hove Albion": "Brighton",
-    "Brighton and Hove Albion": "Brighton",
-    "Wolverhampton Wanderers": "Wolves",
-    "Tottenham Hotspur": "Tottenham",
-
-    # West Ham
-    "West Ham United": "West Ham",
-}
-
 
 # ---------------------------------------------------------------------
 # Paths
@@ -66,11 +26,11 @@ ROOT = Path(__file__).resolve().parents[2]  # /files/Conor_Keenan_Project
 DATA_PROCESSED = ROOT / "data" / "processed"
 DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
 
-# Same matches file you used for injuries
+# Team–match panel with xPts (and injuries, but we only need xPts here)
 MATCHES_FILE = DATA_PROCESSED / "matches" / "matches_with_injuries_all_seasons.csv"
 
-# Understat per-player match files like understat_player_matches_2019.csv, ...
-UNDERSTAT_DIR = ROOT / "data" / "raw" / "understat_player_matches"
+# Understat master (already combined & team names standardised)
+UNDERSTAT_FILE = DATA_PROCESSED / "understat" / "understat_player_matches_master.csv"
 
 
 # ---------------------------------------------------------------------
@@ -84,11 +44,16 @@ def load_matches() -> pd.DataFrame:
     Expected columns in MATCHES_FILE:
       Season, MatchID, Date, Team, Opponent, is_home, xPts, ...
     """
+    if not MATCHES_FILE.exists():
+        raise FileNotFoundError(
+            f"{MATCHES_FILE} not found. Run build_match_panel.py and add_injuries_to_matches.py first."
+        )
+
     df = pd.read_csv(MATCHES_FILE)
 
     df = df.rename(
         columns={
-            "Season": "season",
+            "Season": "season_label",
             "MatchID": "match_id",
             "Team": "team_id",
             "Opponent": "opponent_id",
@@ -99,13 +64,8 @@ def load_matches() -> pd.DataFrame:
     )
 
     df["date"] = pd.to_datetime(df["date"])
-    # "2019-2020" -> 2019 (first year of season, same as proxy2)
-    df["season"] = df["season"].astype(str).str.slice(0, 4).astype(int)
-
-    # standardise team names
-    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
-    df["opponent_id"] = df["opponent_id"].astype(str).replace(TEAM_NAME_MAP)
-
+    # "2019-2020" -> 2019 (first year of season)
+    df["season"] = df["season_label"].astype(str).str.slice(0, 4).astype(int)
     df["is_home"] = df["is_home"].astype(bool)
 
     needed = ["match_id", "team_id", "opponent_id", "date", "season", "is_home", "xpts"]
@@ -117,80 +77,99 @@ def load_matches() -> pd.DataFrame:
 
 
 # ---------------------------------------------------------------------
-# Load Understat minutes / starts
+# Load Understat minutes / starts from master
 # ---------------------------------------------------------------------
 
 def load_understat_minutes() -> pd.DataFrame:
     """
-    Load per-player match minutes & starting info from Understat files:
+    Load per-player match minutes & starting info from the Understat master:
 
-      data/raw/understat_player_matches/understat_player_matches_2019.csv
-      data/raw/understat_player_matches/understat_player_matches_2020.csv
-      ...
+      data/processed/understat/understat_player_matches_master.csv
 
-    Expected columns in each file:
-      season,Date,team,h_team,a_team,player_id,player_name,Min,started,...
+    Expected columns (at least):
+      season or season_start_year,
+      Date or match_date,
+      team (canonical),
+      player_id, player_name, Min, started, ...
     """
-
-    if not UNDERSTAT_DIR.exists():
-        raise FileNotFoundError(f"Understat directory not found: {UNDERSTAT_DIR}")
-
-    files = sorted(UNDERSTAT_DIR.glob("understat_player_matches_*.csv"))
-    if not files:
+    if not UNDERSTAT_FILE.exists():
         raise FileNotFoundError(
-            f"No Understat files of the form 'understat_player_matches_*.csv' "
-            f"found in {UNDERSTAT_DIR}"
+            f"{UNDERSTAT_FILE} not found. Run build_understat_master.py first."
         )
 
-    frames: list[pd.DataFrame] = []
-    for path in files:
-        tmp = pd.read_csv(path)
-        tmp["__source_file"] = path.name
-        frames.append(tmp)
+    df = pd.read_csv(UNDERSTAT_FILE)
 
-    df = pd.concat(frames, ignore_index=True)
+    # Date column: try 'match_date', then 'Date', then 'date'
+    date_col = None
+    for cand in ["match_date", "Date", "date"]:
+        if cand in df.columns:
+            date_col = cand
+            break
+    if date_col is None:
+        raise ValueError(
+            f"No date column ('match_date'/'Date'/'date') found in {UNDERSTAT_FILE}. "
+            f"Columns: {list(df.columns)}"
+        )
 
-    # Normalise column names
-    df = df.rename(
-        columns={
-            "season": "season",
-            "Date": "date",
-            "team": "team_id",
-            "player_id": "player_id",
-            "player_name": "player_name",
-            "Min": "minutes",
-            "started": "started",
+    # Team column
+    if "team" not in df.columns:
+        raise ValueError(
+            f"No 'team' column found in {UNDERSTAT_FILE}. "
+            f"Columns: {list(df.columns)}"
+        )
+
+    # Season: prefer 'season_start_year', else 'season'
+    if "season_start_year" in df.columns:
+        season_series = df["season_start_year"].astype(int)
+    elif "season" in df.columns:
+        season_series = df["season"].astype(str).str.slice(0, 4).astype(int)
+    else:
+        raise ValueError(
+            f"No season column ('season_start_year' or 'season') in {UNDERSTAT_FILE}. "
+            f"Columns: {list(df.columns)}"
+        )
+
+    # Player id/name, minutes, started
+    if "player_id" not in df.columns:
+        raise ValueError(f"'player_id' column missing in {UNDERSTAT_FILE}")
+    if "player_name" not in df.columns:
+        raise ValueError(f"'player_name' column missing in {UNDERSTAT_FILE}")
+    if "Min" not in df.columns:
+        raise ValueError(f"'Min' column (minutes) missing in {UNDERSTAT_FILE}")
+    if "started" not in df.columns:
+        raise ValueError(f"'started' column missing in {UNDERSTAT_FILE}")
+
+    out = pd.DataFrame(
+        {
+            "season": season_series,
+            "date": pd.to_datetime(df[date_col], errors="coerce"),
+            "team_id": df["team"].astype(str),
+            "player_id": df["player_id"],          # numeric or string is fine here
+            "player_name": df["player_name"].astype(str),
+            "minutes": df["Min"],
+            "started": df["started"],
         }
     )
 
-    # If some files already had 'date' column, avoid duplicate-named columns
-    df = df.loc[:, ~df.columns.duplicated()]
-
-    df["date"] = pd.to_datetime(df["date"])
-    df["season"] = df["season"].astype(int)
-
-    # standardise team names to canonical short forms
-    df["team_id"] = df["team_id"].astype(str).replace(TEAM_NAME_MAP)
-
     # started can be boolean or 'True'/'False' strings
-    if df["started"].dtype == object:
-        df["started"] = (
-            df["started"]
+    if out["started"].dtype == object:
+        out["started"] = (
+            out["started"]
             .astype(str)
             .str.strip()
             .str.lower()
             .map({"true": True, "false": False})
         )
-    df["started"] = df["started"].fillna(False).astype(bool)
+    out["started"] = out["started"].fillna(False).astype(bool)
 
-    df["minutes"] = df["minutes"].fillna(0).astype(float)
+    out["minutes"] = pd.to_numeric(out["minutes"], errors="coerce").fillna(0).astype(float)
 
-    needed = ["season", "date", "team_id", "player_id", "minutes", "started"]
-    missing = [c for c in needed if c not in df.columns]
+    needed = ["season", "date", "team_id", "player_id", "player_name", "minutes", "started"]
+    missing = [c for c in needed if c not in out.columns]
     if missing:
         raise ValueError(f"Missing columns in Understat minutes: {missing}")
 
-    return df[needed + ["player_name"]].copy()
+    return out[needed].copy()
 
 
 # ---------------------------------------------------------------------
@@ -214,7 +193,6 @@ def build_rotation_panel() -> pd.DataFrame:
     # Make sure keys are the same type
     matches["team_id"] = matches["team_id"].astype(str)
 
-    # Merge: for each player-appearance, attach match_id, opponent, is_home, xpts
     before = len(under)
     panel = under.merge(
         matches,
@@ -225,13 +203,13 @@ def build_rotation_panel() -> pd.DataFrame:
     after = len(panel)
     dropped = before - after
     if dropped > 0:
-        print(f"⚠️ Dropped {dropped} Understat rows that had no matching league match (cups/friendlies).")
+        print(f"⚠️ Dropped {dropped} Understat rows with no matching league match (cups/friendlies).")
 
     # Compute days_rest for each player (days since last appearance)
     panel = panel.sort_values(["player_id", "date"])
     panel["days_rest"] = panel.groupby("player_id")["date"].diff().dt.days
 
-    # First appearance will have NaN days_rest -> treat as large rest, e.g. 30
+    # First appearance: treat NaN as large rest, e.g. 30 days
     panel["days_rest"] = panel["days_rest"].fillna(30).astype(float)
 
     # Cap extreme values
@@ -257,11 +235,24 @@ def build_rotation_panel() -> pd.DataFrame:
     return panel
 
 
+# ---------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------
+
 def main() -> None:
     panel = build_rotation_panel()
-    out_path = DATA_PROCESSED / "panel_rotation.parquet"
-    panel.to_parquet(out_path, index=False)
-    print(f"✅ Saved rotation panel with shape {panel.shape} to {out_path}")
+
+    # Parquet (fast / compact)
+    out_parquet = DATA_PROCESSED / "panel_rotation.parquet"
+    panel.to_parquet(out_parquet, index=False)
+
+    # CSV (easy to inspect / submit)
+    out_csv = DATA_PROCESSED / "panel_rotation.csv"
+    panel.to_csv(out_csv, index=False)
+
+    print(f"✅ Saved rotation panel with shape {panel.shape} to")
+    print(f"   - {out_parquet}")
+    print(f"   - {out_csv}")
 
 
 if __name__ == "__main__":

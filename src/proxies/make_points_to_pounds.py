@@ -18,16 +18,19 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_standings() -> pd.DataFrame:
-    """Load all standings_*.csv into one DataFrame."""
+    """Load all per-season standings_*.csv into one DataFrame."""
     frames = []
     for path in sorted(STANDINGS_DIR.glob("standings_*.csv")):
+        # Skip the combined file to avoid duplicates
+        if "all_seasons" in path.name:
+            continue
         df = pd.read_csv(path)
         frames.append(df)
 
     if not frames:
         raise FileNotFoundError(
-            f"No standings_*.csv files found in {STANDINGS_DIR}. "
-            "Run PL_table_creator.py first."
+            f"No per-season standings_*.csv files found in {STANDINGS_DIR}. "
+            "Run make_standings.py first."
         )
 
     standings = pd.concat(frames, ignore_index=True)
@@ -40,9 +43,7 @@ def load_standings() -> pd.DataFrame:
             f"Columns are: {list(standings.columns)}"
         )
 
-    # Normalise team column name to 'Team'
     if "Team" not in standings.columns:
-        # common case in your files: team name is under 'HomeTeam'
         if "HomeTeam" in standings.columns:
             standings = standings.rename(columns={"HomeTeam": "Team"})
         else:
@@ -66,6 +67,7 @@ def load_standings() -> pd.DataFrame:
         )
 
     return standings
+
 
 
 def main():

@@ -73,16 +73,18 @@ The project uses public football data from several sources. All files needed to 
 These are external inputs that are **not** created by `main.py`:
 
 - `data/raw/Odds/results/*/E0.csv`  
-  Premier League match odds and results from [football-data.co.uk].  
+  Premier League match odds and results from [football-data.co.uk] scraped using 
+  src/data_collection/download_odds.py 
   One CSV per season (2019–2020 to 2024–2025).
   ->mainly used for ranking difficulty of games for each team and obviously results.
 
 - `data/raw/understat_player_matches/understat_player_matches_*.csv`  
-  Per-player, per-match statistics (minutes, xG, xA, goals, assists) scraped from Understat **once** using a separate script.  
-  The scraping code is not part of the main pipeline; the cleaned CSVs are provided here as starting data.
+  Per-player, per-match statistics (minutes, xG, xA, goals, assists) scraped from Understat **once** using src/data_collection/understat_fetch_players.py  
+  ->mainly used for player statistics used in both proxies
 
 - `data/raw/pl_prize_money.csv`  
-  Data was manually imported from the official Premier League website, showing a table of rankings and prize money per year.
+  Data was manually imported from the official Premier League website, showing a PDF table of rankings and prize money per year.
+  ->used to calculate "price of a point" used in DiD
 
 ### Processed inputs (`data/processed/`)
 
@@ -90,24 +92,38 @@ These files are cleaned / curated versions of the raw data that the analysis bui
 
 - `data/processed/injuries/injuries_20xx.csv`  
   Player injury/suspension spells by season, collected from Transfermarkt and manually cleaned.  
-  The scraping step was done in a separate environment (pycharm) at first it worked in nuvolos, but when testing again, it only worked in pycharm; the final per-season CSVs are included here.
+  The scraping step was done in a separate environment (pycharm). at first it worked in nuvolos (src/data_collection/fetch_injuries_tm.py), but when testing again, it only worked in pycharm; the final per-season CSVs are included here.
+  ->mainly used for absence due to injury information
 
 - `data/processed/matches/*.csv`  
-  Team-match level data for each season, including xPts derived from betting odds and injury counts.
+  Team-match level data for each season, including xPts derived from betting odds and injury counts with standardised team names.
+  src/proxies/build_match_panel.py and add_injuries_to_matches.py
+  ->used to link injuries to games used in DiD proxy.
 
 - `data/processed/points_to_pounds/*.csv`  
-  Mapping from league points to GBP value for each season.
+  Mapping from league points to GBP value for each season, takes info from prize_money.csv and standings.
+  src/proxies/make_points_to_pounds.py
+  ->used to "value" points into currency (GBP)
 
 - `data/processed/standings/*.csv`  
-  Final league tables (position, points) for each season.
+  Final league tables (position, points) for each season. calculated from odds_master using src/make_standings.py.
+  ->instead of importing league table, it is possible to make code that will create a league table, as we have information about wins and goal difference, which is all that is needed for these standings in our calculations.
 
-- `data/processed/panel_injury.parquet`  
-  Player–match–season panel used for the injury DiD proxy.
+- `data/processed/panel_injury.parquet (.csv)`  
+  Player–match–season panel used for the injury DiD proxy. Created a parquet to work on it as is "smaller" and quicker. Outputet a csv to read and have as a visual.
 
-- `data/processed/panel_rotation.parquet`  
-  Player–match–season panel used for the rotation elasticity proxy.
+- `data/processed/panel_rotation.parquet (.csv)`  
+  Player–match–season panel used for the rotation elasticity proxy.Created a parquet to work on it as is "smaller" and quicker. Outputet a csv to read and have as a visual.
+
+  The four different sources provide different team names for unique teams (e.g. Manchester United, Man United, Man Utd), master csv files were created to have all seasons in one file with standardised names. src/data_collection/ : 
+  build_odds_master.py , build_understat_master.py.
+
 
 `main.py` assumes that all of the above files are present. It does **not** re-download or re-scrape any external data; it starts from these CSV/parquet files and reproduces all panels, proxies, and figures.
 
 The scripts for data_collection which can not be done manually have been included in the src/data_collection folder.
 
+Potential inconsistencies:
+ panel_injury.csv transfermarkt will put injury down from x date to recovery date, but in reality some players can come back before their predicted return which would show inconsistencies if a player is "unavailable" but still played the game. just a disagreement between two sourcess.
+
+ panel_rotation.csv Understat player-match data were merged to the match panel on season, date and team. A small number of Understat rows (around 2–3k across all seasons) did not have an exact match in the Football-Data results (for example due to date discrepancies) and were dropped. The final rotation panel therefore contains only matches present in both sources.
