@@ -1,11 +1,13 @@
 # src/data_collection/build_injuries_all_seasons.py
 
 from __future__ import annotations
+from pathlib import Path
+import pandas as pd
 """
 Combine the per-season injury CSV files into a single CSV file with a
-consistent format and canonical team names.
+consistent format and unique team names. (E.g. Man United, not Manchester United or Man Utd)
 
-Input (already in your project):
+Input (already in the project):
   data/processed/injuries/injuries_2020.csv
   data/processed/injuries/injuries_2021.csv
   data/processed/injuries/injuries_2022.csv
@@ -17,11 +19,8 @@ Output:
   data/processed/injuries/injuries_2019_2025_all_seasons.csv
 """
 
-from pathlib import Path
-import pandas as pd
-
 # ---------------------------------------------------------------------
-# Paths
+# Paths - Where to find input files and write output file
 # ---------------------------------------------------------------------
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -41,8 +40,8 @@ SEASON_FILES = [
 OUTPUT_FILE = INJURIES_DIR / "injuries_2019_2025_all_seasons.csv"
 
 # ---------------------------------------------------------------------
-# Team name standardisation: Transfermarkt -> canonical short names
-# (matches/odds/understat all use the canonical versions)
+# Team name standardisation: Transfermarkt -> selected unique short names
+# (matches/odds/understat all use the same unique names)
 # ---------------------------------------------------------------------
 
 INJURIES_TEAM_MAP = {

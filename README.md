@@ -130,3 +130,109 @@ Potential inconsistencies:
   src/proxies
   ## Proxy 2 : Injury DiD
   proxy2_injury_summary.py: When aligning the injury-based DiD proxy with the Understat-based rotation proxy, around 18% of player–season observations could not be matched to a numeric Understat ID (based on name + team). These players are excluded from the combined proxy, so the final analysis focuses on players for whom both rotation and injury information are available.
+
+# Player Rotation, Injuries and Expected Points in the Premier League
+
+Final project for **Data Science and Advanced Programming 2025**  
+HEC Lausanne, University of Lausanne  
+Author: **Conor Keenan**
+
+---
+
+## 1. Project Overview
+
+This project studies the relationship between **player rotation**, **injuries**, and **team performance** in the English Premier League.
+
+The main goals are:
+
+- To build a **rotation proxy** that captures how “rotatable” a player is within their team (rotation elasticity).
+- To build an **injury cost proxy** that measures the expected league points lost due to a player’s injuries.
+- To explore how these two proxies are related and which players provide the best “value” considering both rotation and injury impact.
+
+The analysis covers Premier League seasons **2019–2020 to 2024–2025** for **27 teams**, using match-level and player-level data.
+
+---
+
+## 2. Data
+
+### 2.1 Data sources
+
+The project uses data from several public sources:
+
+- **Understat**: player-level match statistics and xG/xPts.
+- **Transfermarkt**: injury histories and absence periods.
+- **Football-Data / odds files**: bookmaker odds used to derive expected points.
+- **Premier League prize money**: to map league points into pound values (£ per point).
+
+### 2.2 Processed data used by the main pipeline
+
+To keep the main pipeline fast and reproducible for grading, all heavy data collection and preprocessing has already been run. The key processed files are stored in:
+
+- `data/processed/`  
+  - `panel_rotation.csv`  
+    Final player–season panel for the **rotation proxy**.
+  - `panel_injury.csv`  
+    Final player–season panel for the **injury proxy** (expected points lost).
+
+These processed panels are what `main.py` uses. You do **not** need to re-scrape data or rebuild all intermediate files to run the main analysis.
+
+---
+
+## 3. Methodology (high-level)
+
+- **Rotation proxy (Proxy 1 – rotation elasticity)**  
+  For each player-season, the project estimates how a player’s minutes vary relative to changes in match context (e.g. expected points, fixture congestion). This yields a **rotation elasticity** measure per player-season.
+
+- **Injury proxy (Proxy 2 – expected points lost)**  
+  Using a difference-in-differences setup on match-level **expected points**, the project estimates how much each injury event reduces the team’s expected points. These match-level effects are then aggregated to player-season level and mapped into monetary terms using a **£ per point** schedule.
+
+- **Validation & combined analysis**  
+  The proxies are validated via:
+  - summary statistics (distributions, coverage),
+  - correlation between rotation elasticity and injury impact,
+  - club-level aggregates and visualizations.
+
+All the code for these steps lives in the `src/` folder (see structure below). The main entry point for grading reuses the final panels and runs summary + validation.
+
+More detail is provided in the report (`project_report.md` / `project_report.pdf`).
+
+---
+
+## 4. Repository Structure
+
+At a high level:
+
+```text
+Conor_Keenan_Project/
+├── main.py                  # Entry point for graders (uses processed panels)
+├── README.md
+├── PROPOSAL.md
+├── project_report.md        # Markdown report (source)
+├── project_report.pdf       # Final report (PDF, generated from MD)
+├── requirements.txt
+│
+├── data/
+│   ├── raw/                 # Raw inputs (odds, understat, injuries, etc.) – not all required to run main.py
+│   └── processed/           # Processed datasets used by main.py
+│       ├── panel_rotation.csv
+│       └── panel_injury.csv
+│
+├── results/
+│   ├── figures/             # Generated figures
+│   ├── summary_rotation_proxy.csv
+│   ├── summary_injury_proxy.csv
+│   └── proxy_validation_rotation_vs_injury.txt
+│
+├── notebooks/               # Optional exploratory notebooks
+│
+└── src/
+    ├── __init__.py
+    │
+    ├── data_loader.py       # Loads processed panels from data/processed
+    ├── evaluation.py        # Runs summary + validation pipeline
+    ├── full_pipeline.py     # (Optional) Full end-to-end rebuild from raw data
+    │
+    ├── data_collection/     # Scripts to build raw/processed datasets from sources
+    ├── proxies/             # Construction of rotation & injury proxies
+    ├── analysis/            # Summary tables, validation, and figures
+    └── legacy/              # Older or experimental code kept for reference

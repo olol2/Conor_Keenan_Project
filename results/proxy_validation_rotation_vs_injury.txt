@@ -7,8 +7,8 @@ Correlation: -0.022
 Dep. Variable:      xpts_season_total   R-squared:                       0.000
 Model:                            OLS   Adj. R-squared:                 -0.000
 Method:                 Least Squares   F-statistic:                    0.6739
-Date:                Mon, 08 Dec 2025   Prob (F-statistic):              0.412
-Time:                        17:33:18   Log-Likelihood:                -4374.8
+Date:                Wed, 10 Dec 2025   Prob (F-statistic):              0.412
+Time:                        17:11:20   Log-Likelihood:                -4374.8
 No. Observations:                1421   AIC:                             8754.
 Df Residuals:                    1419   BIC:                             8764.
 Df Model:                           1                                         
