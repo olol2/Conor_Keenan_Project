@@ -4,20 +4,31 @@ from __future__ import annotations
 
 from pathlib import Path
 import pandas as pd
+import numpy as np
 
 # This file lives in /files/Conor_Keenan_Project/src/analysis
 ROOT = Path(__file__).resolve().parents[2]  # -> /files/Conor_Keenan_Project
 RESULTS_DIR = ROOT / "results"
+RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def df_to_markdown(df: pd.DataFrame, floatfmt: str = ".2f") -> str:
     """
     Minimal markdown table formatter that does NOT depend on 'tabulate'.
+    Handles NaNs cleanly and avoids integer-ish floats like 2019.0.
     """
     cols = list(df.columns)
 
     def fmt_val(v):
+        if pd.isna(v):
+            return ""
+        # keep ints as ints
+        if isinstance(v, (np.integer, int)):
+            return str(int(v))
+        # nicer float printing (avoid 2019.0)
         if isinstance(v, float):
+            if float(v).is_integer():
+                return str(int(v))
             return format(v, floatfmt)
         return str(v)
 
@@ -44,6 +55,10 @@ def main() -> None:
     # Load the full value table
     tbl = pd.read_csv(value_path)
 
+    # Optional: clean season for display (prevents 2019.0)
+    if "season" in tbl.columns:
+        tbl["season"] = pd.to_numeric(tbl["season"], errors="coerce").astype("Int64")
+
     if "combined_value_z" not in tbl.columns:
         raise ValueError(
             "Column 'combined_value_z' not found. "
@@ -51,18 +66,13 @@ def main() -> None:
         )
 
     # Ensure combined_value_z is numeric
-    tbl["combined_value_z"] = pd.to_numeric(
-        tbl["combined_value_z"], errors="coerce"
-    )
+    tbl["combined_value_z"] = pd.to_numeric(tbl["combined_value_z"], errors="coerce")
 
     # Keep only rows where the combined index is defined
-    tbl = tbl.dropna(subset=["combined_value_z"])
+    tbl = tbl.dropna(subset=["combined_value_z"]).copy()
 
     # Sort by combined value (highest first) and take top 15
-    top = (
-        tbl.sort_values("combined_value_z", ascending=False)
-           .head(15)
-    )
+    top = tbl.sort_values("combined_value_z", ascending=False).head(15).copy()
 
     # Pick nice columns for the report (only keep those that exist)
     cols = [
@@ -71,8 +81,8 @@ def main() -> None:
         "team_id",
         "season",
         "rotation_elasticity",
-        "inj_xpts",          # season injury impact in xPts
-        "inj_gbp",           # season injury impact in £
+        "inj_xpts",           # season injury impact in xPts
+        "inj_gbp",            # season injury impact in £
         "combined_value_z",
     ]
     cols = [c for c in cols if c in top.columns]

@@ -1,0 +1,17 @@
+{
+  "paths": {
+    "data_raw": "data/raw",
+    "data_processed": "data/processed",
+    "results": "results",
+    "figures": "results/figures",
+    "logs": "results/logs",
+    "metadata": "results/metadata"
+  },
+  "seasons": {
+    "min": 2019,
+    "max": 2024
+  },
+  "thresholds": {
+    "min_matches_for_estimation": 8
+  }
+}

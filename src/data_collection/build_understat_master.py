@@ -1,31 +1,36 @@
 # src/data_collection/build_understat_master.py
 from __future__ import annotations
+
+"""
+Build a single Understat master file from per-season understat_player_matches_YYYY.csv files.
+
+Why:
+- Consolidates Understat player-match data into one clean, analysis-ready panel.
+- Adds season labels and standardises team names to match the rest of the project.
+
+Inputs (expected; already in this project):
+- <cfg.raw>/understat_player_matches/understat_player_matches_2019.csv
+- ...
+- <cfg.raw>/understat_player_matches/understat_player_matches_2024.csv (or 2025 depending on your data)
+
+Output (default):
+- <cfg.processed>/understat/understat_player_matches_master.csv
+
+Safe checks:
+- --help shows usage only
+- --dry-run reads/combines/validates but does not write output
+"""
+
 from pathlib import Path
+import argparse
+
 import pandas as pd
 
-"""
-Build a single Understat master file from the per-season
-understat_player_matches_YYYY.csv files.
+from src.utils.config import Config
+from src.utils.io import atomic_write_csv
+from src.utils.logging_setup import setup_logger
+from src.utils.run_metadata import write_run_metadata
 
-Input (already in your project):
-  data/raw/understat_player_matches/understat_player_matches_2019.csv
-  data/raw/understat_player_matches/understat_player_matches_2020.csv
-  ...
-  data/raw/understat_player_matches/understat_player_matches_2025.csv
-
-Output:
-  data/processed/understat/understat_player_matches_master.csv
-"""
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_DIR = PROJECT_ROOT / "data"
-
-RAW_UNDERSTAT_DIR = DATA_DIR / "raw" / "understat_player_matches"
-
-UNDERSTAT_PROCESSED_DIR = DATA_DIR / "processed" / "understat"
-UNDERSTAT_PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
-
-OUT_FILE = UNDERSTAT_PROCESSED_DIR / "understat_player_matches_master.csv"
 
 # ---------------------------------------------------------------------
 # Minimal team mapping: Understat -> canonical short names
@@ -48,73 +53,128 @@ UNDERSTAT_TEAM_MAP = {
     "Sheffield Utd": "Sheffield United",
 }
 
+REQUIRED_COLS = {"season", "Date", "team", "player_id", "player_name"}
+
 
 def standardise_team_name_understat(name: str) -> str:
+    """Map Understat team display names to the canonical short names used across the project."""
     if pd.isna(name):
         return name
-    return UNDERSTAT_TEAM_MAP.get(name, name)
+    return UNDERSTAT_TEAM_MAP.get(str(name), str(name))
 
 
-def load_one_file(path: Path) -> pd.DataFrame:
+def load_one_file(path: Path, logger) -> pd.DataFrame:
     """
-    Load a single understat_player_matches_YYYY.csv and tidy it.
+    Load one per-season Understat CSV and apply minimal cleaning/standardisation.
+
+    Adds:
+    - match_date (datetime from Date)
+    - season_start_year (int)
+    - season_label (e.g. 2019-2020)
     """
     df = pd.read_csv(path)
 
-    # Ensure date is datetime
-    if "Date" not in df.columns:
-        raise KeyError(f"Expected 'Date' column in {path}")
+    missing = REQUIRED_COLS - set(df.columns)
+    if missing:
+        raise ValueError(f"[{path.name}] Missing required columns: {sorted(missing)}")
+
+    # Ensure date is datetime (keeps later filtering/ordering robust)
     df["match_date"] = pd.to_datetime(df["Date"], errors="coerce")
 
     # Understat 'season' is the starting year (2019 => 2019-2020)
-    if "season" not in df.columns:
-        raise KeyError(f"Expected 'season' column in {path}")
-    df["season_start_year"] = df["season"].astype(int)
-    df["season_label"] = (
-        df["season_start_year"].astype(str)
-        + "-"
-        + (df["season_start_year"] + 1).astype(str)
-    )
+    df["season_start_year"] = pd.to_numeric(df["season"], errors="coerce").astype("Int64")
 
-    # Standardise all the team columns
+    # Drop rows where key fields could not be parsed
+    df = df.dropna(subset=["match_date", "season_start_year"])
+
+    df["season_start_year"] = df["season_start_year"].astype(int)
+    df["season_label"] = df["season_start_year"].astype(str) + "-" + (df["season_start_year"] + 1).astype(str)
+
+    # Standardise team columns (if present)
     for col in ["team", "h_team", "a_team"]:
         if col in df.columns:
             df[col] = df[col].apply(standardise_team_name_understat)
 
+    logger.info("Loaded file=%s shape=%s", path.name, df.shape)
     return df
 
 
-def build_understat_master() -> pd.DataFrame:
-    files = sorted(RAW_UNDERSTAT_DIR.glob("understat_player_matches_20*.csv"))
+def build_understat_master(raw_understat_dir: Path, logger) -> pd.DataFrame:
+    """Read all per-season Understat CSVs and concatenate them into one master DataFrame."""
+    files = sorted(raw_understat_dir.glob("understat_player_matches_20*.csv"))
     if not files:
-        raise RuntimeError(f"No understat_player_matches_20*.csv files in {RAW_UNDERSTAT_DIR}")
+        raise FileNotFoundError(f"No understat_player_matches_20*.csv files found in: {raw_understat_dir}")
 
     frames: list[pd.DataFrame] = []
     for f in files:
-        print(f"Reading {f}")
-        frames.append(load_one_file(f))
+        logger.info("Reading %s", f)
+        print(f"Reading {f.name} ...")
+        frames.append(load_one_file(f, logger))
 
     master = pd.concat(frames, ignore_index=True)
 
-    # Optional: sort nicely
+    if len(master) == 0:
+        raise ValueError("Understat master is empty after cleaning. Check date/season parsing and input files.")
+
+    # Stable ordering for easier debugging and deterministic outputs
     sort_cols = [c for c in ["season_start_year", "match_date", "team", "player_name"] if c in master.columns]
     if sort_cols:
         master = master.sort_values(sort_cols).reset_index(drop=True)
 
+    logger.info("Understat master shape=%s", master.shape)
     return master
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Build Understat master CSV from per-season Understat files.")
+    parser.add_argument(
+        "--raw-dir",
+        default=None,
+        help="Optional override for raw understat directory. Default: <cfg.raw>/understat_player_matches",
+    )
+    parser.add_argument(
+        "--output",
+        default=None,
+        help="Optional override for output CSV. Default: <cfg.processed>/understat/understat_player_matches_master.csv",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Run full read/combine/validation, but do not write output.",
+    )
+    args = parser.parse_args()
+
+    cfg = Config.load()
+    logger = setup_logger("build_understat_master", cfg.logs, "build_understat_master.log")
+    meta_path = write_run_metadata(cfg.metadata, "build_understat_master", extra={"dry_run": args.dry_run})
+    logger.info("Run metadata saved to: %s", meta_path)
+
+    raw_understat_dir = Path(args.raw_dir) if args.raw_dir else (cfg.raw / "understat_player_matches")
+    out_dir = cfg.processed / "understat"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    out_path = Path(args.output) if args.output else (out_dir / "understat_player_matches_master.csv")
+
+    logger.info("Reading from: %s", raw_understat_dir)
+    logger.info("Writing to:   %s", out_path)
+
     print("Building Understat master ...")
-    print(f"Reading from: {RAW_UNDERSTAT_DIR}")
-    print(f"Writing to:   {OUT_FILE}")
+    print(f"Reading from: {raw_understat_dir}")
+    print(f"Writing to:   {out_path}")
 
-    master = build_understat_master()
-    master.to_csv(OUT_FILE, index=False)
+    master = build_understat_master(raw_understat_dir, logger)
 
+    if args.dry_run:
+        logger.info("Dry-run complete. Output not written.")
+        print(f"✅ dry-run complete | master shape: {master.shape} | output NOT written")
+        return
+
+    atomic_write_csv(master, out_path, index=False)
+
+    logger.info("Saved Understat master to: %s", out_path)
     print("Done!")
     print(f"Understat master shape: {master.shape}")
-    print(f"Saved to: {OUT_FILE}")
+    print(f"Saved to: {out_path}")
 
 
 if __name__ == "__main__":

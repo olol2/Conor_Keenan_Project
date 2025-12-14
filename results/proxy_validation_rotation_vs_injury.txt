@@ -1,29 +1,30 @@
-Validation of rotation proxy vs injury impact
-Number of merged player-seasons: 1421
-Correlation: -0.022
+Validation: rotation proxy vs injury/player-value proxy
+Outcome column: xpts_season_total
+Number of merged player-seasons: 1420
+Correlation: -0.010
 
                             OLS Regression Results                            
 ==============================================================================
 Dep. Variable:      xpts_season_total   R-squared:                       0.000
-Model:                            OLS   Adj. R-squared:                 -0.000
-Method:                 Least Squares   F-statistic:                    0.6739
-Date:                Wed, 10 Dec 2025   Prob (F-statistic):              0.412
-Time:                        17:11:20   Log-Likelihood:                -4374.8
-No. Observations:                1421   AIC:                             8754.
-Df Residuals:                    1419   BIC:                             8764.
+Model:                            OLS   Adj. R-squared:                 -0.001
+Method:                 Least Squares   F-statistic:                    0.1564
+Date:                Sun, 14 Dec 2025   Prob (F-statistic):              0.693
+Time:                        12:05:07   Log-Likelihood:                -5051.2
+No. Observations:                1420   AIC:                         1.011e+04
+Df Residuals:                    1418   BIC:                         1.012e+04
 Df Model:                           1                                         
-Covariance Type:            nonrobust                                         
+Covariance Type:                  HC1                                         
 =======================================================================================
-                          coef    std err          t      P>|t|      [0.025      0.975]
+                          coef    std err          z      P>|z|      [0.025      0.975]
 ---------------------------------------------------------------------------------------
-const                  -2.4884      0.140    -17.828      0.000      -2.762      -2.215
-rotation_elasticity    -0.4805      0.585     -0.821      0.412      -1.629       0.668
+const                   0.1561      0.225      0.693      0.488      -0.285       0.598
+rotation_elasticity    -0.3650      0.923     -0.395      0.692      -2.174       1.444
 ==============================================================================
-Omnibus:                       39.366   Durbin-Watson:                   1.972
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               76.758
-Skew:                           0.168   Prob(JB):                     2.15e-17
-Kurtosis:                       4.088   Cond. No.                         4.19
+Omnibus:                      179.986   Durbin-Watson:                   1.911
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1194.702
+Skew:                          -0.375   Prob(JB):                    3.75e-260
+Kurtosis:                       7.431   Cond. No.                         4.19
 ==============================================================================
 
 Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[1] Standard Errors are heteroscedasticity robust (HC1)

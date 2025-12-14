@@ -1,258 +1,297 @@
 # src/proxies/build_rotation_panel.py
 from __future__ import annotations
+
 """
-Build a player–team–match rotation panel using:
+Build a player–team–match rotation panel by joining:
 
-  - league matches with expected points (xPts)
-  - Understat per-player match minutes & starting info
+  - team–match panel with xPts (from odds)   [matches_with_injuries_all_seasons.csv]
+  - Understat per-player match minutes/starts [understat_player_matches_master.csv]
 
-Outputs:
-  data/processed/panel_rotation.parquet
-  data/processed/panel_rotation.csv
+Output (one row per player–team–match):
+  - data/processed/panel_rotation.csv
+  - data/processed/panel_rotation.parquet   (optional; skipped if parquet engine missing)
 
-(one row per player–team–match)
+Notes:
+- This script is a preprocessing/proxy builder. Your main.py may choose to read
+  the already-produced CSVs rather than rebuilding from scratch.
+- Use --dry-run to validate everything without writing files.
 """
 
 from pathlib import Path
+import argparse
 
-import numpy as np
 import pandas as pd
 
-# ---------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------
-
-ROOT = Path(__file__).resolve().parents[2]  # /files/Conor_Keenan_Project
-DATA_PROCESSED = ROOT / "data" / "processed"
-DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
-
-# Team–match panel with xPts (and injuries, but we only need xPts here)
-MATCHES_FILE = DATA_PROCESSED / "matches" / "matches_with_injuries_all_seasons.csv"
-
-# Understat master (already combined & team names standardised)
-UNDERSTAT_FILE = DATA_PROCESSED / "understat" / "understat_player_matches_master.csv"
+from src.utils.config import Config
+from src.utils.io import atomic_write_csv
+from src.utils.logging_setup import setup_logger
+from src.utils.run_metadata import write_run_metadata
+from src.validation.checks import assert_non_empty, require_columns
 
 
-# ---------------------------------------------------------------------
-# Load matches (team–match with xPts)
-# ---------------------------------------------------------------------
+# ----------------------------
+# Helpers
+# ----------------------------
 
-def load_matches() -> pd.DataFrame:
+def _normalize_date(s: pd.Series) -> pd.Series:
+    """Normalize datetimes to midnight to make joins robust."""
+    return pd.to_datetime(s, errors="coerce").dt.normalize()
+
+
+def _assert_unique_keys(df: pd.DataFrame, keys: list[str], name: str, logger) -> None:
+    """Fail fast if keys are not unique (prevents many-to-many merges)."""
+    require_columns(df, keys, name=name)
+    dup = df.duplicated(keys).sum()
+    if dup > 0:
+        example = df.loc[df.duplicated(keys, keep=False), keys].head(10)
+        msg = f"[{name}] Found {dup} duplicate rows on keys={keys}. Example:\n{example}"
+        logger.error(msg)
+        raise ValueError(msg)
+
+
+# ----------------------------
+# Loaders
+# ----------------------------
+
+def load_matches(matches_path: Path, logger) -> pd.DataFrame:
     """
     Load team–match data with xPts.
 
-    Expected columns in MATCHES_FILE:
-      Season, MatchID, Date, Team, Opponent, is_home, xPts, ...
+    Expected input columns:
+      Season, MatchID, Date, Team, Opponent, is_home, xPts
     """
-    if not MATCHES_FILE.exists():
+    if not matches_path.exists():
         raise FileNotFoundError(
-            f"{MATCHES_FILE} not found. Run build_match_panel.py and add_injuries_to_matches.py first."
+            f"{matches_path} not found. Run build_match_panel.py and add_injuries_to_matches.py first."
         )
 
-    df = pd.read_csv(MATCHES_FILE)
+    df = pd.read_csv(matches_path)
 
-    df = df.rename(
-        columns={
-            "Season": "season_label",
-            "MatchID": "match_id",
-            "Team": "team_id",
-            "Opponent": "opponent_id",
-            "Date": "date",
-            "is_home": "is_home",
-            "xPts": "xpts",
-        }
+    require_columns(
+        df,
+        ["Season", "MatchID", "Date", "Team", "Opponent", "is_home", "xPts"],
+        name="matches_with_injuries_all_seasons",
     )
-
-    df["date"] = pd.to_datetime(df["date"])
-    # "2019-2020" -> 2019 (first year of season)
-    df["season"] = df["season_label"].astype(str).str.slice(0, 4).astype(int)
-    df["is_home"] = df["is_home"].astype(bool)
-
-    needed = ["match_id", "team_id", "opponent_id", "date", "season", "is_home", "xpts"]
-    missing = [c for c in needed if c not in df.columns]
-    if missing:
-        raise ValueError(f"Missing columns in matches file: {missing}")
-
-    return df[needed].copy()
-
-
-# ---------------------------------------------------------------------
-# Load Understat minutes / starts from master
-# ---------------------------------------------------------------------
-
-def load_understat_minutes() -> pd.DataFrame:
-    """
-    Load per-player match minutes & starting info from the Understat master:
-
-      data/processed/understat/understat_player_matches_master.csv
-
-    Expected columns (at least):
-      season or season_start_year,
-      Date or match_date,
-      team (canonical),
-      player_id, player_name, Min, started, ...
-    """
-    if not UNDERSTAT_FILE.exists():
-        raise FileNotFoundError(
-            f"{UNDERSTAT_FILE} not found. Run build_understat_master.py first."
-        )
-
-    df = pd.read_csv(UNDERSTAT_FILE)
-
-    # Date column: try 'match_date', then 'Date', then 'date'
-    date_col = None
-    for cand in ["match_date", "Date", "date"]:
-        if cand in df.columns:
-            date_col = cand
-            break
-    if date_col is None:
-        raise ValueError(
-            f"No date column ('match_date'/'Date'/'date') found in {UNDERSTAT_FILE}. "
-            f"Columns: {list(df.columns)}"
-        )
-
-    # Team column
-    if "team" not in df.columns:
-        raise ValueError(
-            f"No 'team' column found in {UNDERSTAT_FILE}. "
-            f"Columns: {list(df.columns)}"
-        )
-
-    # Season: prefer 'season_start_year', else 'season'
-    if "season_start_year" in df.columns:
-        season_series = df["season_start_year"].astype(int)
-    elif "season" in df.columns:
-        season_series = df["season"].astype(str).str.slice(0, 4).astype(int)
-    else:
-        raise ValueError(
-            f"No season column ('season_start_year' or 'season') in {UNDERSTAT_FILE}. "
-            f"Columns: {list(df.columns)}"
-        )
-
-    # Player id/name, minutes, started
-    if "player_id" not in df.columns:
-        raise ValueError(f"'player_id' column missing in {UNDERSTAT_FILE}")
-    if "player_name" not in df.columns:
-        raise ValueError(f"'player_name' column missing in {UNDERSTAT_FILE}")
-    if "Min" not in df.columns:
-        raise ValueError(f"'Min' column (minutes) missing in {UNDERSTAT_FILE}")
-    if "started" not in df.columns:
-        raise ValueError(f"'started' column missing in {UNDERSTAT_FILE}")
 
     out = pd.DataFrame(
         {
-            "season": season_series,
-            "date": pd.to_datetime(df[date_col], errors="coerce"),
+            "season_label": df["Season"].astype(str),
+            "match_id": pd.to_numeric(df["MatchID"], errors="coerce"),
+            "team_id": df["Team"].astype(str),
+            "opponent_id": df["Opponent"].astype(str),
+            "date": _normalize_date(df["Date"]),
+            "is_home": df["is_home"].astype(bool),
+            "xpts": pd.to_numeric(df["xPts"], errors="coerce"),
+        }
+    )
+
+    # "2019-2020" -> 2019
+    out["season"] = out["season_label"].str.slice(0, 4).astype(int)
+
+    assert_non_empty(out, "matches_clean")
+    require_columns(out, ["season", "date", "team_id", "match_id"], name="matches_clean")
+
+    # This should be unique: one (season,date,team) row per team per league match.
+    _assert_unique_keys(out, ["season", "date", "team_id"], "matches_clean", logger)
+
+    logger.info("Matches loaded: shape=%s", out.shape)
+    return out
+
+
+def load_understat_minutes(understat_path: Path, logger) -> pd.DataFrame:
+    """
+    Load per-player match minutes & starting info from Understat master.
+
+    Required columns:
+      team, player_id, player_name, Min, started
+    Plus one date column in {'match_date','Date','date'} and one season column
+    in {'season_start_year','season'}.
+    """
+    if not understat_path.exists():
+        raise FileNotFoundError(
+            f"{understat_path} not found. Run build_understat_master.py first."
+        )
+
+    df = pd.read_csv(understat_path)
+
+    # Date column
+    date_col = next((c for c in ["match_date", "Date", "date"] if c in df.columns), None)
+    if date_col is None:
+        raise ValueError(
+            f"No date column found in {understat_path}. "
+            f"Expected one of: match_date, Date, date. Columns={list(df.columns)}"
+        )
+
+    # Season column
+    if "season_start_year" in df.columns:
+        season = pd.to_numeric(df["season_start_year"], errors="coerce").astype("Int64")
+    elif "season" in df.columns:
+        # allow either 2019 or "2019-2020" formats
+        season = (
+            df["season"]
+            .astype(str)
+            .str.slice(0, 4)
+            .pipe(pd.to_numeric, errors="coerce")
+            .astype("Int64")
+        )
+    else:
+        raise ValueError(
+            f"No season column found in {understat_path}. "
+            f"Expected 'season_start_year' or 'season'. Columns={list(df.columns)}"
+        )
+
+    require_columns(df, ["team", "player_id", "player_name", "Min", "started"], name="understat_master")
+
+    out = pd.DataFrame(
+        {
+            "season": season.astype(int),
+            "date": _normalize_date(df[date_col]),
             "team_id": df["team"].astype(str),
-            "player_id": df["player_id"],          # numeric or string is fine here
+            "player_id": pd.to_numeric(df["player_id"], errors="coerce").astype("Int64"),
             "player_name": df["player_name"].astype(str),
-            "minutes": df["Min"],
+            "minutes": pd.to_numeric(df["Min"], errors="coerce").fillna(0).astype(float),
             "started": df["started"],
         }
     )
 
-    # started can be boolean or 'True'/'False' strings
+    # Coerce started -> bool robustly
     if out["started"].dtype == object:
         out["started"] = (
             out["started"]
             .astype(str)
             .str.strip()
             .str.lower()
-            .map({"true": True, "false": False})
+            .map({"true": True, "false": False, "1": True, "0": False, "yes": True, "no": False})
         )
     out["started"] = out["started"].fillna(False).astype(bool)
 
-    out["minutes"] = pd.to_numeric(out["minutes"], errors="coerce").fillna(0).astype(float)
+    assert_non_empty(out, "understat_minutes")
+    require_columns(out, ["season", "date", "team_id", "player_id"], name="understat_minutes")
 
-    needed = ["season", "date", "team_id", "player_id", "player_name", "minutes", "started"]
-    missing = [c for c in needed if c not in out.columns]
-    if missing:
-        raise ValueError(f"Missing columns in Understat minutes: {missing}")
-
-    return out[needed].copy()
+    logger.info("Understat minutes loaded: shape=%s", out.shape)
+    return out
 
 
-# ---------------------------------------------------------------------
-# Build rotation panel
-# ---------------------------------------------------------------------
+# ----------------------------
+# Core build
+# ----------------------------
 
-def build_rotation_panel() -> pd.DataFrame:
+def build_rotation_panel(matches: pd.DataFrame, under: pd.DataFrame, logger) -> pd.DataFrame:
     """
-    Build player–team–match panel for rotation / selection:
-
-      - join Understat minutes to our matches by (season, date, team_id)
-      - compute days_rest per player
-
-    One row = player–team–match, with:
-      match_id, player_id, player_name, team_id, season, date,
-      opponent_id, is_home, xpts, minutes, started, days_rest
+    Join Understat player-match rows to the league match panel by (season, date, team_id),
+    then compute days_rest for each player.
     """
-    matches = load_matches()
-    under = load_understat_minutes()
-
-    # Make sure keys are the same type
-    matches["team_id"] = matches["team_id"].astype(str)
-
     before = len(under)
+
+    # Validate join uniqueness on matches already; now perform many-to-one merge.
     panel = under.merge(
         matches,
         on=["season", "date", "team_id"],
-        how="inner",              # keep only league matches in our dataset
+        how="inner",
         validate="many_to_one",
     )
+
     after = len(panel)
     dropped = before - after
     if dropped > 0:
-        print(f"⚠️ Dropped {dropped} Understat rows with no matching league match (cups/friendlies).")
+        logger.warning(
+            "Dropped %d Understat rows with no matching league match (likely cups/friendlies or date mismatches).",
+            dropped,
+        )
 
-    # Compute days_rest for each player (days since last appearance)
+    assert_non_empty(panel, "rotation_panel")
+
+    # days_rest per player: days since previous appearance (across all teams)
     panel = panel.sort_values(["player_id", "date"])
     panel["days_rest"] = panel.groupby("player_id")["date"].diff().dt.days
+    panel["days_rest"] = panel["days_rest"].fillna(30).astype(float).clip(lower=0, upper=30)
 
-    # First appearance: treat NaN as large rest, e.g. 30 days
-    panel["days_rest"] = panel["days_rest"].fillna(30).astype(float)
+    # Final schema
+    cols = [
+        "match_id",
+        "player_id",
+        "player_name",
+        "team_id",
+        "season",
+        "date",
+        "opponent_id",
+        "is_home",
+        "xpts",
+        "minutes",
+        "started",
+        "days_rest",
+    ]
+    panel = panel[cols].copy()
 
-    # Cap extreme values
-    panel["days_rest"] = panel["days_rest"].clip(lower=0, upper=30)
-
-    panel = panel[
-        [
-            "match_id",
-            "player_id",
-            "player_name",
-            "team_id",
-            "season",
-            "date",
-            "opponent_id",
-            "is_home",
-            "xpts",
-            "minutes",
-            "started",
-            "days_rest",
-        ]
-    ].copy()
-
+    logger.info("Rotation panel built: shape=%s", panel.shape)
     return panel
 
 
-# ---------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------
+# ----------------------------
+# CLI / main
+# ----------------------------
+
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Build player–team–match rotation panel from matches + Understat.")
+    p.add_argument("--matches", type=str, default=None, help="Override path to matches_with_injuries_all_seasons.csv")
+    p.add_argument("--understat", type=str, default=None, help="Override path to understat_player_matches_master.csv")
+    p.add_argument("--out-csv", type=str, default=None, help="Override output CSV path")
+    p.add_argument("--out-parquet", type=str, default=None, help="Override output parquet path")
+    p.add_argument("--dry-run", action="store_true", help="Run full build/validation but do not write outputs")
+    return p.parse_args()
+
 
 def main() -> None:
-    panel = build_rotation_panel()
+    args = parse_args()
+    cfg = Config.load()
+    logger = setup_logger("build_rotation_panel", cfg.logs, "build_rotation_panel.log")
 
-    # Parquet (fast / compact)
-    out_parquet = DATA_PROCESSED / "panel_rotation.parquet"
-    panel.to_parquet(out_parquet, index=False)
+    meta_path = write_run_metadata(cfg.metadata, "build_rotation_panel", extra={"dry_run": args.dry_run})
+    logger.info("Run metadata saved to: %s", meta_path)
 
-    # CSV (easy to inspect / submit)
-    out_csv = DATA_PROCESSED / "panel_rotation.csv"
-    panel.to_csv(out_csv, index=False)
+    # Default paths from config (consistent with your other scripts)
+    default_matches = cfg.processed / "matches" / "matches_with_injuries_all_seasons.csv"
+    default_under = cfg.processed / "understat" / "understat_player_matches_master.csv"
+    default_out_csv = cfg.processed / "panel_rotation.csv"
+    default_out_parquet = cfg.processed / "panel_rotation.parquet"
 
-    print(f"✅ Saved rotation panel with shape {panel.shape} to")
-    print(f"   - {out_parquet}")
-    print(f"   - {out_csv}")
+    matches_path = Path(args.matches) if args.matches else default_matches
+    under_path = Path(args.understat) if args.understat else default_under
+    out_csv = Path(args.out_csv) if args.out_csv else default_out_csv
+    out_parquet = Path(args.out_parquet) if args.out_parquet else default_out_parquet
+
+    logger.info("Reading matches from:   %s", matches_path)
+    logger.info("Reading understat from: %s", under_path)
+    logger.info("Writing CSV to:         %s", out_csv)
+    logger.info("Writing parquet to:     %s", out_parquet)
+
+    matches = load_matches(matches_path, logger)
+    under = load_understat_minutes(under_path, logger)
+    panel = build_rotation_panel(matches, under, logger)
+
+    if args.dry_run:
+        logger.info("Dry-run complete. Output not written.")
+        print(f"✅ dry-run complete | panel shape: {panel.shape} | output NOT written")
+        return
+
+    # Ensure output dir exists
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    atomic_write_csv(panel, out_csv, index=False)
+
+    # Parquet is optional (environment-dependent)
+    try:
+        out_parquet.parent.mkdir(parents=True, exist_ok=True)
+        panel.to_parquet(out_parquet, index=False)
+        parquet_status = "written"
+    except Exception as e:
+        parquet_status = f"skipped ({type(e).__name__}: {e})"
+        logger.warning("Parquet write failed; continuing with CSV only. Reason: %s", parquet_status)
+
+    logger.info("Saved rotation panel CSV rows=%d cols=%d", panel.shape[0], panel.shape[1])
+    print("✅ Saved rotation panel")
+    print(f"   - CSV:     {out_csv}")
+    print(f"   - Parquet: {out_parquet} ({parquet_status})")
+    print(f"   Shape: {panel.shape}")
 
 
 if __name__ == "__main__":

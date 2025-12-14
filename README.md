@@ -131,6 +131,313 @@ Potential inconsistencies:
   ## Proxy 2 : Injury DiD
   proxy2_injury_summary.py: When aligning the injury-based DiD proxy with the Understat-based rotation proxy, around 18% of player–season observations could not be matched to a numeric Understat ID (based on name + team). These players are excluded from the combined proxy, so the final analysis focuses on players for whom both rotation and injury information are available.
 
+## Data collection (optional)
+
+This project includes data-collection scripts (e.g., Understat/Transfermarkt scraping) used to build the processed datasets.  
+Because these sources are external websites and may change or block automated requests, **data collection is not required for reproducing the results for grading**.
+
+All analysis scripts and the final pipeline operate on the **pre-generated CSV files** stored under:
+
+- `data/processed/` (processed match/player panels)
+- `results/` (proxy outputs and analysis-ready tables)
+This makes your intent unambiguous:
+
+```markdown
+The grading workflow does not require internet access; `main.py` uses only the included CSV files.
+
+Data collection and preprocessing (optional)
+
+This repository includes src/data_collection/ scripts that document how the raw datasets were downloaded and consolidated into the processed CSV files committed under data/processed/.
+
+Important: The grading entrypoint main.py does not scrape websites or download external data. It reads the already-prepared CSVs from data/processed/ (and/or results/) to ensure the project runs reliably on the grader’s machine.
+
+What is in src/data_collection/?
+
+These scripts are provided for transparency and reproducibility:
+
+download_odds.py
+Downloads Premier League odds CSVs from football-data.co.uk into:
+
+data/raw/Odds/results/<season>/E0.csv
+This script is optional and not used by main.py.
+
+fetch_injuries_tm.py
+Scrapes injury/suspension spells from Transfermarkt and writes:
+
+data/processed/injuries_<season_end_year>.csv
+This script is optional and not used by main.py (scraping can be slow and depends on external website availability).
+
+build_injuries_all_seasons.py
+Combines the per-season injury CSVs into one standardized master file:
+
+data/processed/injuries/injuries_2019_2025_all_seasons.csv
+Includes canonical team-name mapping and basic validation.
+
+Two master-builder scripts (latest)
+
+These two scripts consolidate raw per-season files into “master” processed datasets used downstream:
+
+build_understat_master.py
+Builds a single Understat player-match master CSV from per-season files in:
+
+Input: data/raw/understat_player_matches/understat_player_matches_20*.csv
+
+Output: data/processed/understat/understat_player_matches_master.csv
+Adds season labels and standardizes team names.
+
+build_odds_master.py
+Builds a single odds master CSV from the football-data season folders:
+
+Input: data/raw/Odds/results/<season>/E0.csv
+
+Output: data/processed/odds/odds_master.csv
+Adds season metadata and a match identifier for later joins.
+
+Proxies (src/proxies/)
+
+This folder contains the end-to-end code used to construct the two core “proxy” measures used in the analysis, plus supporting preprocessing utilities. Each script is designed to be runnable from the command line (typically via python -m ...) and writes its outputs to either data/processed/ (intermediate panels/mappings) or results/ (final proxy outputs and tables). Most scripts also support a --dry-run mode to validate inputs and run the full computation without writing files.
+
+Proxy 1: Rotation Elasticity (Squad Rotation Proxy)
+
+Script: proxy1_rotation_elasticity.py
+
+Inputs: data/processed/panel_rotation.parquet
+
+Method: For each team-season, matches are classified into hard/medium/easy using team-season-specific xPts terciles. For each player–team–season, the script computes start rates in hard vs easy matches and defines rotation elasticity as:
+rotation_elasticity = start_rate_hard − start_rate_easy
+This captures whether a player is preferentially started in higher-stakes matches relative to lower-stakes matches.
+
+Output: results/proxy1_rotation_elasticity.csv
+
+Proxy 2: Injury Impact via Difference-in-Differences (Injury Proxy)
+
+Proxy 2 is built in multiple steps:
+
+Build the player–team–match injury panel
+
+Script: build_injury_panel.py
+
+Inputs:
+
+data/processed/matches/matches_with_injuries_all_seasons.csv (match-level xPts + squad injury counts)
+
+data/processed/injuries/injuries_2019_2025_all_seasons.csv (injury spells)
+
+data/processed/understat/understat_player_matches_master.csv (minutes/starts)
+
+Output: data/processed/panel_injury.parquet and data/processed/panel_injury.csv
+
+Panel definition: One row per (match_id, team_id, player_name) with availability (unavailable), minutes and starting status.
+
+Estimate player-season DiD effects
+
+Script: proxy2_injury_did.py
+
+Input: data/processed/panel_injury.parquet
+
+Method: Runs a per player–team–season DiD-style regression of team xPts on player unavailability, controlling for opponent and matchday fixed effects.
+
+Outputs: results/proxy2_injury_did.parquet and results/proxy2_injury_did.csv
+
+Convert xPts effects into season totals and £ values
+
+Script: proxy2_injury_did_points.py
+
+Inputs:
+
+results/proxy2_injury_did.parquet
+
+data/processed/points_to_pounds/points_to_pounds_*.csv (season-specific £/point mapping)
+
+Outputs: results/proxy2_injury_did_points_gbp.parquet and results/proxy2_injury_did_points_gbp.csv
+
+Attach consistent numeric Understat player IDs
+
+Script: proxy2_injury_summary.py
+
+Inputs:
+
+results/proxy2_injury_did_points_gbp.csv
+
+data/processed/understat/understat_player_matches_master.csv
+
+Output: results/proxy2_injury_final_named.csv
+
+Note: Some injury-based player names cannot be matched to an Understat numeric ID due to naming inconsistencies across sources; these rows retain the name but have missing player_id.
+
+Supporting utilities
+
+League standings builder: make_standings.py
+Builds final league tables from data/processed/odds/odds_master.csv, writing per-season standings files to data/processed/standings/ and a combined file standings_all_seasons.csv. These are used downstream for prize-money/points mappings.
+
+src/analysis/ — Analysis, figures, validation, and report tables
+
+This folder contains the “analysis layer” of the project: sanity checks, summary/validation outputs, and all figures/tables used in the report. These scripts consume outputs produced by the data processing and proxy-building steps (mainly from data/processed/ and results/) and write report-ready artifacts into results/ and results/figures/.
+
+Key conventions
+
+Inputs: read from results/ (proxy outputs) and occasionally data/processed/.
+
+Outputs: written to:
+
+results/figures/ (PNG/HTML figures)
+
+results/ (tables, summaries, markdown snippets)
+
+results/metadata/ (run metadata JSON when enabled)
+
+Many scripts support a --dry-run flag to validate inputs and column requirements without writing files.
+
+Most scripts can be run either as a module (python -m ...) or as a file (python src/analysis/...py), depending on how the repository is configured.
+
+Summary + validation
+
+proxy_summary_and_validation.py
+Creates summary tables for both proxies and runs a simple validation check between them.
+
+Reads:
+
+results/proxy1_rotation_elasticity.csv
+
+results/proxy2_injury_final_named.csv
+
+Writes:
+
+results/summary_rotation_proxy.csv
+
+results/summary_injury_proxy.csv
+
+results/proxy_validation_rotation_vs_injury.txt
+
+results/figures/proxy_validation_rotation_vs_injury_scatter.png
+
+results/figures/proxy2_total_injury_xpts_by_club.png
+
+Run:
+
+python -m py_compile src/analysis/proxy_summary_and_validation.py
+python -m src.analysis.proxy_summary_and_validation
+
+Proxy-specific figures
+
+fig_proxy1_rotation.py
+Generates visualisations for Proxy 1 (rotation elasticity), such as histogram, top players, team distributions, and season trend.
+
+Reads: results/proxy1_rotation_elasticity.csv
+
+Writes (examples):
+
+results/figures/proxy1_hist_rotation_elasticity.png
+
+results/figures/proxy1_team_boxplot_rotation_elasticity.png
+
+results/figures/proxy1_trend_rotation_elasticity_by_season.png
+
+Run:
+
+python -m py_compile src/analysis/fig_proxy1_rotation.py
+python -m src.analysis.fig_proxy1_rotation --dry-run
+python -m src.analysis.fig_proxy1_rotation
+
+
+fig_proxy2_injury.py
+Generates figures for Proxy 2 (injury DiD), including top injured player-seasons and club-level injury totals (xPts or £).
+
+Reads: results/proxy2_injury_final_named.csv
+
+Writes (examples):
+
+results/figures/proxy2_top10_injury_xpts.png
+
+results/figures/proxy2_club_injury_bill.png
+
+Run:
+
+python -m py_compile src/analysis/fig_proxy2_injury.py
+python -m src.analysis.fig_proxy2_injury --dry-run
+python -m src.analysis.fig_proxy2_injury
+
+Combined proxy figures
+
+proxies_combined_plots.py
+Creates a static scatter plot relating Proxy 1 (rotation) to Proxy 2 (injury xPts) using the combined proxies file.
+
+Reads: results/proxies_combined.csv
+
+Writes:
+
+results/figures/proxies_scatter_rotation_vs_injury_xpts.png
+
+Run:
+
+python -m py_compile src/analysis/proxies_combined_plots.py
+python -m src.analysis.proxies_combined_plots --dry-run
+python -m src.analysis.proxies_combined_plots
+
+
+fig_combined_proxies.py (interactive)
+Builds an interactive Plotly scatter (HTML) of rotation elasticity vs injury xPts.
+
+Reads: results/proxies_combined.csv
+
+Writes:
+
+results/figures/proxies_scatter_rotation_vs_injury_xpts_interactive.html
+
+Run:
+
+python -m py_compile src/analysis/fig_combined_proxies.py
+python -c "import src.analysis.fig_combined_proxies as m; print('import-ok')"
+python -m src.analysis.fig_combined_proxies
+
+Report tables
+
+build_player_value_table.py
+Creates a consolidated player-value table by combining proxy outputs and computing z-scores plus a simple combined index.
+
+Reads: results/proxies_combined.csv
+
+Writes:
+
+results/player_value_table.csv
+
+Run:
+
+python -m py_compile src/analysis/build_player_value_table.py
+python -m src.analysis.build_player_value_table --dry-run
+python -m src.analysis.build_player_value_table
+
+
+build_top15_value_table.py
+Creates a “Top 15” table (CSV + Markdown) for direct inclusion in the report.
+
+Reads: results/player_value_table.csv
+
+Writes:
+
+results/player_value_top15.csv
+
+results/player_value_top15.md
+
+Run:
+
+python -m py_compile src/analysis/build_top15_value_table.py
+python -m src.analysis.build_top15_value_table
+
+Quick “is everything OK?” checks
+
+Common checks used across scripts:
+
+# Syntax
+python -m py_compile src/analysis/<script>.py
+
+# Import wiring
+python -c "import src.analysis.<script_module> as m; print('import-ok')"
+
+# Dry-run (if supported)
+python -m src.analysis.<script_module> --dry-run
+
+------------------------------------------------------------------
 # Player Rotation, Injuries and Expected Points in the Premier League
 
 Final project for **Data Science and Advanced Programming 2025**  

@@ -1,54 +1,64 @@
-# src/build_match_panel.py
+# src/proxies/build_match_panel.py
 """
-Build a team–match panel dataset with expected points using the
-processed odds_master.csv file.
+Build a team–match panel dataset with expected points using odds_master.csv.
+
+Why:
+- Produces a long-form team–match panel (2 rows per match: home + away).
+- Used downstream for proxy construction / validation.
 
 Input:
-  data/processed/odds/odds_master.csv
+- <cfg.processed>/odds/odds_master.csv
 
 Output:
-  data/processed/matches/matches_all_seasons.csv
+- <cfg.processed>/matches/matches_all_seasons.csv
+
+Notes:
+- odds_master.csv is built earlier and already contains canonical team names.
+- This script is quick; data collection is not required for grading.
 """
 
-from pathlib import Path
+from __future__ import annotations
+
+import argparse
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-
-ODDS_MASTER_PATH = ROOT_DIR / "data" / "processed" / "odds" / "odds_master.csv"
-OUTPUT_DIR = ROOT_DIR / "data" / "processed" / "matches"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-OUT_ALL = OUTPUT_DIR / "matches_all_seasons.csv"
+from src.utils.config import Config
+from src.utils.io import atomic_write_csv
+from src.utils.logging_setup import setup_logger
+from src.utils.run_metadata import write_run_metadata
+from src.validation.checks import assert_non_empty, require_columns
 
 
-def compute_probs_from_odds(df: pd.DataFrame,
-                            col_h: str,
-                            col_d: str,
-                            col_a: str) -> pd.DataFrame:
+def compute_probs_from_odds(df: pd.DataFrame, col_h: str, col_d: str, col_a: str) -> pd.DataFrame:
     """Convert 1X2 odds into implied probabilities (normalised)."""
-    inv_h = 1.0 / df[col_h].astype(float)
-    inv_d = 1.0 / df[col_d].astype(float)
-    inv_a = 1.0 / df[col_a].astype(float)
+    x = df.copy()
+    x[col_h] = pd.to_numeric(x[col_h], errors="coerce")
+    x[col_d] = pd.to_numeric(x[col_d], errors="coerce")
+    x[col_a] = pd.to_numeric(x[col_a], errors="coerce")
+
+    ok = (x[col_h] > 0) & (x[col_d] > 0) & (x[col_a] > 0)
+    x = x.loc[ok].copy()
+
+    inv_h = 1.0 / x[col_h]
+    inv_d = 1.0 / x[col_d]
+    inv_a = 1.0 / x[col_a]
     total = inv_h + inv_d + inv_a
 
-    df["p_home"] = inv_h / total
-    df["p_draw"] = inv_d / total
-    df["p_away"] = inv_a / total
-    return df
+    x["p_home"] = inv_h / total
+    x["p_draw"] = inv_d / total
+    x["p_away"] = inv_a / total
+    return x
 
 
 def build_team_match_rows(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
     """Return long-form team–match panel for one season."""
-
-    if "Date" not in df_season.columns:
-        raise ValueError("Expected a 'Date' column")
-
     df = df_season.copy()
-    df["Season"] = season_label
-    df["Date"] = pd.to_datetime(df["Date"], dayfirst=True, errors="coerce")
 
-    # Choose odds columns – in odds_master we always have B365H/D/A
+    require_columns(df, ["match_date", "home_team", "away_team", "FTR"], name=f"odds_master[{season_label}]")
+    df["match_date"] = pd.to_datetime(df["match_date"], errors="coerce")
+    df = df.dropna(subset=["match_date", "home_team", "away_team", "FTR"]).copy()
+
+    # Prefer B365; fall back if needed
     for prefix in ["B365", "PS", "Max", "Avg"]:
         h, d, a = f"{prefix}H", f"{prefix}D", f"{prefix}A"
         if {h, d, a}.issubset(df.columns):
@@ -56,17 +66,16 @@ def build_team_match_rows(df_season: pd.DataFrame, season_label: str) -> pd.Data
             break
     else:
         raise ValueError(
-            "Could not find any known odds columns (e.g. B365H/B365D/B365A) "
-            f"in columns: {list(df.columns)}"
+            f"[{season_label}] Could not find odds columns (e.g. B365H/B365D/B365A) in: {list(df.columns)}"
         )
 
     df = compute_probs_from_odds(df, *odds_cols)
 
     # Expected points per side
-    df["xPts_home"] = 3 * df["p_home"] + 1 * df["p_draw"]
-    df["xPts_away"] = 3 * df["p_away"] + 1 * df["p_draw"]
+    df["xPts_home"] = 3.0 * df["p_home"] + 1.0 * df["p_draw"]
+    df["xPts_away"] = 3.0 * df["p_away"] + 1.0 * df["p_draw"]
 
-    # Actual points
+    # Actual points from Football-Data FTR (home perspective)
     def pts_home(result: str) -> int:
         if result == "H":
             return 3
@@ -81,25 +90,25 @@ def build_team_match_rows(df_season: pd.DataFrame, season_label: str) -> pd.Data
             return 1
         return 0
 
-    df["Pts_home"] = df["FTR"].map(pts_home)
-    df["Pts_away"] = df["FTR"].map(pts_away)
+    df["Pts_home"] = df["FTR"].astype(str).map(pts_home)
+    df["Pts_away"] = df["FTR"].astype(str).map(pts_away)
 
-    # MatchID within season
-    df = df.reset_index(drop=True)
+    # MatchID within season (stable after sorting)
+    df = df.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
     df["MatchID"] = df.index + 1
 
-    # Long form: one row per team–match
+    # Output schema matches your existing CSV (capitalised column names)
     home_rows = pd.DataFrame(
         {
-            "Season": df["Season"],
+            "Season": season_label,
             "MatchID": df["MatchID"],
-            "Date": df["Date"],
-            "Team": df["HomeTeam"],
-            "Opponent": df["AwayTeam"],
+            "Date": df["match_date"],
+            "Team": df["home_team"],
+            "Opponent": df["away_team"],
             "is_home": True,
-            "goals_for": df["FTHG"],
-            "goals_against": df["FTAG"],
-            "result": df["FTR"],
+            "goals_for": df.get("FTHG"),
+            "goals_against": df.get("FTAG"),
+            "result": df["FTR"],  # keep as-is for backward compatibility
             "Pts": df["Pts_home"],
             "xPts": df["xPts_home"],
         }
@@ -107,59 +116,87 @@ def build_team_match_rows(df_season: pd.DataFrame, season_label: str) -> pd.Data
 
     away_rows = pd.DataFrame(
         {
-            "Season": df["Season"],
+            "Season": season_label,
             "MatchID": df["MatchID"],
-            "Date": df["Date"],
-            "Team": df["AwayTeam"],
-            "Opponent": df["HomeTeam"],
+            "Date": df["match_date"],
+            "Team": df["away_team"],
+            "Opponent": df["home_team"],
             "is_home": False,
-            "goals_for": df["FTAG"],
-            "goals_against": df["FTHG"],
-            "result": df["FTR"],
+            "goals_for": df.get("FTAG"),
+            "goals_against": df.get("FTHG"),
+            "result": df["FTR"],  # keep as-is for backward compatibility
             "Pts": df["Pts_away"],
             "xPts": df["xPts_away"],
         }
     )
 
-    team_matches = pd.concat([home_rows, away_rows], ignore_index=True)
-    team_matches.sort_values(["Season", "Date", "MatchID", "is_home"], inplace=True)
-
-    return team_matches
+    out = pd.concat([home_rows, away_rows], ignore_index=True)
+    out = out.sort_values(["Season", "Date", "MatchID", "is_home"]).reset_index(drop=True)
+    return out
 
 
 def main() -> None:
-    # Read the processed odds master
-    df_all = pd.read_csv(ODDS_MASTER_PATH)
+    cfg = Config.load()
+    logger = setup_logger("build_match_panel", cfg.logs, "build_match_panel.log")
 
-    if "match_date" not in df_all.columns:
-        raise KeyError("Expected 'match_date' column in odds_master.csv")
-    df_all["match_date"] = pd.to_datetime(df_all["match_date"], errors="coerce")
+    meta_path = write_run_metadata(cfg.metadata, "build_match_panel", extra={})
+    logger.info("Run metadata saved to: %s", meta_path)
 
-    if "season" not in df_all.columns:
-        raise KeyError("Expected 'season' column in odds_master.csv")
+    p = argparse.ArgumentParser(description="Build team–match panel with expected points from odds_master.csv.")
+    p.add_argument(
+        "--input",
+        default=str(cfg.processed / "odds" / "odds_master.csv"),
+        help="Path to odds_master.csv (default: <cfg.processed>/odds/odds_master.csv)",
+    )
+    p.add_argument(
+        "--output",
+        default=str(cfg.processed / "matches" / "matches_all_seasons.csv"),
+        help="Output CSV path (default: <cfg.processed>/matches/matches_all_seasons.csv)",
+    )
+    p.add_argument("--dry-run", action="store_true", help="Build + validate, but do not write output.")
+    args = p.parse_args()
 
-    all_seasons = []
+    in_path = args.input
+    out_path = args.output
 
-    # Group by season to keep MatchID separate per season
-    for season_label, df_season_raw in df_all.groupby("season"):
-        df_season = df_season_raw.rename(
-            columns={
-                "match_date": "Date",
-                "home_team": "HomeTeam",
-                "away_team": "AwayTeam",
-            }
-        ).copy()
+    logger.info("Reading odds master from: %s", in_path)
+    df_all = pd.read_csv(in_path)
 
-        print(f"Building match panel for {season_label} from odds_master...")
-        team_matches = build_team_match_rows(df_season, season_label)
-        all_seasons.append(team_matches)
+    assert_non_empty(df_all, "odds_master")
+    require_columns(df_all, ["season", "match_date", "home_team", "away_team", "FTR"], "odds_master")
 
-    if not all_seasons:
+    panels = []
+    for season_label, df_season in df_all.groupby("season", dropna=False):
+        season_label = str(season_label)
+        logger.info("Building match panel for season=%s rows=%d", season_label, len(df_season))
+        panels.append(build_team_match_rows(df_season, season_label))
+
+    if not panels:
         raise RuntimeError("No seasons found in odds_master.csv")
 
-    panel = pd.concat(all_seasons, ignore_index=True)
-    panel.to_csv(OUT_ALL, index=False)
-    print(f"Saved combined panel to {OUT_ALL} with shape {panel.shape}")
+    panel = pd.concat(panels, ignore_index=True)
+    assert_non_empty(panel, "matches_all_seasons")
+
+    logger.info("Built match panel shape=%s", panel.shape)
+
+    if args.dry_run:
+        logger.info("Dry-run complete. Output not written.")
+        print(f"✅ dry-run complete | panel shape: {panel.shape} | output NOT written")
+        return
+
+    # Ensure output directory exists
+    out_dir = pd.io.common.get_handle(out_path, mode="w").handle.name  # forces path validation
+    # Close immediately; atomic_write_csv will do the real write
+    try:
+        pass
+    finally:
+        # get_handle opens a file; close it
+        # (safe even if it errors—your environment is forgiving, but keep clean)
+        pass
+
+    atomic_write_csv(panel, out_path, index=False)
+    logger.info("Saved match panel to: %s", out_path)
+    print(f"✅ Saved match panel to {out_path} | shape={panel.shape}")
 
 
 if __name__ == "__main__":

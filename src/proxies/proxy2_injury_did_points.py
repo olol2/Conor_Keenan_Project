@@ -1,52 +1,48 @@
 # src/proxies/proxy2_injury_did_points.py
-
 from __future__ import annotations
 
 from pathlib import Path
+import argparse
 
 import numpy as np
 import pandas as pd
 
-
-# ---------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------
-
-# Project root: /files/Conor_Keenan_Project
-ROOT = Path(__file__).resolve().parents[2]
-
-RESULTS_DIR = ROOT / "results"
-RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-
-DATA_PROCESSED = ROOT / "data" / "processed"
-DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
-
-# Directory that contains per-season CSVs like:
-#   points_to_pounds_2019-2020.csv, points_to_pounds_2020-2021.csv, ...
-POINTS_TO_POUNDS_DIR = DATA_PROCESSED / "points_to_pounds"
+from src.utils.config import Config
+from src.utils.logging_setup import setup_logger
+from src.utils.run_metadata import write_run_metadata
 
 
 # ---------------------------------------------------------------------
 # Load DiD results
 # ---------------------------------------------------------------------
-
-def load_did_results() -> pd.DataFrame:
+def load_did_results(path: Path, logger) -> tuple[pd.DataFrame, str]:
     """
-    Load the raw DiD estimates produced by proxy2_injury_did.py.
+    Load DiD estimates produced by proxy2_injury_did.py.
 
-    Expected file:
-      results/proxy2_injury_did.parquet
+    Accepts either:
+      - player_name-based output, or
+      - player_id-based output
 
-    Expected columns:
-      player_id, team_id, season,
-      beta_unavailable, se_unavailable,
-      n_matches, n_unavail, n_avail
+    Returns:
+      (df, player_key_col)
     """
-    path = RESULTS_DIR / "proxy2_injury_did.parquet"
+    if not path.exists():
+        raise FileNotFoundError(f"DiD results not found: {path}")
+
     df = pd.read_parquet(path)
 
+    # Support both versions
+    if "player_name" in df.columns:
+        player_key = "player_name"
+    elif "player_id" in df.columns:
+        player_key = "player_id"
+    else:
+        raise ValueError(
+            f"DiD results must contain 'player_name' or 'player_id'. Columns={list(df.columns)}"
+        )
+
     needed = [
-        "player_id",
+        player_key,
         "team_id",
         "season",
         "beta_unavailable",
@@ -57,41 +53,30 @@ def load_did_results() -> pd.DataFrame:
     ]
     missing = [c for c in needed if c not in df.columns]
     if missing:
-        raise ValueError(f"Missing columns in proxy2_injury_did: {missing}")
+        raise ValueError(f"Missing columns in DiD results: {missing}")
 
     df["season"] = df["season"].astype(int)
+    logger.info("Loaded DiD results: shape=%s | player_key=%s", df.shape, player_key)
 
-    return df[needed].copy()
+    return df[needed].copy(), player_key
 
 
 # ---------------------------------------------------------------------
 # Build £ per point mapping from all per-season CSVs
 # ---------------------------------------------------------------------
-
-def load_points_to_pounds_all_seasons() -> pd.DataFrame:
+def load_points_to_pounds_all_seasons(points_dir: Path, logger) -> pd.DataFrame:
     """
-    Build a mapping season -> gbp_per_point using all CSVs in
-    data/processed/points_to_pounds/.
+    Build a mapping season -> gbp_per_point using all CSVs in points_dir.
 
-    Each file is expected to look like:
-        Season,Points,Money_gbp
-        2019-2020,21,52_527_464.78
-        2019-2020,22,55_028_772.63
-        ...
-
-    For each season, we fit a simple linear regression:
-        Money_gbp ≈ alpha + beta * Points
-
-    and use beta as 'gbp_per_point' for that season.
+    For each season file, fit: money_gbp ~ alpha + beta * points
+    and use beta as gbp_per_point.
     """
-    if not POINTS_TO_POUNDS_DIR.exists():
-        raise FileNotFoundError(f"Points-to-pounds directory not found: {POINTS_TO_POUNDS_DIR}")
+    if not points_dir.exists():
+        raise FileNotFoundError(f"Points-to-pounds directory not found: {points_dir}")
 
-    files = sorted(POINTS_TO_POUNDS_DIR.glob("points_to_pounds_*.csv"))
+    files = sorted(points_dir.glob("points_to_pounds_*.csv"))
     if not files:
-        raise FileNotFoundError(
-            f"No files named 'points_to_pounds_*.csv' found in {POINTS_TO_POUNDS_DIR}"
-        )
+        raise FileNotFoundError(f"No files named 'points_to_pounds_*.csv' found in {points_dir}")
 
     rows: list[dict] = []
 
@@ -112,14 +97,16 @@ def load_points_to_pounds_all_seasons() -> pd.DataFrame:
         if missing:
             raise ValueError(f"Missing columns in {path.name}: {missing}")
 
-        # Take the season year = first 4 chars of '2019-2020'
         tmp["season"] = tmp["season_str"].astype(str).str.slice(0, 4).astype(int)
 
-        # Fit linear regression money_gbp ~ points
-        x = tmp["points"].to_numpy(dtype=float)
-        y = tmp["money_gbp"].to_numpy(dtype=float)
+        # Make sure money is numeric even if formatted like "52_527_464.78" or "52,527,464.78"
+        money_raw = tmp["money_gbp"].astype(str).str.replace("_", "", regex=False).str.replace(",", "", regex=False)
+        y = pd.to_numeric(money_raw, errors="coerce").to_numpy(dtype=float)
+        x = pd.to_numeric(tmp["points"], errors="coerce").to_numpy(dtype=float)
 
-        # Simple check
+        if np.isnan(x).any() or np.isnan(y).any():
+            raise ValueError(f"NaNs after numeric conversion in {path.name}. Check money/points formatting.")
+
         if len(np.unique(x)) < 2:
             raise ValueError(f"Not enough variation in points in {path.name} to fit a slope.")
 
@@ -129,55 +116,36 @@ def load_points_to_pounds_all_seasons() -> pd.DataFrame:
         rows.append({"season": season_year, "gbp_per_point": float(slope)})
 
     mapping = pd.DataFrame(rows).sort_values("season").reset_index(drop=True)
-
+    logger.info("Built gbp_per_point mapping: seasons=%d", len(mapping))
     return mapping
 
 
 # ---------------------------------------------------------------------
-# Add points and £ interpretation
+# Add xPts + £ interpretation
 # ---------------------------------------------------------------------
-
 def add_points_interpretation(did: pd.DataFrame) -> pd.DataFrame:
     """
-    From DiD estimates, compute:
-
-      - xpts_per_match_present:
-            how many expected points per match this player is worth
-            when they are available (approx. -beta_unavailable).
-
-      - xpts_season_total:
-            xpts_per_match_present * n_matches,
-            i.e. rough season-level impact in expected points.
+    Compute:
+      - xpts_per_match_present = -beta_unavailable
+      - xpts_season_total = xpts_per_match_present * n_matches
     """
     out = did.copy()
-
-    # When the player is unavailable, xpts change by beta_unavailable.
-    # So when the player *is* present, we approximate the contribution as -beta.
     out["xpts_per_match_present"] = -out["beta_unavailable"]
-
-    # Season-level impact: contribution per match times number of league matches
     out["xpts_season_total"] = out["xpts_per_match_present"] * out["n_matches"]
-
     return out
 
 
-def add_money_interpretation(did_points: pd.DataFrame,
-                             mapping: pd.DataFrame) -> pd.DataFrame:
+def add_money_interpretation(did_points: pd.DataFrame, mapping: pd.DataFrame, logger) -> pd.DataFrame:
     """
-    Merge £/point mapping and compute monetary values:
-
-      - gbp_per_point (from mapping)
-      - value_gbp_per_match  = xpts_per_match_present * gbp_per_point
-      - value_gbp_season_total = xpts_season_total * gbp_per_point
+    Merge £/point mapping and compute:
+      - value_gbp_per_match
+      - value_gbp_season_total
     """
     out = did_points.merge(mapping, on="season", how="left")
 
     if out["gbp_per_point"].isna().any():
-        missing_seasons = out.loc[out["gbp_per_point"].isna(), "season"].unique()
-        print(
-            f"⚠️ Warning: missing gbp_per_point for seasons {missing_seasons}. "
-            f"Monetary values will be NaN for those rows."
-        )
+        missing_seasons = sorted(out.loc[out["gbp_per_point"].isna(), "season"].unique().tolist())
+        logger.warning("Missing gbp_per_point for seasons=%s (values will be NaN).", missing_seasons)
 
     out["value_gbp_per_match"] = out["xpts_per_match_present"] * out["gbp_per_point"]
     out["value_gbp_season_total"] = out["xpts_season_total"] * out["gbp_per_point"]
@@ -186,33 +154,66 @@ def add_money_interpretation(did_points: pd.DataFrame,
 
 
 # ---------------------------------------------------------------------
-# Main
+# CLI / Main
 # ---------------------------------------------------------------------
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Add xPts + £ interpretation to Proxy 2 DiD estimates.")
+    p.add_argument("--did", type=str, default=None, help="Override results/proxy2_injury_did.parquet path")
+    p.add_argument("--points-dir", type=str, default=None, help="Override data/processed/points_to_pounds directory")
+    p.add_argument("--out-csv", type=str, default=None, help="Override output CSV path")
+    p.add_argument("--out-parquet", type=str, default=None, help="Override output parquet path")
+    p.add_argument("--dry-run", action="store_true", help="Run compute but do not write outputs")
+    return p.parse_args()
+
 
 def main() -> None:
-    print("Loading DiD results from results/proxy2_injury_did.parquet ...")
-    did = load_did_results()
-    print(f"Loaded {len(did)} player-seasons.")
+    args = parse_args()
+    cfg = Config.load()
+    logger = setup_logger("proxy2_injury_did_points", cfg.logs, "proxy2_injury_did_points.log")
+    meta_path = write_run_metadata(cfg.metadata, "proxy2_injury_did_points", extra={"dry_run": bool(args.dry_run)})
+    logger.info("Run metadata saved to: %s", meta_path)
 
-    print("Adding xPts-per-match and season-total interpretation ...")
+    # Derive root/results from cfg.processed (no cfg.project_root in your Config)
+    project_root = cfg.processed.parent.parent
+    results_dir = project_root / "results"
+
+    did_path = Path(args.did) if args.did else (results_dir / "proxy2_injury_did.parquet")
+    points_dir = Path(args.points_dir) if args.points_dir else (cfg.processed / "points_to_pounds")
+
+    out_csv = Path(args.out_csv) if args.out_csv else (results_dir / "proxy2_injury_did_points_gbp.csv")
+    out_parquet = Path(args.out_parquet) if args.out_parquet else (results_dir / "proxy2_injury_did_points_gbp.parquet")
+
+    logger.info("Reading DiD from:       %s", did_path)
+    logger.info("Reading points-dir:     %s", points_dir)
+    logger.info("Writing output CSV to:  %s", out_csv)
+    logger.info("Writing output PQ to:   %s", out_parquet)
+
+    did, player_key = load_did_results(did_path, logger)
     did_points = add_points_interpretation(did)
 
-    print("Building points-to-pounds mapping from per-season CSVs ...")
-    mapping = load_points_to_pounds_all_seasons()
-    print(mapping)
+    mapping = load_points_to_pounds_all_seasons(points_dir, logger)
+    did_full = add_money_interpretation(did_points, mapping, logger)
 
-    print("Adding monetary (£) interpretation ...")
-    did_full = add_money_interpretation(did_points, mapping)
+    # Stable column order (keep player id/name first)
+    cols_front = [player_key, "team_id", "season"]
+    cols_rest = [c for c in did_full.columns if c not in cols_front]
+    did_full = did_full[cols_front + cols_rest].copy()
 
-    # Save as CSV for easy inspection / report tables
-    csv_path = RESULTS_DIR / "proxy2_injury_did_points_gbp.csv"
-    did_full.to_csv(csv_path, index=False)
-    print(f"✅ Saved points+£ proxy to {csv_path}")
+    if args.dry_run:
+        logger.info("Dry-run complete. Output not written. shape=%s", did_full.shape)
+        print(f"✅ dry-run complete | shape={did_full.shape} | output NOT written")
+        return
 
-    # Also save as parquet
-    parquet_path = RESULTS_DIR / "proxy2_injury_did_points_gbp.parquet"
-    did_full.to_parquet(parquet_path, index=False)
-    print(f"✅ Saved points+£ proxy to {parquet_path}")
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    out_parquet.parent.mkdir(parents=True, exist_ok=True)
+
+    did_full.to_csv(out_csv, index=False)
+    did_full.to_parquet(out_parquet, index=False)
+
+    logger.info("Wrote outputs: csv=%s parquet=%s shape=%s", out_csv, out_parquet, did_full.shape)
+    print(f"✅ Saved points+£ proxy | shape={did_full.shape}")
+    print(f"   - {out_parquet}")
+    print(f"   - {out_csv}")
 
 
 if __name__ == "__main__":

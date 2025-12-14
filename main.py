@@ -1,34 +1,98 @@
+# main.py
+"""
+Minimal project orchestrator.
+
+Purpose:
+- Provide a single entrypoint for graders to reproduce the key outputs.
+- Keep orchestration thin: run your existing modules in a sensible order.
+- Be robust to where certain scripts live (src.proxies vs src.analysis).
+"""
+
 from __future__ import annotations
 
-from src.data_loader import load_all_panels
-from src.evaluation import run_full_evaluation
+import os
+import subprocess
+import sys
+import importlib.util
+from pathlib import Path
+
+
+def module_exists(module: str) -> bool:
+    """Return True if `python -m <module>` should be importable."""
+    return importlib.util.find_spec(module) is not None
+
+
+def run_module(module: str, *args: str) -> None:
+    """Run a module via `python -m module ...` and fail fast on error."""
+    cmd = [sys.executable, "-m", module, *args]
+    print("\n" + "=" * 80)
+    print("RUN:", " ".join(cmd))
+    print("=" * 80)
+    subprocess.run(cmd, check=True)
+
+
+def run_first_available(candidates: list[str], *args: str) -> str:
+    """
+    Try multiple module paths and run the first one that exists.
+    Returns the module path used.
+    """
+    for m in candidates:
+        if module_exists(m):
+            run_module(m, *args)
+            return m
+    raise ModuleNotFoundError(
+        "None of these modules exist:\n  - " + "\n  - ".join(candidates)
+    )
 
 
 def main() -> None:
-    """
-    Entry point for the project for grading.
+    # Ensure consistent working directory (important for graders).
+    project_root = Path(__file__).resolve().parent
+    os.chdir(project_root)
 
-    Steps:
-      1) Load final rotation and injury panels from data/processed.
-      2) Run the evaluation script to create summary tables and figures.
-    """
-    print("=== Conor_Keenan_Project: starting main pipeline ===")
+    # -------------------------
+    # Build / refresh panels
+    # -------------------------
+    run_module("src.proxies.build_injury_panel")
 
-    rotation, injury = load_all_panels()
-    print(
-        f"Loaded rotation panel: {len(rotation)} rows, "
-        f"{rotation['season'].nunique()} seasons, "
-        f"{rotation['team_id'].nunique()} teams."
+    # -------------------------
+    # Proxy 2 (injury): DiD -> points/£ -> attach Understat ID
+    # -------------------------
+    run_module("src.proxies.proxy2_injury_did")
+    run_module("src.proxies.proxy2_injury_did_points")
+    run_module("src.proxies.proxy2_injury_summary")
+
+    # -------------------------
+    # Proxy 1 (rotation)
+    # -------------------------
+    run_module("src.proxies.proxy1_rotation_elasticity")
+
+    # -------------------------
+    # Combine proxies + derived tables
+    # (combine_proxies might live in src.proxies or src.analysis)
+    # -------------------------
+    run_first_available(
+        ["src.analysis.combine_proxies", "src.proxies.combine_proxies"]
     )
-    print(
-        f"Loaded injury panel:   {len(injury)} rows, "
-        f"{injury['season'].nunique()} seasons, "
-        f"{injury['team_id'].nunique()} teams."
-    )
 
-    run_full_evaluation()
+    run_module("src.analysis.build_player_value_table")
 
-    print("=== Pipeline completed successfully ===")
+    # -------------------------
+    # Validation + key figures (static)
+    # -------------------------
+    run_module("src.analysis.proxy_summary_and_validation")
+    run_module("src.analysis.fig_proxy1_rotation")
+    run_module("src.analysis.fig_proxy2_injury")
+    run_module("src.analysis.proxies_combined_plots")
+
+    # -------------------------
+    # Optional: interactive plot (Plotly)
+    # (only run if module exists in your repo)
+    # -------------------------
+    if module_exists("src.analysis.fig_combined_proxies"):
+        run_module("src.analysis.fig_combined_proxies")
+
+    print("\n✅ Pipeline complete.")
 
 
 if __name__ == "__main__":
