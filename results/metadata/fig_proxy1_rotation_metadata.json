@@ -1,9 +1,9 @@
 {
   "run_name": "fig_proxy1_rotation",
-  "timestamp_utc": "2025-12-14T12:05:09.275731+00:00",
+  "timestamp_utc": "2025-12-17T14:24:32.476957+00:00",
   "python_version": "3.13.5 | packaged by conda-forge | (main, Jun 16 2025, 08:27:50) [GCC 13.3.0]",
   "platform": "Linux-5.15.0-1092-azure-x86_64-with-glibc2.39",
-  "git_commit": "ba20ec307bcda2b44447ad772cc2fa28c1ab747d",
+  "git_commit": "5963ac4fb0771969d2bea8dc9dcc3c02271a2894",
   "packages": {
     "pandas": "2.3.1",
     "numpy": "2.3.1",

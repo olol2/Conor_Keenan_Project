@@ -8,7 +8,7 @@ Provide a concise summary (150-200 words) of your project including:
 
 This project investigates how player rotation and injury-related absences relate to team performance in the English Premier League (EPL). Using match-level lineups and injury logs across six seasons (2019/2020 - 2024/2025) and 27 total teams (accounting for promoted and relegated teams), I build two player season proxies designed to quantify how selectively a player is used and how costly a plyer's absence is in performance terms such as Expected Points (xPts) or money (GBP).
 
-First I propose a Rotation Elasticity proxy that measures how a player's starting likelihood changes between "hard" and "easy" fixtures (defined from opponent strength / match difficulty).
+Firstly, I propose a Rotation Elasticity proxy that measures how a player's starting likelihood changes between "hard" and "easy" fixtures (defined from opponent strength / match difficulty).
 
 Secondly, I construct an Injury Impact proxy that attributes changes in team outcomes, around periods when a player is unavailable, using within-team comparisons to mitigate confounding factors.
 
@@ -79,22 +79,47 @@ Discuss relevant prior work, existing solutions, or theoretical background:
 
 # 3. Methodology
 
+There are three major steps in my project, the first being data collection/processing. This step relied on scraping the data from several websites to obtain the data needed for the project. Once this raw per-season data was in a csv format, an extra but optional step was to create a master dataset with all seasons combined in one csv file per source. Then, some master datasets needed to be merged and derive new columns or remove some. Secondly, creating the proxies, this is where the main pipeline starts, using the processed data to create two seperate proxies followed by a combined version of both proxies. Lastly, the analysis, this part is mainly evaluating the results of the proxies created and printing results, graphs and figures.
+
 ## 3.1 Data Description
 
 Describe your dataset(s):
 
 - **Source**: Where did the data come from?
+Data was extracted from multiple sources depending on the data needed. Football-data.co.uk provides a csv file that can be downloaded directly from the website for each match per season with many statistical information with the main purpose of match logs and betting odds. Understat provides detailed per-game player statistics, including minutes played and whether they started or not. One of the most important and "difficult" data sources was transfermarkt, providing every injury absence for every player for every season. Finally the official Premier League website provides the prize money per season that each team earned.
+
 - **Size**: Number of samples, features
+Gathering all of this data, there is essentially 3 big datasets from Understat, Transfermarkt and Football-Data, the PL prize money is very small in comparison to these. The various big datasets provided thousands of entries which then had to be combined into structured panels for the main pipeline. An important step in merging these datasets was to standardize team names (e.g., one source presents a team such as: Man United, where another might be Man Utd), this step involved checking every single of the 27 team names across the four data sources and to create one canonical team name per team. There were many data samples, but it was important to remove those with too fewer appearances (e.g., a rotation / often injured player that played for a team that only played one season -> bad estimates)
+
 - **Characteristics**: Type of data, distribution
+The competition is the EPL, the dataset consists of 27 unique teams, with 20 teams per season with 3 teams changing per season (relegation/promotion). All collected data was transformed into csv files, with values such as strings, integers and binaries. The primary units are match-team observations (team performance + lineup usage per match), player-season observations (final proxy outputs), Injury spells (player availability intervals).
+
 - **Features**: Description of important variables
+At minimum, the pipeline relies on the following fields,
+1. Match panel:
+    - season,match_id,date
+    - team_id,opponent_id, home_away
+    - player_name (or player_id)
+    - started (binary), minutes(integer)
+    - xpts (or translated into GBP through prize money)
+    - difficulty_label (hard/easy)
+
+2. Injury panel
+    - season, team_id, player_name
+    - injury_start, injury_end
+    - derived: missed_match_id list or match-level availability indicator
 - **Data quality**: Missing values, outliers, etc.
+There are a few issues regarding the data, transfermarkt injury data provides the expected absence of a certain injury, which in reality, sometimes players can be back sooner than expected (e.g., a player is expected to be out for 9 months with an ACL injury, but in reality was back on the pitch 8 months later), this creates inconsistencies between Understat data which says he played X minutes, even though transfermarkt said he was unavailable due to injury.
 
 ## 3.2 Approach
 
 Detail your technical approach:
 
 - **Algorithms**: Which methods did you use and why?
+To retrieve data from websties such as Understat and football-data, the algorithm's were relatively basic and for football-data, this could have been done manually very easily by downloading the csv file directly on their website. For transfermarkt, this data collection was more complex, this involved writing a script that would scrape the data from their website and took around 25 minutes to create an csv files with injury data per season.
 - **Preprocessing**: Data cleaning and transformation steps
+
+In order to process data, it was important to remove some NaN values, to do so I did not take into account any players with some type of NaN values. When merging, very important to standardise team names to avoid missing values. Very few players has different spellings in the datasets, because they were so little, they were not taking into account for this analysis. Deduplication; collapse duplicate injury windows where applicable. Sample restrictions; excluded player-seasons without sufficient observations (e.g., too few matches in a category to estimate stable rates or impacts)
 - **Model architecture**: If using ML/DL, describe the model
 - **Evaluation metrics**: How do you measure success?
 
