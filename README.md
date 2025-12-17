@@ -82,9 +82,6 @@ Conor_Keenan_Project/
 │   ├── summary_injury_proxy.csv
 │   └── (other tables/figures produced by analysis scripts)
 │
-├── scripts/
-│   └── fetch_injuries_tm_py.py         # Transfermarkt injury scraper (optional)
-│
 └── src/
     ├── data_collection/               # optional reproducibility scripts (not used by main.py)
     ├── proxies/                       # proxy construction code

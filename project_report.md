@@ -6,7 +6,15 @@ Provide a concise summary (150-200 words) of your project including:
 - Key results/findings
 - Main contributions
 
-**Keywords:** data science, Python, machine learning, [add your keywords]
+This project investigates how player rotation and injury-related absences relate to team performance in the English Premier League (EPL). Using match-level lineups and injury logs across six seasons (2019/2020 - 2024/2025) and 27 total teams (accounting for promoted and relegated teams), I build two player season proxies designed to quantify how selectively a player is used and how costly a plyer's absence is in performance terms such as Expected Points (xPts) or money (GBP).
+
+First I propose a Rotation Elasticity proxy that measures how a player's starting likelihood changes between "hard" and "easy" fixtures (defined from opponent strength / match difficulty).
+
+Secondly, I construct an Injury Impact proxy that attributes changes in team outcomes, around periods when a player is unavailable, using within-team comparisons to mitigate confounding factors.
+
+The resulting dataset provides interpretable player-season measures that can be used for downstream analysis (ranking, profiling, and team-level aggregation). Empirically, the proxies reveal substantial heterogeneity across roles and squads, highlighting that "value" in football is partially driven by context-dependant usage and the marginal performance loss associated with availability shocks.
+
+**Keywords:** Data Science, Python, Machine Learning, Sports Analytics, Football, Premier League, Causal Inference, Expected Points
 
 \newpage
 
@@ -28,6 +36,15 @@ Provide a concise summary (150-200 words) of your project including:
 Introduce your project and its context. This section should include:
 
 - **Background and motivation**: Why is this problem important?
+
+The EPL is one if not the biggest league in the world when it comes to viewership, popularity and therefore money! Like many of the top leagues, the teams operate under tight constraints such as congested match calendars, high physical demands and substantial stakes linked to league position (Broadcast revenue, prize money and European qualification). Within this environment, clubs continously manage two intertwined problems:
+1. Rotation decisions: coaches must allocate minutes across players while balancing short-term match objectives and longer-term fatigue/injury management.
+2. Injury risk and availability: injuries disrupt quad plans, forcing tactival adjustments and altering the distribution of minutes and starts.
+
+Despite widespread siscussion in the football industry, quandtifying these concepts in a way that is player-specific, season-comparable, and tightly linked to performance remains non-trivial. Traditional player metrics such as minutes, appearances, goals/assists do not fully capture how and when a player is used, nor do they isolate the performance cost of absences in a comparable way.
+
+This project focuses on building data-driven, interpretable proxies that operationalize these concepts and enable subsequent analysis of "fair value" drivers beyond headline statistics.
+
 - **Problem statement**: What specific problem are you solving?
 - **Objectives and goals**: What do you aim to achieve?
 - **Report organization**: Brief overview of the report structure
