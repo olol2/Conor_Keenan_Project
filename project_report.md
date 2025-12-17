@@ -46,8 +46,27 @@ Despite widespread siscussion in the football industry, quandtifying these conce
 This project focuses on building data-driven, interpretable proxies that operationalize these concepts and enable subsequent analysis of "fair value" drivers beyond headline statistics.
 
 - **Problem statement**: What specific problem are you solving?
+
+The central issue is measurement: rotation adn injury impact are often referenced qualitively, but rigourous player-season quantification requires defining match contexts, dealoing with selection effects (better player start more) and seperating the effect of a player's absence from broader team dynamics.
+Accordingly, the project asks: can we construct robust player-season measures that capture selective usage (rotation) and the performance cost of availibility shocks(injuries), using only broadly obtainable match and injury data?
+
+The report is structured into three research questions:
+1. Rotation behavior: Do teams systematically vary the probability that a given player starts depending on match difficulty and can this be summarized as a player-season statistic?
+2. Injury-related performance cost: When a player is unavailable due to injury, what is the associated change in team performance, and can this be attributed at the player-season level in a comparable way?
+3. "Fair value" interpretation: Do the resulting proxies provide meaningful differentiation between players (e.g., core starters vs. situational players; high-impact absences vs. low-impact absences) that complements conventional performance measures?
+
 - **Objectives and goals**: What do you aim to achieve?
+The project's objective is not to "solve" transfer pricing or wage valuation directly, but to contibute two proxy measures that are:
+    - Interpretable: aligned with football decision-making (starts in hard matches; cost of missing games).
+    - Scalable: computable across seasons and clubs from consistent data sources.
+    - Actionable: usage as inputs for later valuation, scouting, squad planning, or robustness checks in performance modeling.
+    - Deliverables include:
+        Proxy 1 - Rotation Elasticity (player-season): context-sensitive starting selectivity
+        Proxy 2 - Injury Impact (player-season): marginal performance loss associated with injury absence.
+High level approach?
+    
 - **Report organization**: Brief overview of the report structure
+The report is structured as follows. Section 2 reviews prior work on squad rotation, match congestion, injury evidence, and performance measurement (including expected goals/expected points). Section 3 details data sources, variable construction and proxy definitions. Section 4 presents empirical results and validation figures. Section 5 discusses interpretation, limitations and robustness considerations. Section 6 concludes and proposes further work.
 
 # 2. Literature Review
 
