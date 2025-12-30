@@ -100,10 +100,21 @@ This will run the full pipeline end-to-end using processed inputs in data/proces
 
 ### 5.3 Expected Outputs
 
- Running main.py should generate:
-  - Proxy output files (csv) in results/
-  - Summary tables in results/
-  - Figures in results/figures/
+### Notes on outputs (generated at runtime)
+
+Running `python main.py` writes results to `results/` and creates lightweight run artifacts:
+
+- `results/figures/`: figures regenerated each run (not tracked in Git).
+- `results/metadata/`: JSON metadata per step (inputs, parameters, timestamps) for reproducibility/debugging (not tracked in Git).
+- `results/logs/` (if present): execution logs for traceability (not tracked in Git).
+
+Core deliverables used in the report (tracked in Git) include:
+- `results/proxy1_rotation_elasticity.csv`
+- `results/proxy2_injury_final_named.csv`
+- `results/summary_rotation_proxy.csv`
+- `results/summary_injury_proxy.csv`
+- `results/proxies_combined.csv`
+
 
 ## 6. Methodology
 

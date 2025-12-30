@@ -46,7 +46,7 @@ def run_first_available(candidates: list[str], *args: str) -> str:
 
 
 def main() -> None:
-    # Ensure consistent working directory (important for graders).
+    # Ensure consistent working directory.
     project_root = Path(__file__).resolve().parent
     os.chdir(project_root)
 
