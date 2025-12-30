@@ -6,6 +6,4 @@ plotly
 requests
 beautifulsoup4
 python-dateutil
-aiohttp
-understat
 pyarrow>=14
