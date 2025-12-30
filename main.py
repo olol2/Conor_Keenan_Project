@@ -54,7 +54,7 @@ def main() -> None:
     # Build / refresh panels
     # -------------------------
     run_module("src.proxies.build_injury_panel")
-
+    run_module("src.proxies.build_rotation_panel")
     # -------------------------
     # Proxy 2 (injury): DiD -> points/£ -> attach Understat ID
     # -------------------------
