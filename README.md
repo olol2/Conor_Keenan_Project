@@ -142,40 +142,76 @@ Implementation (high level):
 
 ## 7. Running Individual Components (Optional/Development)
 
-These commands are useful for debugging or re-running parts of the pipeline. Run from the repo root.
+Run from the repository root.
 
-### 7.1 Summary + Validation
-
-```bash
-python src/analysis/proxy_summary_and_validation.py
-```
-### 7.2 Combine Proxies (if used)
+### 7.1 Build Panels
 
 ```bash
-python src/analysis/combine_proxies.py
+python -m src.proxies.build_rotation_panel
+python -m src.proxies.build_injury_panel
 ```
-
-### 7.3 Proxy Construction (if you want to re-run)
+### 7.2 Build Proxies
 
 ```bash
-python src/proxies/proxy2_injury_did.py
+python -m src.proxies.proxy1_rotation_elasticity
+python -m src.proxies.proxy2_injury_did
+python -m src.proxies.proxy2_injury_did_points
+python -m src.proxies.proxy2_injury_summary
 ```
 
-## 8. Data Collection Scripts (Optional)
- This repository includes scripts under src/data_collection/ that document how the raw datasets were downloaded/scraped and consolidated into processed files.
+### 7.3 Combine + Analysis Outputs
 
- Because these sources are external websites and may block automated requests:
-  - For the main pipeline, main.py **does not** scrape data, it takes the already processed csv files
-  - Additionally, transfermarkt scraping can take around 20 minutes per season depending on the site and connection
+```bash
+python -m src.proxies.combine_proxies
+python -m src.analysis.build_player_value_table
+python -m src.analysis.proxy_summary_and_validation
+python -m src.analysis.fig_proxy1_rotation
+python -m src.analysis.fig_proxy2_injury
+python -m src.analysis.proxies_combined_plots
+python -m src.analysis.fig_combined_proxies
+```
+
+## 8. Optional: Data Acquisition (Scraping)
+The main.py pipeline does not scrape as for solely the data from transfermarkt would take multiple hours and in a different environment (footy311), so this is why all required inputs are already committed under data/processed/.
+
+Scraping scripts are provided for documentation/reproducibility under src/data_collection/, but they may be slower and less stable due to external website constraints.
+### 8.1 Seperate scraping environment
+Scraping was performed in a separate environment (footy311, Python 3.11) because some scraping dependencies are more stable on Python 3.11 than on Python 3.13.
+
+```bash 
+conda activate footy311
+pip install -r requirements-scrape.txt
+python src/data_collection/understat_fetch_players.py
+```
+Notes: 
+  - Transfermarkt scraping can take ~25 minutes per season depending on the connection and site rate-limiting.
+  - For these reasons scraping is not included in the main.py pipeline.
 
 ## 9. Known Data Issues / Limitations
 
-  - **Transfermarkt return dates vs actual returns**: predicted return dates may not match true return-to-play dates; this can create cases where a player is listed as unavailable but still played.
-  - **Cross-source name matching**: Understat/Transfermarkt/Football-Data use different naming conventions for player and teams. Team-name master mappings were created to standardize joins.
-  - **Match join drops**: a small number of Understat rows may fail to match the Football-Data match panel (e.g., date discrepencies) and were dropped from the final rotation panel.
-  -**Player-ID coverage**: some injury-based player names cannot be matched to numeric Understat ID's due to naming inconsistencies; these observations may be excluded in combined_proxy analysis depending on the step.
+  - **Transfermarkt return dates vs actual returns**: listed return dates may differ from true return-to-play dates, creating occasional availability inconsistencies.
+  - **Cross-source name matching**: Understat / Transfermarkt / Football-Data use different naming conventions; standardized mappings are used but some mismatches remain.
+  - **Match join drops**: a small number of Understat rows may not match the match panel (e.g., date discrepancies) and are dropped from the rotation panel build.
+  -**Player-ID coverage**: some injury player names cannot be matched to Understat numeric IDs; these observations may be excluded in cross-proxy merges.
 
-  ## 10. Project Timeline
+  ## 10. Reproducibility Notes
+  - **Grading entry point:** python main.py
+  - **No internet required for grading:** the pipeline starts from data/processed/.
+  - **Python version:** developed and tested on Python 3.13.5 for the main.py pipeline.
+  -**Scraping (Optional):** tested on python 3.11 in the footy311 environment
+  
+  ## 11. References/acknowledgements
+  - Football-Data (EPL odds/results): football-data.co.uk
+  - Understat player-match statistics (via community tooling)
+  - Transfermarkt injury histories (scraped responsibly)
+  - Premier League prize money tables (manually curated for points-to-£ mapping)
+
+## 12. Contact
+
+Author: **Conor Keenan**
+E-mail: ***conor.keenan@unil.ch***
+
+## 13.  Project Timeline
 
   - **06.11** Proposal Accepted
   - **11.11** Repository created
@@ -186,26 +222,3 @@ python src/proxies/proxy2_injury_did.py
   - **08.12** 
   - **14-20.12** Final Phase: Validation, combined plots, and report-ready outputs
 
-  ## 11. References/acknowledgements
-  - Football-Data odds and results: football-data.co.uk
-  - Understat player-match statistics (via community tooling)
-  - Transfermarkt injury histories (scraped responsibly)
-  - Premier League prize money tables (manually curated for points-to-£ mapping)
-
-## 12. Contact
-
-Author: **Conor Keenan**
-E-mail: ***conor.keenan@unil.ch***
-
-## Optional: data acquisition (scraping)
-Raw data was originally collected via scraping scripts (Understat / Transfermarkt).
-This step is NOT required for grading because the project includes the processed inputs needed
-to run `python main.py` end-to-end.
-
-Scraping was performed in a separate environment (`footy311`, Python 3.11) because some
-scraping dependencies are more stable on Python 3.11 than on Python 3.13.
-
-To re-run scraping (optional):
-conda activate footy311
-pip install -r requirements-scrape.txt
-python src/data_collection/understat_fetch_players.py
