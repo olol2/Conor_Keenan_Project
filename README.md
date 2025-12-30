@@ -9,18 +9,21 @@ Seasons covered: **2019/20 to 2024/25** (6 seasons), **27 teams** (across promot
 
 ## 1. Project Overview
 
-This project studies the relationship between **player rotation**, **injuries**, and **team performance** in the English Premier League.
+This project studies the relationship between **player rotation**, **injuries**, and **team performance** in the English Premier League (EPL).
 
-The core deliverables are two player-season “proxy” measures:
+The core deliverables are two player-season proxy measures:
 
 - **Proxy 1 — Rotation Elasticity:** captures how selectively a player is used across match contexts (e.g., higher-stakes vs lower-stakes matches).
-- **Proxy 2 — Injury Impact (DiD on xPts):** estimates the expected points impact of a player’s unavailability, aggregated to player-season level; can be mapped into monetary terms using a **£ per point** schedule.
+- **Proxy 2 — Injury Impact (DiD on xPts):** estimates the expected points impact of a player’s unavailability, aggregated to player-season level; optionally mapped to **£** using a **£ per point** schedule.
 
-The pipeline is built to be **reproducible for grading**: the grading entry point **does not scrape** external sources and instead relies on **pre-generated processed files** committed to the repository.
+### Reproducibility / Grading Contract (Important)
+- The grading entry point is **`main.py`**.
+- **`main.py` does not scrape** external websites and is designed to run **without internet access**.
+- The pipeline starts from **pre-generated processed inputs** committed under **`data/processed/`** and writes outputs to **`results/`**.
 
 ---
 
-## 2. Research Question
+## 2. Research Questions
 
 1. How do **rotation dynamics** (Proxy 1) vary across players, teams, and seasons?
 2. What is the **expected performance cost** of player injuries (Proxy 2), measured in **expected points (xPts)** and optionally in **£**?
@@ -30,88 +33,70 @@ The pipeline is built to be **reproducible for grading**: the grading entry poin
 
 ## 3. Data
 
-### 3.1 Data Sources (Raw)
-
-This project uses public football data from multiple sources:
-
-- **Football-Data (football-data.co.uk):** bookmaker odds + results (Premier League)
-- **Understat:** player-level match statistics (minutes, starts, xG/xA, etc.)
+### 3.1 Data Sources (Raw / External)
+Raw data originally came from public football sources:
+- **Football-Data (football-data.co.uk):** match results and bookmaker odds (Premier League)
+- **Understat:** player-match statistics (minutes, starts, xG/xA, etc.)
 - **Transfermarkt:** injury spells (start/end dates, injury type)
-- **Premier League prize money tables:** used to map points to £ (value of league points)
+- **Premier League prize money tables / points value:** mapping points to £ by season (used for conversion)
 
 ### 3.2 Repository Convention
-
 To ensure the project runs reliably for grading:
-
-- `main.py` **does not** scrape or download anything.
-- `main.py` starts from **already-prepared CSV/parquet files** under `data/processed/` (and reads/writes additional artifacts under `results/`).
-
-> **Grading workflow does not require internet access.**
+- `main.py` **does not** download/scrape anything.
+- `main.py` begins from **processed inputs** under `data/processed/`.
+- Outputs are written to `results/`.
 
 ---
 
 ## 4. Repository Structure
-
-High-level structure:
 
 ```text
 Conor_Keenan_Project/
 ├── main.py
 ├── README.md
 ├── PROPOSAL.md
-├── requirements.txt
-├── environment.yml                    # optional (if present)
+├── requirements.txt                  # grading/runtime dependencies
+├── requirements-scrape.txt           # optional scraping dependencies
 │
 ├── data/
-│   ├── raw/                           # optional for reproduction from scratch
-│   │   ├── Odds/results/*/E0.csv
-│   │   └── understat_player_matches/understat_player_matches_*.csv
-│   └── processed/                     # required by main.py
-│       ├── panel_rotation.(parquet|csv)
-│       ├── panel_injury.(parquet|csv)
-│       ├── matches/                   # match-level panels (if included)
-│       ├── injuries/                  # cleaned injury spells
-│       ├── points_to_pounds/           # season-specific £/point mapping
-│       └── standings/                 # league tables per season
+│   ├── raw/                          # not required for grading (may be empty / partial)
+│   └── processed/                    # required by main.py
+│       ├── matches/
+│       ├── injuries/
+│       ├── understat/
+│       ├── points_to_pounds/
+│       ├── standings/
+│       └── (panels created/updated by pipeline)
 │
-├── results/
-│   ├── figures/
-│   ├── proxy1_rotation_elasticity.csv
-│   ├── proxy2_injury_final_named.csv
-│   ├── summary_rotation_proxy.csv
-│   ├── summary_injury_proxy.csv
-│   └── (other tables/figures produced by analysis scripts)
+├── results/                          # outputs written by pipeline
+│   ├── figures/                      # generated (ignored by git)
+│   ├── logs/                         # generated (ignored by git)
+│   ├── metadata/                     # generated (ignored by git)
+│   └── (csv outputs; some are tracked, some ignored; see Section 7)
 │
 └── src/
-    ├── data_collection/               # optional reproducibility scripts (not used by main.py)
-    ├── proxies/                       # proxy construction code
-    └── analysis/                      # summaries, validation, and plotting
+    ├── data_collection/              # optional: reproduction from scratch (scraping)
+    ├── proxies/                      # proxy construction
+    └── analysis/                     # summaries, validation, plotting
+
 ```
 ## 5. Quickstart (How to Run)
 
 ### 5.1 Environment Setup
 
-### Option A - Conda (if 'environment.yml' exists)
+From the repository root:
 
-```bash
-conda env create -f environment.yml
-conda activate conor_keenan_project
-```
-### Option B -pip
-
-```bash
-python -m venv .venv
-source .venv/bin/activate   # macOS/Linux
-# .venv\Scripts\activate    # Windows
-pip install -r requirements.txt
+```bash 
+python install -r requirements.txt
 ```
 
-### 5.2 Run the Full (Grading) Pipeline
+### 5.2 Run the Full Pipeline (Grading Entry Point)
  
  From the repository root:
 ```bash
 python main.py
 ```
+This will run the full pipeline end-to-end using processed inputs in data/processed/ and will write outputs to results/.
 
 ### 5.3 Expected Outputs
 
@@ -126,26 +111,34 @@ python main.py
 
 **Goal**: quantify how a player's selection/usage changes across match contexts.
 
-A typical operationalization used in this project:
-  - Classify matches into difficulty bins (e.g., easy/medium/hard) using team-season-specific xPts terciles
-  - Compute player start rates by bin
-  - Define rotation elasticity as the difference between start rates across bins, e.g.:
-      $\text{rotation\_elasticity} = \text{start\_rate}_{\text{hard}} - \text{start\_rate}_{\text{easy}}$
+Implementation (high level):
+  - Classify matches into difficulty bins "easy" vs "hard" contexts using team-season difficulty signal.
+  - Compute a player's start rates in each context.
+  - Define:
+$$
+\text{rotation\_elasticity} = \text{start\_rate}_{\text{hard}} - \text{start\_rate}_{\text{easy}}
+$$
 
-**Primary output**: results/proxy1_rotation_elasticity.csv
 
-### 6.2 Proxy 2 - Injury impact via DiD (xPts)
+**Key output**: results/proxy1_rotation_elasticity.csv
 
-**Goal**: estimate the marginal effect of a player being unavailable on the team's expected points.
+Interpretation: 
+  - Positive values: player starts relatively more in hard matches than easy ones.
+  - Negative values: player starts relatively more in easy matches than hard ones.
+  - Near zero: player usage is comparatively stable across contexts.
 
-High-level approach:
-   - build a player-match panel containing team xPts, player availability, and match controls
-   - estimate a DiD-style regression within player-team-season with fixed effects (e.g., opponent and matchday/date)
-   - aggregate estimated effects into player-season totals (xPts) and optionally convert to GBP using a seasomn-specific mapping
+### 6.2 Proxy 2 - Injury impact via DiD (Expected Points)
 
-**Primary output**: results/proxy2_injury_final_named.csv
+**Goal**: estimate the marginal effect of a player being unavailable on team expected points.
 
-**Interpretation note:** matches wioth multiple injuries may be included; coefficients are interpreted as marginal effects within the realised injury environment.
+Implementation (high level):
+   - Build a player-match panel with team xPts, player availability, and match controls.
+   - Estimate within player-team-season, comparing "available vs unavailable" periods (DiD style logic).
+   - Aggregate to player-season total impact in xPts and optionally convert to £ using a season-specific £ per point mapping.
+
+**Key output**: results/proxy2_injury_final_named.csv
+
+**Interpretation note:** Effects are interpreted as marginal impacts within the realized injury environment. Matches may contain multiple absences.
 
 ## 7. Running Individual Components (Optional/Development)
 
