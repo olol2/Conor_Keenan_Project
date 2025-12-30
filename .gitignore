@@ -152,9 +152,14 @@ results/logs/**
 results/metadata/**
 results/figures/**
 
-# Text outputs that are regenerated each run (e.g., regression summaries).
+# Generated artifacts (do not track)
+results/*.png
+results/*.html
+results/*.md
 results/*.txt
-
-# Parquet outputs are generated artifacts; keep repo clean.
 results/**/*.parquet
 
+# Intermediate proxy outputs (regenerated each run)
+results/proxy2_injury_did*.csv
+results/proxy2_injury_did*.parquet
+results/proxy12_combined_player_season.csv
