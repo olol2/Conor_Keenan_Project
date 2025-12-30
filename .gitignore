@@ -135,11 +135,14 @@ __marimo__/
 # ----------------------------
 # Project data policy
 # ----------------------------
-# Keep raw inputs out of git (large / scraped / grading will use processed data).
+# Keep raw inputs out of git (large / scraped).
 data/raw/**
 
 # Processed inputs are tracked so `python main.py` runs end-to-end.
 # (No ignore rule for data/processed/** on purpose.)
+
+# But parquet in processed is generated (cache-like) and should not be committed.
+data/processed/**/*.parquet
 
 # ----------------------------
 # Run artifacts (generated each execution)
@@ -149,5 +152,9 @@ results/logs/**
 results/metadata/**
 results/figures/**
 
-# Validation/regression text outputs are also regenerated each run.
+# Text outputs that are regenerated each run (e.g., regression summaries).
 results/*.txt
+
+# Parquet outputs are generated artifacts; keep repo clean.
+results/**/*.parquet
+
