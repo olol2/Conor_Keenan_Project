@@ -203,3 +203,16 @@ python src/proxies/proxy2_injury_did.py
 
 Author: **Conor Keenan**
 E-mail: ***conor.keenan@unil.ch***
+
+## Optional: data acquisition (scraping)
+Raw data was originally collected via scraping scripts (Understat / Transfermarkt).
+This step is NOT required for grading because the project includes the processed inputs needed
+to run `python main.py` end-to-end.
+
+Scraping was performed in a separate environment (`footy311`, Python 3.11) because some
+scraping dependencies are more stable on Python 3.11 than on Python 3.13.
+
+To re-run scraping (optional):
+conda activate footy311
+pip install -r requirements-scrape.txt
+python src/data_collection/understat_fetch_players.py
