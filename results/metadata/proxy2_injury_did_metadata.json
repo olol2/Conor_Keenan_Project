@@ -1,9 +1,9 @@
 {
   "run_name": "proxy2_injury_did",
-  "timestamp_utc": "2025-12-30T07:25:27.314593+00:00",
+  "timestamp_utc": "2025-12-30T08:20:53.620656+00:00",
   "python_version": "3.13.5 | packaged by conda-forge | (main, Jun 16 2025, 08:27:50) [GCC 13.3.0]",
   "platform": "Linux-5.15.0-1092-azure-x86_64-with-glibc2.39",
-  "git_commit": "c347914212ec2d930d5d146fa0ca0457999ec122",
+  "git_commit": "c3b946cdf759fab1132b85a7f955d0fcfd3a3bb5",
   "packages": {
     "pandas": "2.3.1",
     "numpy": "2.3.1",
