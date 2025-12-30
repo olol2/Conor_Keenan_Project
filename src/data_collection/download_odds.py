@@ -1,5 +1,4 @@
 # src/data_collection/download_odds.py
-from __future__ import annotations
 
 """
 Download football match odds data from football-data.co.uk for specified seasons.
@@ -11,7 +10,7 @@ Purpose:
 Output:
 - data/raw/Odds/results/<season>/E0.csv
 """
-
+from __future__ import annotations
 from pathlib import Path
 import argparse
 import requests
