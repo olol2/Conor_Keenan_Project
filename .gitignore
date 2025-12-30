@@ -147,6 +147,13 @@ data/processed/**/*.parquet
 # ----------------------------
 # Run artifacts (generated each execution)
 # ----------------------------
+
+# Generated summary tables / report exports (regenerated each run)
+results/injury_cost_*.csv
+results/injury_summary_*.csv
+results/injury_regression_*.csv
+results/player_value_top15.csv
+
 # Logs/metadata/figures are regenerated and change every run.
 results/logs/**
 results/metadata/**
