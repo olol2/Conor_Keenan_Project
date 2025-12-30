@@ -186,6 +186,8 @@ python -m src.analysis.fig_combined_proxies
 The main.py pipeline does not scrape as for solely the data from transfermarkt would take multiple hours and in a different environment (footy311), so this is why all required inputs are already committed under data/processed/.
 
 Scraping scripts are provided for documentation/reproducibility under src/data_collection/, but they may be slower and less stable due to external website constraints.
+> Note: Scripts in `src/data_collection/` are optional and not used by `main.py`. Depending on your local VS Code interpreter/linter configuration, you may see lint warnings for these files even though they run correctly.
+
 ### 8.1 Seperate scraping environment
 Scraping was performed in a separate environment (footy311, Python 3.11) because some scraping dependencies are more stable on Python 3.11 than on Python 3.13.
 
