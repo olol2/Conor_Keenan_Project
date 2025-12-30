@@ -155,23 +155,16 @@ __marimo__/
 # Project data
 # ------------------------------------------------------------
 
-# Ignore all raw and processed data by default
-/data/raw/**
-/data/processed/**
+# Ignore raw data (often large / scraped)
+ /data/raw/**
 
-# Allow specific processed inputs required for a clean "grader" run
-!/data/processed/matches/
-!/data/processed/matches/matches_with_injuries_all_seasons.csv
+# Track processed data for reproducible grading runs
+# (do NOT ignore /data/processed)
 
-!/data/processed/injuries/
-!/data/processed/injuries/injuries_2019_2025_all_seasons.csv
-
-!/data/processed/understat/
-!/data/processed/understat/understat_player_matches_master.csv
-
-# Allow points-to-pounds mapping directory required by proxy2_injury_did_points
-!/data/processed/points_to_pounds/
-!/data/processed/points_to_pounds/**
+# Ignore noisy artifacts that may appear inside processed/results
+results/logs/**
+**/__pycache__/
+.DS_Store
 
 # R / OS artifacts
 .Rproj.user/

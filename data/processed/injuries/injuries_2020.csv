@@ -1,0 +1,800 @@
+player_name,team,start_date,end_date,type,source
+Bernd Leno,Arsenal FC,2020-06-21,2020-06-30,injury-ligament-stretching,https://www.transfermarkt.com/bernd-leno/verletzungen/spieler/72476
+Sokratis,Arsenal FC,2020-06-19,2020-06-24,injury-muscle-strain,https://www.transfermarkt.com/sokratis/verletzungen/spieler/34322
+Sokratis,Arsenal FC,2020-02-22,2020-02-22,injury-knee-injury,https://www.transfermarkt.com/sokratis/verletzungen/spieler/34322
+Sokratis,Arsenal FC,2020-01-17,2020-01-22,injury-ill,https://www.transfermarkt.com/sokratis/verletzungen/spieler/34322
+Sokratis,Arsenal FC,2019-12-27,2019-12-30,injury-concussion,https://www.transfermarkt.com/sokratis/verletzungen/spieler/34322
+Sokratis,Arsenal FC,2019-10-23,2019-10-25,injury-rest,https://www.transfermarkt.com/sokratis/verletzungen/spieler/34322
+Calum Chambers,Arsenal FC,2019-12-29,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/calum-chambers/verletzungen/spieler/215118
+Shkodran Mustafi,Arsenal FC,2020-02-29,2020-03-15,injury-muscle-strain,https://www.transfermarkt.com/shkodran-mustafi/verletzungen/spieler/88590
+Shkodran Mustafi,Arsenal FC,2020-01-29,2020-01-02,injury-ankle-injury,https://www.transfermarkt.com/shkodran-mustafi/verletzungen/spieler/88590
+Shkodran Mustafi,Arsenal FC,2019-11-30,2019-11-30,injury-ankle-injury,https://www.transfermarkt.com/shkodran-mustafi/verletzungen/spieler/88590
+Shkodran Mustafi,Arsenal FC,2019-07-01,2019-11-01,injury-knock,https://www.transfermarkt.com/shkodran-mustafi/verletzungen/spieler/88590
+David Luiz,Arsenal FC,2020-01-12,2020-06-30,injury-head-injury,https://www.transfermarkt.com/david-luiz/verletzungen/spieler/46741
+Rob Holding,Arsenal FC,2019-10-11,2019-12-31,injury-knee-injury,https://www.transfermarkt.com/rob-holding/verletzungen/spieler/253341
+Rob Holding,Arsenal FC,2019-07-01,2019-08-31,injury-cruciate-ligament-tear,https://www.transfermarkt.com/rob-holding/verletzungen/spieler/253341
+Pablo Marí,Arsenal FC,2020-06-15,2020-03-12,injury-ankle-injury,https://www.transfermarkt.com/pablo-mari/verletzungen/spieler/210178
+Konstantinos Mavropanos,Arsenal FC,2020-02-24,2020-06-30,injury-pelvic-injury,https://www.transfermarkt.com/konstantinos-mavropanos/verletzungen/spieler/415912
+Konstantinos Mavropanos,Arsenal FC,2019-08-08,2019-07-10,injury-groin-injury,https://www.transfermarkt.com/konstantinos-mavropanos/verletzungen/spieler/415912
+Kieran Tierney,Arsenal FC,2019-09-12,2020-03-14,injury-shoulder-injury,https://www.transfermarkt.com/kieran-tierney/verletzungen/spieler/300716
+Kieran Tierney,Arsenal FC,2019-07-05,2019-09-06,injury-groin-surgery,https://www.transfermarkt.com/kieran-tierney/verletzungen/spieler/300716
+Nacho Monreal,Arsenal FC,2020-03-09,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/nacho-monreal/verletzungen/spieler/43003
+Nacho Monreal,Arsenal FC,2020-06-01,2020-01-27,injury-muscle-injury,https://www.transfermarkt.com/nacho-monreal/verletzungen/spieler/43003
+Nacho Monreal,Arsenal FC,2019-07-01,2019-11-01,injury-hamstring-injury,https://www.transfermarkt.com/nacho-monreal/verletzungen/spieler/43003
+Héctor Bellerín,Arsenal FC,2019-07-01,2020-01-14,injury-hamstring-injury,https://www.transfermarkt.com/hector-bellerin/verletzungen/spieler/191217
+Héctor Bellerín,Arsenal FC,2019-07-01,2019-09-16,injury-cruciate-ligament-tear,https://www.transfermarkt.com/hector-bellerin/verletzungen/spieler/191217
+Héctor Bellerín,Arsenal FC,2019-07-01,2019-11-01,injury-calf-strain,https://www.transfermarkt.com/hector-bellerin/verletzungen/spieler/191217
+Ainsley Maitland-Niles,Arsenal FC,2019-07-01,2019-08-02,injury-knee-injury,https://www.transfermarkt.com/ainsley-maitland-niles/verletzungen/spieler/285845
+Cédric Soares,Arsenal FC,2020-06-17,2020-06-26,injury-broken-nose-bone,https://www.transfermarkt.com/cedric-soares/verletzungen/spieler/112988
+Cédric Soares,Arsenal FC,2020-01-21,2020-02-03,injury-knee-injury,https://www.transfermarkt.com/cedric-soares/verletzungen/spieler/112988
+Cédric Soares,Arsenal FC,2019-09-26,2019-08-11,injury-calf-injury,https://www.transfermarkt.com/cedric-soares/verletzungen/spieler/112988
+Lucas Torreira,Arsenal FC,2020-03-03,2020-03-07,injury-ankle-injury,https://www.transfermarkt.com/lucas-torreira/verletzungen/spieler/318077
+Lucas Torreira,Arsenal FC,2020-02-17,2020-02-21,injury-ill,https://www.transfermarkt.com/lucas-torreira/verletzungen/spieler/318077
+Granit Xhaka,Arsenal FC,2020-06-18,2020-06-24,injury-ankle-injury,https://www.transfermarkt.com/granit-xhaka/verletzungen/spieler/111455
+Granit Xhaka,Arsenal FC,2019-09-12,2019-12-17,injury-concussion,https://www.transfermarkt.com/granit-xhaka/verletzungen/spieler/111455
+Granit Xhaka,Arsenal FC,2019-12-08,2019-08-23,injury-back-injury,https://www.transfermarkt.com/granit-xhaka/verletzungen/spieler/111455
+Mattéo Guendouzi,Arsenal FC,2020-06-25,2020-06-30,injury-fitness,https://www.transfermarkt.com/matteo-guendouzi/verletzungen/spieler/465830
+Mattéo Guendouzi,Arsenal FC,2020-02-16,2020-02-16,injury-ill,https://www.transfermarkt.com/matteo-guendouzi/verletzungen/spieler/465830
+Dani Ceballos,Arsenal FC,2019-07-11,2019-12-31,injury-torn-muscle-bundle,https://www.transfermarkt.com/dani-ceballos/verletzungen/spieler/319745
+Dani Ceballos,Arsenal FC,2019-08-08,2019-10-08,injury-knock,https://www.transfermarkt.com/dani-ceballos/verletzungen/spieler/319745
+Henrikh Mkhitaryan,Arsenal FC,2019-11-14,2019-11-26,injury-fitness,https://www.transfermarkt.com/henrikh-mkhitaryan/verletzungen/spieler/55735
+Henrikh Mkhitaryan,Arsenal FC,2019-09-30,2019-11-14,injury-adductor-injury,https://www.transfermarkt.com/henrikh-mkhitaryan/verletzungen/spieler/55735
+Henrikh Mkhitaryan,Arsenal FC,2019-07-01,2019-07-02,injury-metatarsal-fracture,https://www.transfermarkt.com/henrikh-mkhitaryan/verletzungen/spieler/55735
+Joe Willock,Arsenal FC,2019-07-01,2019-09-14,injury-calf-injury,https://www.transfermarkt.com/joe-willock/verletzungen/spieler/340329
+Emile Smith Rowe,Arsenal FC,2019-09-23,2019-07-10,injury-head-injury,https://www.transfermarkt.com/emile-smith-rowe/verletzungen/spieler/392765
+Emile Smith Rowe,Arsenal FC,2019-08-08,2019-12-13,injury-groin-injury,https://www.transfermarkt.com/emile-smith-rowe/verletzungen/spieler/392765
+Gabriel Martinelli,Arsenal FC,2020-06-21,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/gabriel-martinelli/verletzungen/spieler/655488
+Gabriel Martinelli,Arsenal FC,2020-02-20,2020-02-25,injury-knock,https://www.transfermarkt.com/gabriel-martinelli/verletzungen/spieler/655488
+Gabriel Martinelli,Arsenal FC,2019-12-23,2020-06-01,injury-hamstring-injury,https://www.transfermarkt.com/gabriel-martinelli/verletzungen/spieler/655488
+Reiss Nelson,Arsenal FC,2020-03-12,2020-06-30,injury-head-injury,https://www.transfermarkt.com/reiss-nelson/verletzungen/spieler/340325
+Reiss Nelson,Arsenal FC,2019-07-10,2019-11-25,injury-ankle-injury,https://www.transfermarkt.com/reiss-nelson/verletzungen/spieler/340325
+Reiss Nelson,Arsenal FC,2019-07-01,2019-11-04,injury-thigh-problems,https://www.transfermarkt.com/reiss-nelson/verletzungen/spieler/340325
+Nicolas Pépé,Arsenal FC,2020-02-07,2020-06-07,injury-muscle-fatigue,https://www.transfermarkt.com/nicolas-pepe/verletzungen/spieler/343052
+Nicolas Pépé,Arsenal FC,2019-10-12,2019-12-14,injury-knee-injury,https://www.transfermarkt.com/nicolas-pepe/verletzungen/spieler/343052
+Bukayo Saka,Arsenal FC,2020-03-02,2020-02-15,injury-knee-injury,https://www.transfermarkt.com/bukayo-saka/verletzungen/spieler/433177
+Pierre-Emerick Aubameyang,Arsenal FC,2020-02-01,2020-01-13,injury-knock,https://www.transfermarkt.com/pierre-emerick-aubameyang/verletzungen/spieler/58864
+Alexandre Lacazette,Arsenal FC,2019-07-01,2019-10-20,injury-ankle-injury,https://www.transfermarkt.com/alexandre-lacazette/verletzungen/spieler/93720
+Alexandre Lacazette,Arsenal FC,2019-07-28,2019-11-08,injury-ankle-sprain,https://www.transfermarkt.com/alexandre-lacazette/verletzungen/spieler/93720
+Tom Heaton,Aston Villa,2020-01-01,2020-06-30,injury-cruciate-ligament-injury,https://www.transfermarkt.com/tom-heaton/verletzungen/spieler/34130
+Tom Heaton,Aston Villa,2019-10-11,2019-11-24,injury-calf-strain,https://www.transfermarkt.com/tom-heaton/verletzungen/spieler/34130
+Jed Steer,Aston Villa,2019-11-11,2020-06-15,injury-calf-injury,https://www.transfermarkt.com/jed-steer/verletzungen/spieler/110867
+Ørjan Nyland,Aston Villa,2020-02-10,2020-06-30,injury-back-injury,https://www.transfermarkt.com/orjan-nyland/verletzungen/spieler/73517
+Pepe Reina,Aston Villa,2019-09-08,2019-09-18,injury-abdominal-problems,https://www.transfermarkt.com/pepe-reina/verletzungen/spieler/7825
+Tyrone Mings,Aston Villa,2019-09-12,2019-12-31,injury-muscle-strain,https://www.transfermarkt.com/tyrone-mings/verletzungen/spieler/253677
+Ezri Konsa,Aston Villa,2020-02-02,2020-02-15,injury-muscle-strain,https://www.transfermarkt.com/ezri-konsa/verletzungen/spieler/413403
+Ezri Konsa,Aston Villa,2019-07-01,2019-09-08,injury-muscle-strain,https://www.transfermarkt.com/ezri-konsa/verletzungen/spieler/413403
+Kortney Hause,Aston Villa,2020-02-10,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/kortney-hause/verletzungen/spieler/233124
+Kortney Hause,Aston Villa,2019-11-08,2019-08-22,injury-ankle-injury,https://www.transfermarkt.com/kortney-hause/verletzungen/spieler/233124
+James Chester,Aston Villa,2019-08-08,2019-09-11,injury-hamstring-injury,https://www.transfermarkt.com/james-chester/verletzungen/spieler/73482
+Frédéric Guilbert,Aston Villa,2020-02-10,2020-06-30,injury-chest-injury,https://www.transfermarkt.com/frederic-guilbert/verletzungen/spieler/354352
+Frédéric Guilbert,Aston Villa,2020-05-19,2020-04-07,injury-knee-injury,https://www.transfermarkt.com/frederic-guilbert/verletzungen/spieler/354352
+Frédéric Guilbert,Aston Villa,2019-07-01,2019-09-11,injury-muscle-strain,https://www.transfermarkt.com/frederic-guilbert/verletzungen/spieler/354352
+Douglas Luiz,Aston Villa,2019-07-01,2019-10-05,injury-muscle-injury,https://www.transfermarkt.com/douglas-luiz/verletzungen/spieler/447661
+John McGinn,Aston Villa,2019-12-21,2020-05-06,injury-ankle-injury,https://www.transfermarkt.com/john-mcginn/verletzungen/spieler/193116
+Danny Drinkwater,Aston Villa,2020-01-23,2020-02-15,injury-calf-injury,https://www.transfermarkt.com/danny-drinkwater/verletzungen/spieler/73491
+Danny Drinkwater,Aston Villa,2019-07-01,2019-11-29,injury-ankle-injury,https://www.transfermarkt.com/danny-drinkwater/verletzungen/spieler/73491
+Danny Drinkwater,Aston Villa,2019-07-01,2019-09-03,injury-unknown-injury,https://www.transfermarkt.com/danny-drinkwater/verletzungen/spieler/73491
+Henri Lansbury,Aston Villa,2020-01-07,2020-04-07,injury-knock,https://www.transfermarkt.com/henri-lansbury/verletzungen/spieler/44794
+Jack Grealish,Aston Villa,2020-02-10,2020-03-10,injury-calf-injury,https://www.transfermarkt.com/jack-grealish/verletzungen/spieler/203460
+Jack Grealish,Aston Villa,2019-10-27,2019-11-24,injury-calf-injury,https://www.transfermarkt.com/jack-grealish/verletzungen/spieler/203460
+Mahmoud Trezeguet,Aston Villa,2020-01-12,2020-06-30,injury-head-injury,https://www.transfermarkt.com/mahmoud-trezeguet/verletzungen/spieler/234189
+Anwar El Ghazi,Aston Villa,2019-07-01,2019-07-12,injury-knee-injury,https://www.transfermarkt.com/anwar-el-ghazi/verletzungen/spieler/183720
+Anwar El Ghazi,Aston Villa,2019-07-01,2019-07-12,injury-knee-injury,https://www.transfermarkt.com/anwar-el-ghazi/verletzungen/spieler/183720
+Anwar El Ghazi,Aston Villa,2019-07-01,2019-09-08,injury-ankle-injury,https://www.transfermarkt.com/anwar-el-ghazi/verletzungen/spieler/183720
+Wesley Moraes,Aston Villa,2020-01-01,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/wesley-moraes/verletzungen/spieler/381362
+Jonathan Kodjia,Aston Villa,2020-05-01,2020-01-21,injury-ill,https://www.transfermarkt.com/jonathan-kodjia/verletzungen/spieler/88971
+Jonathan Kodjia,Aston Villa,2019-11-08,2019-10-20,injury-head-injury,https://www.transfermarkt.com/jonathan-kodjia/verletzungen/spieler/88971
+Keinan Davis,Aston Villa,2020-05-02,2020-02-29,injury-muscle-strain,https://www.transfermarkt.com/keinan-davis/verletzungen/spieler/412660
+Keinan Davis,Aston Villa,2019-07-01,2020-01-31,injury-muscle-strain,https://www.transfermarkt.com/keinan-davis/verletzungen/spieler/412660
+Aaron Ramsdale,AFC Bournemouth,2020-05-26,2020-05-31,injury-virus,https://www.transfermarkt.com/aaron-ramsdale/verletzungen/spieler/427568
+Nathan Aké,AFC Bournemouth,2019-08-12,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/nathan-ake/verletzungen/spieler/177476
+Steve Cook,AFC Bournemouth,2020-02-07,2020-06-30,injury-muscle-strain,https://www.transfermarkt.com/steve-cook/verletzungen/spieler/90836
+Steve Cook,AFC Bournemouth,2019-07-01,2020-06-30,injury-hand-injury,https://www.transfermarkt.com/steve-cook/verletzungen/spieler/90836
+Steve Cook,AFC Bournemouth,2019-10-02,2019-12-04,injury-groin-injury,https://www.transfermarkt.com/steve-cook/verletzungen/spieler/90836
+Lloyd Kelly,AFC Bournemouth,2020-01-23,2020-06-30,injury-muscle-strain,https://www.transfermarkt.com/lloyd-kelly/verletzungen/spieler/480116
+Lloyd Kelly,AFC Bournemouth,2019-07-01,2020-01-19,injury-hamstring-injury,https://www.transfermarkt.com/lloyd-kelly/verletzungen/spieler/480116
+Lloyd Kelly,AFC Bournemouth,2019-07-29,2019-09-30,injury-ligament-injury,https://www.transfermarkt.com/lloyd-kelly/verletzungen/spieler/480116
+Chris Mepham,AFC Bournemouth,2020-02-07,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/chris-mepham/verletzungen/spieler/480987
+Chris Mepham,AFC Bournemouth,2020-05-01,2020-05-19,injury-knee-injury,https://www.transfermarkt.com/chris-mepham/verletzungen/spieler/480987
+Chris Mepham,AFC Bournemouth,2019-09-29,2019-10-18,injury-calf-injury,https://www.transfermarkt.com/chris-mepham/verletzungen/spieler/480987
+Chris Mepham,AFC Bournemouth,2019-11-09,2019-09-14,injury-knock,https://www.transfermarkt.com/chris-mepham/verletzungen/spieler/480987
+Diego Rico,AFC Bournemouth,2020-01-23,2020-01-31,injury-knock,https://www.transfermarkt.com/diego-rico/verletzungen/spieler/249513
+Charlie Daniels,AFC Bournemouth,2019-08-26,2020-06-30,injury-knee-surgery,https://www.transfermarkt.com/charlie-daniels/verletzungen/spieler/61819
+Charlie Daniels,AFC Bournemouth,2019-07-04,2019-09-08,injury-knee-surgery,https://www.transfermarkt.com/charlie-daniels/verletzungen/spieler/61819
+Adam Smith,AFC Bournemouth,2019-07-01,2020-01-18,injury-ankle-injury,https://www.transfermarkt.com/adam-smith/verletzungen/spieler/61841
+Adam Smith,AFC Bournemouth,2019-07-01,2019-10-18,injury-muscle-strain,https://www.transfermarkt.com/adam-smith/verletzungen/spieler/61841
+Jack Stacey,AFC Bournemouth,2020-05-07,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/jack-stacey/verletzungen/spieler/249356
+Jack Stacey,AFC Bournemouth,2019-12-29,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/jack-stacey/verletzungen/spieler/249356
+Simon Francis,AFC Bournemouth,2020-01-03,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/simon-francis/verletzungen/spieler/13573
+Simon Francis,AFC Bournemouth,2019-12-22,2019-12-31,injury-head-injury,https://www.transfermarkt.com/simon-francis/verletzungen/spieler/13573
+Simon Francis,AFC Bournemouth,2019-07-01,2019-09-21,injury-cruciate-ligament-tear,https://www.transfermarkt.com/simon-francis/verletzungen/spieler/13573
+Jefferson Lerma,AFC Bournemouth,2020-02-02,2020-02-28,injury-chest-injury,https://www.transfermarkt.com/jefferson-lerma/verletzungen/spieler/262980
+Jefferson Lerma,AFC Bournemouth,2020-01-23,2020-01-31,injury-groin-injury,https://www.transfermarkt.com/jefferson-lerma/verletzungen/spieler/262980
+Jefferson Lerma,AFC Bournemouth,2020-01-13,2020-01-17,injury-knee-injury,https://www.transfermarkt.com/jefferson-lerma/verletzungen/spieler/262980
+Jefferson Lerma,AFC Bournemouth,2019-10-16,2019-10-25,injury-knock,https://www.transfermarkt.com/jefferson-lerma/verletzungen/spieler/262980
+Jefferson Lerma,AFC Bournemouth,2019-07-01,2019-08-02,injury-ankle-injury,https://www.transfermarkt.com/jefferson-lerma/verletzungen/spieler/262980
+Lewis Cook,AFC Bournemouth,2019-07-01,2019-09-14,injury-cruciate-ligament-tear,https://www.transfermarkt.com/lewis-cook/verletzungen/spieler/249089
+Philip Billing,AFC Bournemouth,2020-06-06,2020-06-23,injury-ankle-injury,https://www.transfermarkt.com/philip-billing/verletzungen/spieler/320411
+Philip Billing,AFC Bournemouth,2020-01-23,2020-01-31,injury-back-injury,https://www.transfermarkt.com/philip-billing/verletzungen/spieler/320411
+Dan Gosling,AFC Bournemouth,2019-07-01,2019-08-11,injury-hip-injury,https://www.transfermarkt.com/dan-gosling/verletzungen/spieler/44983
+Dan Gosling,AFC Bournemouth,2019-07-01,2019-12-01,injury-knee-injury,https://www.transfermarkt.com/dan-gosling/verletzungen/spieler/44983
+Andrew Surman,AFC Bournemouth,2020-02-07,2020-03-07,injury-knock,https://www.transfermarkt.com/andrew-surman/verletzungen/spieler/29975
+Andrew Surman,AFC Bournemouth,2019-12-15,2019-12-20,injury-calf-injury,https://www.transfermarkt.com/andrew-surman/verletzungen/spieler/29975
+Kyle Taylor,AFC Bournemouth,2020-01-11,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/kyle-taylor/verletzungen/spieler/562254
+Ryan Fraser,AFC Bournemouth,2020-02-11,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/ryan-fraser/verletzungen/spieler/146795
+Ryan Fraser,AFC Bournemouth,2019-12-22,2019-12-25,injury-knock,https://www.transfermarkt.com/ryan-fraser/verletzungen/spieler/146795
+Ryan Fraser,AFC Bournemouth,2019-11-24,2019-11-29,injury-knock,https://www.transfermarkt.com/ryan-fraser/verletzungen/spieler/146795
+Ryan Fraser,AFC Bournemouth,2019-10-11,2019-11-22,injury-knock,https://www.transfermarkt.com/ryan-fraser/verletzungen/spieler/146795
+Ryan Fraser,AFC Bournemouth,2019-07-01,2019-12-01,injury-hamstring-injury,https://www.transfermarkt.com/ryan-fraser/verletzungen/spieler/146795
+Arnaut Danjuma,AFC Bournemouth,2019-09-12,2020-06-30,injury-broken-foot,https://www.transfermarkt.com/arnaut-danjuma/verletzungen/spieler/355861
+Arnaut Danjuma,AFC Bournemouth,2019-07-29,2019-09-19,injury-hamstring-injury,https://www.transfermarkt.com/arnaut-danjuma/verletzungen/spieler/355861
+Arnaut Danjuma,AFC Bournemouth,2019-07-01,2019-11-03,injury-ankle-injury,https://www.transfermarkt.com/arnaut-danjuma/verletzungen/spieler/355861
+Junior Stanislas,AFC Bournemouth,2020-05-01,2020-01-31,injury-calf-injury,https://www.transfermarkt.com/junior-stanislas/verletzungen/spieler/87672
+Junior Stanislas,AFC Bournemouth,2019-07-01,2019-12-13,injury-knee-surgery,https://www.transfermarkt.com/junior-stanislas/verletzungen/spieler/87672
+David Brooks,AFC Bournemouth,2019-07-31,2020-06-19,injury-ankle-surgery,https://www.transfermarkt.com/david-brooks/verletzungen/spieler/277033
+Harry Wilson,AFC Bournemouth,2019-07-01,2019-12-25,injury-muscle-strain,https://www.transfermarkt.com/harry-wilson/verletzungen/spieler/279455
+Harry Wilson,AFC Bournemouth,2019-07-01,2019-12-01,injury-hip-injury,https://www.transfermarkt.com/harry-wilson/verletzungen/spieler/279455
+Dominic Solanke,AFC Bournemouth,2019-07-01,2019-08-03,injury-muscle-strain,https://www.transfermarkt.com/dominic-solanke/verletzungen/spieler/258889
+Jermain Defoe,AFC Bournemouth,2020-06-03,2020-03-15,injury-calf-problems,https://www.transfermarkt.com/jermain-defoe/verletzungen/spieler/3875
+Jermain Defoe,AFC Bournemouth,2020-01-29,2020-02-03,injury-calf-injury,https://www.transfermarkt.com/jermain-defoe/verletzungen/spieler/3875
+Jermain Defoe,AFC Bournemouth,2019-11-27,2019-11-29,injury-knock,https://www.transfermarkt.com/jermain-defoe/verletzungen/spieler/3875
+Adam Webster,Brighton & Hove Albion,2020-06-24,2020-03-07,injury-hamstring-strain,https://www.transfermarkt.com/adam-webster/verletzungen/spieler/212847
+Adam Webster,Brighton & Hove Albion,2019-07-01,2019-11-22,injury-ankle-injury,https://www.transfermarkt.com/adam-webster/verletzungen/spieler/212847
+Shane Duffy,Brighton & Hove Albion,2020-01-23,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/shane-duffy/verletzungen/spieler/119269
+Shane Duffy,Brighton & Hove Albion,2019-09-26,2019-11-10,injury-calf-injury,https://www.transfermarkt.com/shane-duffy/verletzungen/spieler/119269
+Dan Burn,Brighton & Hove Albion,2020-01-01,2020-06-30,injury-broken-collarbone,https://www.transfermarkt.com/dan-burn/verletzungen/spieler/134270
+Leon Balogun,Brighton & Hove Albion,2020-05-01,2020-01-31,injury-muscle-strain,https://www.transfermarkt.com/leon-balogun/verletzungen/spieler/56100
+Leon Balogun,Brighton & Hove Albion,2019-07-01,2019-11-02,injury-ill,https://www.transfermarkt.com/leon-balogun/verletzungen/spieler/56100
+Tudor Băluță,Brighton & Hove Albion,2020-01-11,2020-06-30,injury-corona-virus,https://www.transfermarkt.com/tudor-baluta/verletzungen/spieler/433976
+Davy Pröpper,Brighton & Hove Albion,2020-02-07,2020-03-07,injury-calf-injury,https://www.transfermarkt.com/davy-propper/verletzungen/spieler/79027
+Davy Pröpper,Brighton & Hove Albion,2019-09-22,2019-10-18,injury-hamstring-injury,https://www.transfermarkt.com/davy-propper/verletzungen/spieler/79027
+Aaron Mooy,Brighton & Hove Albion,2020-01-09,2020-06-30,injury-quarantine,https://www.transfermarkt.com/aaron-mooy/verletzungen/spieler/123951
+Aaron Mooy,Brighton & Hove Albion,2020-02-01,2020-01-17,injury-knock,https://www.transfermarkt.com/aaron-mooy/verletzungen/spieler/123951
+Dale Stephens,Brighton & Hove Albion,2020-02-02,2020-02-28,injury-hamstring-strain,https://www.transfermarkt.com/dale-stephens/verletzungen/spieler/49755
+Dale Stephens,Brighton & Hove Albion,2019-07-01,2019-08-02,injury-torn-knee-ligaments,https://www.transfermarkt.com/dale-stephens/verletzungen/spieler/49755
+Steven Alzate,Brighton & Hove Albion,2020-01-03,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/steven-alzate/verletzungen/spieler/476237
+Leandro Trossard,Brighton & Hove Albion,2020-02-11,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/leandro-trossard/verletzungen/spieler/144028
+Leandro Trossard,Brighton & Hove Albion,2019-07-01,2019-10-18,injury-groin-injury,https://www.transfermarkt.com/leandro-trossard/verletzungen/spieler/144028
+José Izquierdo,Brighton & Hove Albion,2019-07-01,2020-02-10,injury-knee-injury,https://www.transfermarkt.com/jose-izquierdo/verletzungen/spieler/147094
+Alireza Jahanbakhsh,Brighton & Hove Albion,2020-01-10,2020-05-11,injury-hamstring-injury,https://www.transfermarkt.com/alireza-jahanbakhsh/verletzungen/spieler/213268
+Solly March,Brighton & Hove Albion,2020-02-11,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/solly-march/verletzungen/spieler/209212
+Solly March,Brighton & Hove Albion,2020-06-07,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/solly-march/verletzungen/spieler/209212
+Solly March,Brighton & Hove Albion,2020-01-17,2020-01-19,injury-minor-knock,https://www.transfermarkt.com/solly-march/verletzungen/spieler/209212
+Solly March,Brighton & Hove Albion,2019-11-24,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/solly-march/verletzungen/spieler/209212
+Solly March,Brighton & Hove Albion,2019-09-19,2019-09-23,injury-muscle-injury,https://www.transfermarkt.com/solly-march/verletzungen/spieler/209212
+Neal Maupay,Brighton & Hove Albion,2019-09-22,2019-09-27,injury-knee-injury,https://www.transfermarkt.com/neal-maupay/verletzungen/spieler/217115
+Jürgen Locadia,Brighton & Hove Albion,2019-09-19,2019-09-23,injury-stomach-flu,https://www.transfermarkt.com/jurgen-locadia/verletzungen/spieler/166240
+Aaron Connolly,Brighton & Hove Albion,2019-07-12,2019-12-20,injury-hamstring-strain,https://www.transfermarkt.com/aaron-connolly/verletzungen/spieler/434207
+Florin Andone,Brighton & Hove Albion,2020-06-15,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/florin-andone/verletzungen/spieler/177065
+Florin Andone,Brighton & Hove Albion,2019-09-11,2020-01-29,injury-knee-medial-ligament-tear,https://www.transfermarkt.com/florin-andone/verletzungen/spieler/177065
+Glenn Murray,Brighton & Hove Albion,2019-12-29,2020-06-30,injury-knock,https://www.transfermarkt.com/glenn-murray/verletzungen/spieler/45693
+Ben Mee,Burnley FC,2020-03-07,2020-05-11,injury-hamstring-strain,https://www.transfermarkt.com/ben-mee/verletzungen/spieler/74810
+Ben Gibson,Burnley FC,2019-08-12,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/ben-gibson/verletzungen/spieler/128904
+Charlie Taylor,Burnley FC,2020-03-02,2020-02-14,injury-hamstring-strain,https://www.transfermarkt.com/charlie-taylor/verletzungen/spieler/195633
+Charlie Taylor,Burnley FC,2019-07-01,2019-12-20,injury-hamstring-strain,https://www.transfermarkt.com/charlie-taylor/verletzungen/spieler/195633
+Matthew Lowton,Burnley FC,2020-01-10,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/matthew-lowton/verletzungen/spieler/102258
+Matthew Lowton,Burnley FC,2020-06-28,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/matthew-lowton/verletzungen/spieler/102258
+Matthew Lowton,Burnley FC,2020-03-02,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/matthew-lowton/verletzungen/spieler/102258
+Matthew Lowton,Burnley FC,2019-07-01,2019-08-02,injury-toe-injury,https://www.transfermarkt.com/matthew-lowton/verletzungen/spieler/102258
+Matthew Lowton,Burnley FC,2019-07-01,2019-11-01,injury-knock,https://www.transfermarkt.com/matthew-lowton/verletzungen/spieler/102258
+Phil Bardsley,Burnley FC,2020-01-20,2020-01-02,injury-back-injury,https://www.transfermarkt.com/phil-bardsley/verletzungen/spieler/15773
+Phil Bardsley,Burnley FC,2020-05-01,2020-06-30,injury-ill,https://www.transfermarkt.com/phil-bardsley/verletzungen/spieler/15773
+Phil Bardsley,Burnley FC,2019-07-01,2019-12-13,injury-knock,https://www.transfermarkt.com/phil-bardsley/verletzungen/spieler/15773
+Phil Bardsley,Burnley FC,2019-07-01,2019-11-01,injury-knock,https://www.transfermarkt.com/phil-bardsley/verletzungen/spieler/15773
+Jack Cork,Burnley FC,2020-06-30,2020-06-30,injury-broken-foot,https://www.transfermarkt.com/jack-cork/verletzungen/spieler/40613
+Jack Cork,Burnley FC,2019-09-29,2019-10-25,injury-shoulder-injury,https://www.transfermarkt.com/jack-cork/verletzungen/spieler/40613
+Jack Cork,Burnley FC,2019-07-01,2019-09-08,injury-groin-injury,https://www.transfermarkt.com/jack-cork/verletzungen/spieler/40613
+Ashley Westwood,Burnley FC,2019-12-15,2019-12-20,injury-groin-injury,https://www.transfermarkt.com/ashley-westwood/verletzungen/spieler/91317
+Ashley Westwood,Burnley FC,2019-11-24,2019-12-13,injury-groin-injury,https://www.transfermarkt.com/ashley-westwood/verletzungen/spieler/91317
+Danny Drinkwater,Burnley FC,2020-01-23,2020-02-15,injury-calf-injury,https://www.transfermarkt.com/danny-drinkwater/verletzungen/spieler/73491
+Danny Drinkwater,Burnley FC,2019-07-01,2019-11-29,injury-ankle-injury,https://www.transfermarkt.com/danny-drinkwater/verletzungen/spieler/73491
+Danny Drinkwater,Burnley FC,2019-07-01,2019-09-03,injury-unknown-injury,https://www.transfermarkt.com/danny-drinkwater/verletzungen/spieler/73491
+Robbie Brady,Burnley FC,2020-06-12,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/robbie-brady/verletzungen/spieler/128229
+Robbie Brady,Burnley FC,2020-06-22,2020-04-07,injury-groin-strain,https://www.transfermarkt.com/robbie-brady/verletzungen/spieler/128229
+Robbie Brady,Burnley FC,2020-02-01,2020-01-18,injury-calf-injury,https://www.transfermarkt.com/robbie-brady/verletzungen/spieler/128229
+Robbie Brady,Burnley FC,2019-08-08,2019-09-13,injury-chest-injury,https://www.transfermarkt.com/robbie-brady/verletzungen/spieler/128229
+Robbie Brady,Burnley FC,2019-07-01,2019-11-05,injury-knock,https://www.transfermarkt.com/robbie-brady/verletzungen/spieler/128229
+Dwight McNeil,Burnley FC,2020-02-01,2020-06-30,injury-knock,https://www.transfermarkt.com/dwight-mcneil/verletzungen/spieler/584769
+Dwight McNeil,Burnley FC,2019-09-26,2019-09-27,injury-hamstring-strain,https://www.transfermarkt.com/dwight-mcneil/verletzungen/spieler/584769
+Dwight McNeil,Burnley FC,2019-07-01,2019-09-13,injury-hamstring-injury,https://www.transfermarkt.com/dwight-mcneil/verletzungen/spieler/584769
+Jóhann Berg Gudmundsson,Burnley FC,2020-02-23,2020-04-07,injury-hamstring-strain,https://www.transfermarkt.com/johann-berg-gudmundsson/verletzungen/spieler/89231
+Jóhann Berg Gudmundsson,Burnley FC,2020-05-01,2020-02-21,injury-hamstring-strain,https://www.transfermarkt.com/johann-berg-gudmundsson/verletzungen/spieler/89231
+Jóhann Berg Gudmundsson,Burnley FC,2019-10-13,2019-12-25,injury-hamstring-strain,https://www.transfermarkt.com/johann-berg-gudmundsson/verletzungen/spieler/89231
+Aaron Lennon,Burnley FC,2019-12-22,2020-06-30,injury-ill,https://www.transfermarkt.com/aaron-lennon/verletzungen/spieler/14221
+Chris Wood,Burnley FC,2020-05-06,2020-04-07,injury-calf-injury,https://www.transfermarkt.com/chris-wood/verletzungen/spieler/108725
+Chris Wood,Burnley FC,2020-02-16,2020-02-28,injury-hamstring-strain,https://www.transfermarkt.com/chris-wood/verletzungen/spieler/108725
+Chris Wood,Burnley FC,2020-05-01,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/chris-wood/verletzungen/spieler/108725
+Chris Wood,Burnley FC,2019-12-15,2019-12-20,injury-calf-injury,https://www.transfermarkt.com/chris-wood/verletzungen/spieler/108725
+Chris Wood,Burnley FC,2019-10-20,2019-08-11,injury-hamstring-injury,https://www.transfermarkt.com/chris-wood/verletzungen/spieler/108725
+Ashley Barnes,Burnley FC,2020-03-14,2020-03-28,injury-corona-virus,https://www.transfermarkt.com/ashley-barnes/verletzungen/spieler/63200
+Ashley Barnes,Burnley FC,2020-02-01,2020-06-30,injury-groin-surgery,https://www.transfermarkt.com/ashley-barnes/verletzungen/spieler/63200
+Ashley Barnes,Burnley FC,2019-07-01,2019-12-13,injury-groin-injury,https://www.transfermarkt.com/ashley-barnes/verletzungen/spieler/63200
+Ashley Barnes,Burnley FC,2019-10-17,2019-10-25,injury-groin-injury,https://www.transfermarkt.com/ashley-barnes/verletzungen/spieler/63200
+Ashley Barnes,Burnley FC,2019-07-01,2019-09-13,injury-groin-injury,https://www.transfermarkt.com/ashley-barnes/verletzungen/spieler/63200
+Antonio Rüdiger,Chelsea FC,2019-12-09,2019-12-12,injury-groin-injury,https://www.transfermarkt.com/antonio-rudiger/verletzungen/spieler/86202
+Antonio Rüdiger,Chelsea FC,2019-08-19,2019-09-16,injury-knock,https://www.transfermarkt.com/antonio-rudiger/verletzungen/spieler/86202
+Antonio Rüdiger,Chelsea FC,2019-07-15,2019-12-08,injury-knee-injury,https://www.transfermarkt.com/antonio-rudiger/verletzungen/spieler/86202
+Marcos Alonso,Chelsea FC,2019-12-23,2020-01-20,injury-knock,https://www.transfermarkt.com/marcos-alonso/verletzungen/spieler/112515
+Fikayo Tomori,Chelsea FC,2020-06-19,2020-06-30,injury-knock,https://www.transfermarkt.com/fikayo-tomori/verletzungen/spieler/303254
+Fikayo Tomori,Chelsea FC,2019-09-12,2019-12-21,injury-hip-problems,https://www.transfermarkt.com/fikayo-tomori/verletzungen/spieler/303254
+Emerson,Chelsea FC,2019-10-09,2019-10-20,injury-hamstring-injury,https://www.transfermarkt.com/emerson/verletzungen/spieler/181778
+N'Golo Kanté,Chelsea FC,2020-02-07,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/ngolo-kante/verletzungen/spieler/225083
+N'Golo Kanté,Chelsea FC,2020-02-17,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/ngolo-kante/verletzungen/spieler/225083
+Mateo Kovacic,Chelsea FC,2020-02-07,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/mateo-kovacic/verletzungen/spieler/51471
+Mateo Kovacic,Chelsea FC,2020-04-03,2020-06-06,injury-achilles-tendon-problems,https://www.transfermarkt.com/mateo-kovacic/verletzungen/spieler/51471
+Ross Barkley,Chelsea FC,2019-12-13,2019-12-23,injury-foot-injury,https://www.transfermarkt.com/ross-barkley/verletzungen/spieler/131978
+Marco van Ginkel,Chelsea FC,2019-07-01,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/marco-van-ginkel/verletzungen/spieler/147034
+Davide Zappacosta,Chelsea FC,2019-07-01,2020-03-31,injury-cruciate-ligament-tear,https://www.transfermarkt.com/davide-zappacosta/verletzungen/spieler/173859
+Mason Mount,Chelsea FC,2019-07-11,2019-07-11,injury-ankle-injury,https://www.transfermarkt.com/mason-mount/verletzungen/spieler/346483
+Mason Mount,Chelsea FC,2019-09-19,2019-09-23,injury-ankle-injury,https://www.transfermarkt.com/mason-mount/verletzungen/spieler/346483
+Callum Hudson-Odoi,Chelsea FC,2020-03-12,2020-06-30,injury-hip-injury,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Callum Hudson-Odoi,Chelsea FC,2020-06-15,2020-06-29,injury-ankle-injury,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Callum Hudson-Odoi,Chelsea FC,2020-03-02,2020-06-04,injury-hamstring-injury,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Callum Hudson-Odoi,Chelsea FC,2019-11-21,2019-11-28,injury-minor-knock,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Callum Hudson-Odoi,Chelsea FC,2019-07-01,2019-12-09,injury-achilles-tendon-rupture,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Willian,Chelsea FC,2020-05-03,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/willian/verletzungen/spieler/52769
+Willian,Chelsea FC,2019-07-01,2019-12-08,injury-hamstring-injury,https://www.transfermarkt.com/willian/verletzungen/spieler/52769
+Willian,Chelsea FC,2019-07-01,2019-11-01,injury-knock,https://www.transfermarkt.com/willian/verletzungen/spieler/52769
+Kenedy,Chelsea FC,2019-12-13,2020-01-02,injury-knee-bruise,https://www.transfermarkt.com/kenedy/verletzungen/spieler/281404
+Pedro,Chelsea FC,2020-01-08,2020-06-30,injury-shoulder-injury,https://www.transfermarkt.com/pedro/verletzungen/spieler/65278
+Pedro,Chelsea FC,2020-01-07,2020-01-07,injury-arch-problems,https://www.transfermarkt.com/pedro/verletzungen/spieler/65278
+Tammy Abraham,Chelsea FC,2020-02-26,2020-06-06,injury-ankle-injury,https://www.transfermarkt.com/tammy-abraham/verletzungen/spieler/331726
+Tammy Abraham,Chelsea FC,2020-02-02,2020-02-21,injury-knock,https://www.transfermarkt.com/tammy-abraham/verletzungen/spieler/331726
+Tammy Abraham,Chelsea FC,2020-01-31,2020-01-31,injury-ankle-injury,https://www.transfermarkt.com/tammy-abraham/verletzungen/spieler/331726
+Olivier Giroud,Chelsea FC,2020-06-01,2020-02-16,injury-groin-injury,https://www.transfermarkt.com/olivier-giroud/verletzungen/spieler/82442
+Olivier Giroud,Chelsea FC,2019-07-01,2020-04-01,injury-ankle-injury,https://www.transfermarkt.com/olivier-giroud/verletzungen/spieler/82442
+Olivier Giroud,Chelsea FC,2019-07-01,2019-11-01,injury-ankle-injury,https://www.transfermarkt.com/olivier-giroud/verletzungen/spieler/82442
+Vicente Guaita,Crystal Palace,2020-06-24,2020-06-28,injury-hamstring-strain,https://www.transfermarkt.com/vicente-guaita/verletzungen/spieler/64399
+Mamadou Sakho,Crystal Palace,2020-02-01,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/mamadou-sakho/verletzungen/spieler/47713
+Mamadou Sakho,Crystal Palace,2019-09-27,2019-11-29,injury-knock,https://www.transfermarkt.com/mamadou-sakho/verletzungen/spieler/47713
+Mamadou Sakho,Crystal Palace,2019-07-01,2019-08-30,injury-meniscus-injury,https://www.transfermarkt.com/mamadou-sakho/verletzungen/spieler/47713
+James Tomkins,Crystal Palace,2020-06-11,2020-06-30,injury-hip-injury,https://www.transfermarkt.com/james-tomkins/verletzungen/spieler/61592
+James Tomkins,Crystal Palace,2019-07-04,2019-09-13,injury-groin-injury,https://www.transfermarkt.com/james-tomkins/verletzungen/spieler/61592
+Gary Cahill,Crystal Palace,2019-08-12,2020-04-01,injury-knee-injury,https://www.transfermarkt.com/gary-cahill/verletzungen/spieler/27511
+Gary Cahill,Crystal Palace,2019-07-01,2019-08-11,injury-head-injury,https://www.transfermarkt.com/gary-cahill/verletzungen/spieler/27511
+Gary Cahill,Crystal Palace,2019-07-01,2019-09-03,injury-back-injury,https://www.transfermarkt.com/gary-cahill/verletzungen/spieler/27511
+Scott Dann,Crystal Palace,2019-12-18,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/scott-dann/verletzungen/spieler/62688
+Scott Dann,Crystal Palace,2019-08-29,2019-09-21,injury-hand-injury,https://www.transfermarkt.com/scott-dann/verletzungen/spieler/62688
+Patrick van Aanholt,Crystal Palace,2019-12-27,2020-01-31,injury-hamstring-strain,https://www.transfermarkt.com/patrick-van-aanholt/verletzungen/spieler/52119
+Patrick van Aanholt,Crystal Palace,2019-07-01,2019-12-20,injury-hamstring-strain,https://www.transfermarkt.com/patrick-van-aanholt/verletzungen/spieler/52119
+Tyrick Mitchell,Crystal Palace,2020-02-22,2020-06-30,injury-thigh-problems,https://www.transfermarkt.com/tyrick-mitchell/verletzungen/spieler/730893
+Tyrick Mitchell,Crystal Palace,2019-12-21,2020-01-02,injury-hip-problems,https://www.transfermarkt.com/tyrick-mitchell/verletzungen/spieler/730893
+Tyrick Mitchell,Crystal Palace,2019-10-08,2019-07-12,injury-hip-injury,https://www.transfermarkt.com/tyrick-mitchell/verletzungen/spieler/730893
+Joel Ward,Crystal Palace,2019-11-24,2020-01-17,injury-knee-injury,https://www.transfermarkt.com/joel-ward/verletzungen/spieler/92572
+Martin Kelly,Crystal Palace,2020-04-12,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/martin-kelly/verletzungen/spieler/78959
+Martin Kelly,Crystal Palace,2020-06-19,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/martin-kelly/verletzungen/spieler/78959
+Martin Kelly,Crystal Palace,2019-12-29,2019-12-31,injury-hamstring-strain,https://www.transfermarkt.com/martin-kelly/verletzungen/spieler/78959
+Martin Kelly,Crystal Palace,2019-10-17,2019-10-26,injury-groin-injury,https://www.transfermarkt.com/martin-kelly/verletzungen/spieler/78959
+Martin Kelly,Crystal Palace,2019-07-01,2019-09-21,injury-groin-injury,https://www.transfermarkt.com/martin-kelly/verletzungen/spieler/78959
+Cheikhou Kouyaté,Crystal Palace,2020-02-23,2020-02-28,injury-ankle-injury,https://www.transfermarkt.com/cheikhou-kouyate/verletzungen/spieler/66934
+Cheikhou Kouyaté,Crystal Palace,2019-07-01,2019-08-11,injury-head-injury,https://www.transfermarkt.com/cheikhou-kouyate/verletzungen/spieler/66934
+Cheikhou Kouyaté,Crystal Palace,2019-09-15,2019-09-21,injury-ankle-injury,https://www.transfermarkt.com/cheikhou-kouyate/verletzungen/spieler/66934
+Jaïro Riedewald,Crystal Palace,2020-06-01,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/jairo-riedewald/verletzungen/spieler/241481
+Jaïro Riedewald,Crystal Palace,2019-12-18,2019-12-20,injury-groin-injury,https://www.transfermarkt.com/jairo-riedewald/verletzungen/spieler/241481
+Max Meyer,Crystal Palace,2020-06-01,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/max-meyer/verletzungen/spieler/146164
+Max Meyer,Crystal Palace,2019-11-24,2019-12-15,injury-ill,https://www.transfermarkt.com/max-meyer/verletzungen/spieler/146164
+James McArthur,Crystal Palace,2019-07-01,2019-08-11,injury-back-injury,https://www.transfermarkt.com/james-mcarthur/verletzungen/spieler/41416
+James McArthur,Crystal Palace,2019-07-01,2019-09-21,injury-knock,https://www.transfermarkt.com/james-mcarthur/verletzungen/spieler/41416
+Víctor Camarasa,Crystal Palace,2019-12-29,2020-01-13,injury-calf-injury,https://www.transfermarkt.com/victor-camarasa/verletzungen/spieler/263856
+Víctor Camarasa,Crystal Palace,2019-07-01,2019-08-02,injury-muscle-strain,https://www.transfermarkt.com/victor-camarasa/verletzungen/spieler/263856
+Jeffrey Schlupp,Crystal Palace,2019-08-12,2020-06-03,injury-hip-injury,https://www.transfermarkt.com/jeffrey-schlupp/verletzungen/spieler/157506
+Jeffrey Schlupp,Crystal Palace,2019-07-01,2019-08-17,injury-ankle-injury,https://www.transfermarkt.com/jeffrey-schlupp/verletzungen/spieler/157506
+Andros Townsend,Crystal Palace,2019-08-12,2020-01-31,injury-groin-injury,https://www.transfermarkt.com/andros-townsend/verletzungen/spieler/61842
+Andros Townsend,Crystal Palace,2019-10-28,2019-08-11,injury-bruise,https://www.transfermarkt.com/andros-townsend/verletzungen/spieler/61842
+Cenk Tosun,Crystal Palace,2020-02-03,2020-06-30,injury-cruciate-ligament-surgery,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Cenk Tosun,Crystal Palace,2020-01-24,2020-02-21,injury-crack-bruise,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Cenk Tosun,Crystal Palace,2019-10-18,2019-10-27,injury-groin-injury,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Cenk Tosun,Crystal Palace,2019-07-01,2019-07-30,injury-torn-lateral-knee-ligament,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Christian Benteke,Crystal Palace,2020-06-24,2020-03-07,injury-hamstring-strain,https://www.transfermarkt.com/christian-benteke/verletzungen/spieler/50201
+Christian Benteke,Crystal Palace,2019-12-22,2020-01-31,injury-knock,https://www.transfermarkt.com/christian-benteke/verletzungen/spieler/50201
+Christian Benteke,Crystal Palace,2019-07-01,2019-11-05,injury-facial-injury,https://www.transfermarkt.com/christian-benteke/verletzungen/spieler/50201
+Christian Benteke,Crystal Palace,2019-07-01,2019-12-01,injury-knee-injury,https://www.transfermarkt.com/christian-benteke/verletzungen/spieler/50201
+Connor Wickham,Crystal Palace,2019-07-01,2019-08-03,injury-knock,https://www.transfermarkt.com/connor-wickham/verletzungen/spieler/95435
+Jonas Lössl,Everton FC,2019-08-18,2019-09-25,injury-calf-strain,https://www.transfermarkt.com/jonas-lossl/verletzungen/spieler/48870
+Jean-Philippe Gbamin,Everton FC,2020-05-28,2020-06-30,injury-achilles-tendon-rupture,https://www.transfermarkt.com/jean-philippe-gbamin/verletzungen/spieler/182894
+Jean-Philippe Gbamin,Everton FC,2019-08-18,2020-03-04,injury-hamstring-injury,https://www.transfermarkt.com/jean-philippe-gbamin/verletzungen/spieler/182894
+Jean-Philippe Gbamin,Everton FC,2019-07-01,2019-07-02,injury-virus,https://www.transfermarkt.com/jean-philippe-gbamin/verletzungen/spieler/182894
+Michael Keane,Everton FC,2020-01-17,2020-01-20,injury-neck-injury,https://www.transfermarkt.com/michael-keane/verletzungen/spieler/118534
+Michael Keane,Everton FC,2019-07-01,2019-08-04,injury-ill,https://www.transfermarkt.com/michael-keane/verletzungen/spieler/118534
+Lucas Digne,Everton FC,2019-08-12,2019-12-14,injury-ankle-injury,https://www.transfermarkt.com/lucas-digne/verletzungen/spieler/126664
+Djibril Sidibé,Everton FC,2020-06-21,2020-01-07,injury-foot-injury,https://www.transfermarkt.com/djibril-sidibe/verletzungen/spieler/161869
+Djibril Sidibé,Everton FC,2019-12-15,2019-12-18,injury-unknown-injury,https://www.transfermarkt.com/djibril-sidibe/verletzungen/spieler/161869
+Séamus Coleman,Everton FC,2020-02-03,2020-06-14,injury-hamstring-strain,https://www.transfermarkt.com/seamus-coleman/verletzungen/spieler/68390
+Séamus Coleman,Everton FC,2019-11-24,2019-12-14,injury-hamstring-injury,https://www.transfermarkt.com/seamus-coleman/verletzungen/spieler/68390
+Morgan Schneiderlin,Everton FC,2020-02-24,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/morgan-schneiderlin/verletzungen/spieler/56818
+Morgan Schneiderlin,Everton FC,2019-08-12,2020-04-01,injury-calf-strain,https://www.transfermarkt.com/morgan-schneiderlin/verletzungen/spieler/56818
+Morgan Schneiderlin,Everton FC,2019-11-24,2019-11-30,injury-knock,https://www.transfermarkt.com/morgan-schneiderlin/verletzungen/spieler/56818
+André Gomes,Everton FC,2020-03-06,2020-06-20,injury-bruise,https://www.transfermarkt.com/andre-gomes/verletzungen/spieler/221025
+André Gomes,Everton FC,2019-07-01,2020-02-21,injury-ankle-injury,https://www.transfermarkt.com/andre-gomes/verletzungen/spieler/221025
+André Gomes,Everton FC,2019-11-08,2019-08-16,injury-ankle-injury,https://www.transfermarkt.com/andre-gomes/verletzungen/spieler/221025
+Tom Davies,Everton FC,2020-01-30,2020-04-02,injury-ill,https://www.transfermarkt.com/tom-davies/verletzungen/spieler/314210
+Fabian Delph,Everton FC,2020-06-12,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Fabian Delph,Everton FC,2020-02-11,2020-06-30,injury-bruise,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Fabian Delph,Everton FC,2020-02-06,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Fabian Delph,Everton FC,2019-07-01,2019-12-20,injury-muscle-injury,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Fabian Delph,Everton FC,2019-07-01,2019-10-24,injury-muscle-injury,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Fabian Delph,Everton FC,2019-07-01,2019-08-31,injury-calf-injury,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Fabian Delph,Everton FC,2019-07-01,2019-08-04,injury-bruise,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Fabian Delph,Everton FC,2019-07-01,2019-08-03,injury-ill,https://www.transfermarkt.com/fabian-delph/verletzungen/spieler/50362
+Gylfi Sigurdsson,Everton FC,2019-08-12,2019-12-20,injury-knock,https://www.transfermarkt.com/gylfi-sigurdsson/verletzungen/spieler/90466
+Alex Iwobi,Everton FC,2019-12-23,2020-01-27,injury-hamstring-injury,https://www.transfermarkt.com/alex-iwobi/verletzungen/spieler/242631
+Bernard,Everton FC,2020-01-01,2020-04-01,injury-knee-injury,https://www.transfermarkt.com/bernard/verletzungen/spieler/175169
+Bernard,Everton FC,2019-10-27,2019-11-30,injury-knee-injury,https://www.transfermarkt.com/bernard/verletzungen/spieler/175169
+Theo Walcott,Everton FC,2019-08-12,2019-12-25,injury-calf-strain,https://www.transfermarkt.com/theo-walcott/verletzungen/spieler/33713
+Theo Walcott,Everton FC,2019-09-29,2019-10-18,injury-head-injury,https://www.transfermarkt.com/theo-walcott/verletzungen/spieler/33713
+Cenk Tosun,Everton FC,2020-02-03,2020-06-30,injury-cruciate-ligament-surgery,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Cenk Tosun,Everton FC,2020-01-24,2020-02-21,injury-crack-bruise,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Cenk Tosun,Everton FC,2019-10-18,2019-10-27,injury-groin-injury,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Cenk Tosun,Everton FC,2019-07-01,2019-07-30,injury-torn-lateral-knee-ligament,https://www.transfermarkt.com/cenk-tosun/verletzungen/spieler/45671
+Jonny Evans,Leicester City,2019-11-24,2019-11-30,injury-hamstring-strain,https://www.transfermarkt.com/jonny-evans/verletzungen/spieler/42412
+Jonny Evans,Leicester City,2019-07-01,2019-11-04,injury-hip-injury,https://www.transfermarkt.com/jonny-evans/verletzungen/spieler/42412
+Filip Benkovic,Leicester City,2020-01-09,2020-06-30,injury-hip-injury,https://www.transfermarkt.com/filip-benkovic/verletzungen/spieler/293168
+Daniel Amartey,Leicester City,2020-05-10,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/daniel-amartey/verletzungen/spieler/214056
+Daniel Amartey,Leicester City,2019-12-20,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/daniel-amartey/verletzungen/spieler/214056
+Daniel Amartey,Leicester City,2019-07-01,2019-09-23,injury-ankle-surgery,https://www.transfermarkt.com/daniel-amartey/verletzungen/spieler/214056
+Ryan Bennett,Leicester City,2020-03-12,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/ryan-bennett/verletzungen/spieler/67252
+Ryan Bennett,Leicester City,2019-10-20,2019-09-11,injury-groin-strain,https://www.transfermarkt.com/ryan-bennett/verletzungen/spieler/67252
+Wes Morgan,Leicester City,2020-01-26,2020-02-13,injury-ill,https://www.transfermarkt.com/wes-morgan/verletzungen/spieler/10003
+Wes Morgan,Leicester City,2020-05-01,2020-01-18,injury-groin-injury,https://www.transfermarkt.com/wes-morgan/verletzungen/spieler/10003
+Wes Morgan,Leicester City,2019-08-30,2019-09-13,injury-back-injury,https://www.transfermarkt.com/wes-morgan/verletzungen/spieler/10003
+Wes Morgan,Leicester City,2019-07-01,2019-11-01,injury-ill,https://www.transfermarkt.com/wes-morgan/verletzungen/spieler/10003
+Ben Chilwell,Leicester City,2020-06-07,2020-06-30,injury-foot-injury,https://www.transfermarkt.com/ben-chilwell/verletzungen/spieler/316125
+Ben Chilwell,Leicester City,2020-05-03,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/ben-chilwell/verletzungen/spieler/316125
+Ben Chilwell,Leicester City,2019-07-01,2019-09-12,injury-groin-injury,https://www.transfermarkt.com/ben-chilwell/verletzungen/spieler/316125
+Ben Chilwell,Leicester City,2019-12-08,2019-08-29,injury-hip-injury,https://www.transfermarkt.com/ben-chilwell/verletzungen/spieler/316125
+Wilfred Ndidi,Leicester City,2020-01-30,2020-02-27,injury-knee-problems,https://www.transfermarkt.com/wilfred-ndidi/verletzungen/spieler/274839
+Wilfred Ndidi,Leicester City,2019-08-26,2019-08-29,injury-hamstring-injury,https://www.transfermarkt.com/wilfred-ndidi/verletzungen/spieler/274839
+Nampalys Mendy,Leicester City,2020-01-24,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/nampalys-mendy/verletzungen/spieler/111051
+Dennis Praet,Leicester City,2020-06-18,2020-06-22,injury-calf-injury,https://www.transfermarkt.com/dennis-praet/verletzungen/spieler/129588
+Matty James,Leicester City,2019-07-01,2020-02-01,injury-achilles-tendon-problems,https://www.transfermarkt.com/matty-james/verletzungen/spieler/73522
+Matty James,Leicester City,2019-07-01,2019-11-01,injury-achilles-tendon-problems,https://www.transfermarkt.com/matty-james/verletzungen/spieler/73522
+Marc Albrighton,Leicester City,2019-07-01,2019-12-04,injury-hamstring-injury,https://www.transfermarkt.com/marc-albrighton/verletzungen/spieler/61560
+James Maddison,Leicester City,2020-06-11,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/james-maddison/verletzungen/spieler/294057
+James Maddison,Leicester City,2020-02-07,2020-06-30,injury-hip-injury,https://www.transfermarkt.com/james-maddison/verletzungen/spieler/294057
+Bartosz Kapustka,Leicester City,2019-07-01,2019-12-29,injury-cruciate-ligament-tear,https://www.transfermarkt.com/bartosz-kapustka/verletzungen/spieler/246579
+George Thomas,Leicester City,2020-04-09,2020-06-09,injury-thigh-problems,https://www.transfermarkt.com/george-thomas/verletzungen/spieler/298240
+Jamie Vardy,Leicester City,2020-01-23,2020-01-30,injury-strain-in-the-thigh-and-gluteal-muscles,https://www.transfermarkt.com/jamie-vardy/verletzungen/spieler/197838
+Jamie Vardy,Leicester City,2019-12-30,2020-06-01,injury-muscle-injury,https://www.transfermarkt.com/jamie-vardy/verletzungen/spieler/197838
+Jamie Vardy,Leicester City,2019-07-01,2019-07-03,injury-head-injury,https://www.transfermarkt.com/jamie-vardy/verletzungen/spieler/197838
+Alisson,Liverpool FC,2020-03-10,2020-06-30,injury-shoulder-injury,https://www.transfermarkt.com/alisson/verletzungen/spieler/105470
+Alisson,Liverpool FC,2020-01-03,2020-05-20,injury-hip-injury,https://www.transfermarkt.com/alisson/verletzungen/spieler/105470
+Loris Karius,Liverpool FC,2019-07-01,2019-08-19,injury-hamstring-strain,https://www.transfermarkt.com/loris-karius/verletzungen/spieler/85864
+Vitezslav Jaros,Liverpool FC,2019-07-16,2019-12-31,injury-elbow-injury,https://www.transfermarkt.com/vitezslav-jaros/verletzungen/spieler/486604
+Virgil van Dijk,Liverpool FC,2019-12-16,2019-12-19,injury-ill,https://www.transfermarkt.com/virgil-van-dijk/verletzungen/spieler/139208
+Virgil van Dijk,Liverpool FC,2019-07-01,2019-10-01,injury-ill,https://www.transfermarkt.com/virgil-van-dijk/verletzungen/spieler/139208
+Joe Gomez,Liverpool FC,2020-01-03,2020-02-03,injury-knock,https://www.transfermarkt.com/joe-gomez/verletzungen/spieler/256178
+Joe Gomez,Liverpool FC,2019-07-01,2019-08-04,injury-ankle-surgery,https://www.transfermarkt.com/joe-gomez/verletzungen/spieler/256178
+Dejan Lovren,Liverpool FC,2020-02-07,2020-06-30,injury-knock,https://www.transfermarkt.com/dejan-lovren/verletzungen/spieler/37838
+Dejan Lovren,Liverpool FC,2019-12-13,2020-01-24,injury-muscle-injury,https://www.transfermarkt.com/dejan-lovren/verletzungen/spieler/37838
+Dejan Lovren,Liverpool FC,2019-08-12,2019-09-12,injury-knock,https://www.transfermarkt.com/dejan-lovren/verletzungen/spieler/37838
+Dejan Lovren,Liverpool FC,2019-11-08,2019-08-30,injury-ill,https://www.transfermarkt.com/dejan-lovren/verletzungen/spieler/37838
+Dejan Lovren,Liverpool FC,2019-07-01,2019-09-03,injury-muscle-injury,https://www.transfermarkt.com/dejan-lovren/verletzungen/spieler/37838
+Nat Phillips,Liverpool FC,2020-06-19,2020-06-23,injury-knock,https://www.transfermarkt.com/nat-phillips/verletzungen/spieler/371814
+Nat Phillips,Liverpool FC,2019-12-18,2019-12-25,injury-angina,https://www.transfermarkt.com/nat-phillips/verletzungen/spieler/371814
+Andrew Robertson,Liverpool FC,2019-11-11,2019-11-22,injury-ankle-injury,https://www.transfermarkt.com/andrew-robertson/verletzungen/spieler/234803
+Andrew Robertson,Liverpool FC,2019-08-05,2019-11-05,injury-fracture-of-fibula-shaft,https://www.transfermarkt.com/andrew-robertson/verletzungen/spieler/234803
+Neco Williams,Liverpool FC,2020-02-24,2020-02-29,injury-fitness,https://www.transfermarkt.com/neco-williams/verletzungen/spieler/503680
+Neco Williams,Liverpool FC,2020-01-29,2020-01-02,injury-ill,https://www.transfermarkt.com/neco-williams/verletzungen/spieler/503680
+Neco Williams,Liverpool FC,2020-01-18,2020-01-20,injury-fitness,https://www.transfermarkt.com/neco-williams/verletzungen/spieler/503680
+Trent Alexander-Arnold,Liverpool FC,2019-10-21,2019-10-28,injury-ill,https://www.transfermarkt.com/trent-alexander-arnold/verletzungen/spieler/314353
+Nathaniel Clyne,Liverpool FC,2019-07-24,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/nathaniel-clyne/verletzungen/spieler/85177
+Fabinho,Liverpool FC,2019-11-28,2020-01-18,injury-ankle-injury,https://www.transfermarkt.com/fabinho/verletzungen/spieler/225693
+Jordan Henderson,Liverpool FC,2020-02-10,2020-03-10,injury-hip-problems,https://www.transfermarkt.com/jordan-henderson/verletzungen/spieler/61651
+Jordan Henderson,Liverpool FC,2020-02-19,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/jordan-henderson/verletzungen/spieler/61651
+Jordan Henderson,Liverpool FC,2019-07-01,2019-08-02,injury-ligament-injury,https://www.transfermarkt.com/jordan-henderson/verletzungen/spieler/61651
+Jordan Henderson,Liverpool FC,2019-07-01,2019-11-01,injury-calf-stiffness,https://www.transfermarkt.com/jordan-henderson/verletzungen/spieler/61651
+Georginio Wijnaldum,Liverpool FC,2019-12-12,2019-12-23,injury-knock,https://www.transfermarkt.com/georginio-wijnaldum/verletzungen/spieler/49499
+Georginio Wijnaldum,Liverpool FC,2019-07-01,2019-11-02,injury-knee-injury,https://www.transfermarkt.com/georginio-wijnaldum/verletzungen/spieler/49499
+Alex Oxlade-Chamberlain,Liverpool FC,2019-12-23,2020-04-01,injury-ankle-injury,https://www.transfermarkt.com/alex-oxlade-chamberlain/verletzungen/spieler/143424
+Alex Oxlade-Chamberlain,Liverpool FC,2019-07-01,2019-07-10,injury-head-injury,https://www.transfermarkt.com/alex-oxlade-chamberlain/verletzungen/spieler/143424
+Alex Oxlade-Chamberlain,Liverpool FC,2019-07-01,2019-11-05,injury-knock,https://www.transfermarkt.com/alex-oxlade-chamberlain/verletzungen/spieler/143424
+Alex Oxlade-Chamberlain,Liverpool FC,2019-09-03,2019-12-04,injury-hamstring-injury,https://www.transfermarkt.com/alex-oxlade-chamberlain/verletzungen/spieler/143424
+Alex Oxlade-Chamberlain,Liverpool FC,2019-07-01,2019-07-03,injury-cruciate-ligament-tear,https://www.transfermarkt.com/alex-oxlade-chamberlain/verletzungen/spieler/143424
+James Milner,Liverpool FC,2020-06-22,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/james-milner/verletzungen/spieler/3333
+James Milner,Liverpool FC,2020-02-19,2020-02-03,injury-hamstring-injury,https://www.transfermarkt.com/james-milner/verletzungen/spieler/3333
+Xherdan Shaqiri,Liverpool FC,2019-12-28,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/xherdan-shaqiri/verletzungen/spieler/86792
+Xherdan Shaqiri,Liverpool FC,2019-09-23,2019-11-26,injury-calf-injury,https://www.transfermarkt.com/xherdan-shaqiri/verletzungen/spieler/86792
+Ben Woodburn,Liverpool FC,2019-07-10,2020-01-03,injury-broken-foot,https://www.transfermarkt.com/ben-woodburn/verletzungen/spieler/344015
+Isaac Christie-Davies,Liverpool FC,2020-01-16,2020-06-10,injury-knee-surgery,https://www.transfermarkt.com/isaac-christie-davies/verletzungen/spieler/264660
+Isaac Christie-Davies,Liverpool FC,2019-08-08,2019-10-24,injury-knee-injury,https://www.transfermarkt.com/isaac-christie-davies/verletzungen/spieler/264660
+Sadio Mané,Liverpool FC,2020-02-10,2020-06-30,injury-corona-virus,https://www.transfermarkt.com/sadio-mane/verletzungen/spieler/200512
+Sadio Mané,Liverpool FC,2020-01-26,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/sadio-mane/verletzungen/spieler/200512
+Sadio Mané,Liverpool FC,2020-01-24,2020-02-14,injury-muscle-injury,https://www.transfermarkt.com/sadio-mane/verletzungen/spieler/200512
+Sadio Mané,Liverpool FC,2019-09-23,2019-09-27,injury-hamstring-strain,https://www.transfermarkt.com/sadio-mane/verletzungen/spieler/200512
+Takumi Minamino,Liverpool FC,2019-12-13,2019-12-31,injury-thigh-problems,https://www.transfermarkt.com/takumi-minamino/verletzungen/spieler/165793
+Mohamed Salah,Liverpool FC,2019-11-11,2019-11-22,injury-ankle-injury,https://www.transfermarkt.com/mohamed-salah/verletzungen/spieler/148455
+Mohamed Salah,Liverpool FC,2019-07-01,2019-10-22,injury-ankle-problems,https://www.transfermarkt.com/mohamed-salah/verletzungen/spieler/148455
+Mohamed Salah,Liverpool FC,2019-07-01,2019-11-05,injury-concussion,https://www.transfermarkt.com/mohamed-salah/verletzungen/spieler/148455
+Divock Origi,Liverpool FC,2019-09-15,2019-09-27,injury-ankle-injury,https://www.transfermarkt.com/divock-origi/verletzungen/spieler/148368
+Rhian Brewster,Liverpool FC,2019-11-20,2020-04-01,injury-ankle-injury,https://www.transfermarkt.com/rhian-brewster/verletzungen/spieler/406560
+Ederson,Manchester City,2019-12-30,2020-06-30,injury-ill,https://www.transfermarkt.com/ederson/verletzungen/spieler/238223
+Ederson,Manchester City,2019-08-12,2019-12-14,injury-ill,https://www.transfermarkt.com/ederson/verletzungen/spieler/238223
+Ederson,Manchester City,2019-07-01,2019-11-22,injury-muscular-problems,https://www.transfermarkt.com/ederson/verletzungen/spieler/238223
+Claudio Bravo,Manchester City,2019-07-01,2019-12-05,injury-fitness,https://www.transfermarkt.com/claudio-bravo/verletzungen/spieler/40423
+Aymeric Laporte,Manchester City,2020-02-27,2020-06-15,injury-hamstring-injury,https://www.transfermarkt.com/aymeric-laporte/verletzungen/spieler/176553
+Aymeric Laporte,Manchester City,2020-01-23,2020-02-20,injury-knock,https://www.transfermarkt.com/aymeric-laporte/verletzungen/spieler/176553
+Aymeric Laporte,Manchester City,2019-08-29,2020-01-20,injury-knee-injury,https://www.transfermarkt.com/aymeric-laporte/verletzungen/spieler/176553
+Aymeric Laporte,Manchester City,2019-07-01,2019-11-03,injury-muscle-injury,https://www.transfermarkt.com/aymeric-laporte/verletzungen/spieler/176553
+John Stones,Manchester City,2020-06-19,2020-06-27,injury-ankle-injury,https://www.transfermarkt.com/john-stones/verletzungen/spieler/186590
+John Stones,Manchester City,2020-01-19,2020-01-25,injury-foot-injury,https://www.transfermarkt.com/john-stones/verletzungen/spieler/186590
+John Stones,Manchester City,2019-08-12,2020-03-01,injury-knock,https://www.transfermarkt.com/john-stones/verletzungen/spieler/186590
+John Stones,Manchester City,2019-09-17,2019-10-22,injury-muscle-injury,https://www.transfermarkt.com/john-stones/verletzungen/spieler/186590
+John Stones,Manchester City,2019-08-16,2019-09-13,injury-muscle-injury,https://www.transfermarkt.com/john-stones/verletzungen/spieler/186590
+Nicolás Otamendi,Manchester City,2019-12-31,2020-06-01,injury-knock,https://www.transfermarkt.com/nicolas-otamendi/verletzungen/spieler/54781
+Nicolás Otamendi,Manchester City,2019-10-10,2019-10-21,injury-knock,https://www.transfermarkt.com/nicolas-otamendi/verletzungen/spieler/54781
+Eric García,Manchester City,2020-06-17,2020-06-29,injury-head-injury,https://www.transfermarkt.com/eric-garcia/verletzungen/spieler/466794
+Tosin Adarabioyo,Manchester City,2019-12-08,2019-09-09,injury-unknown-injury,https://www.transfermarkt.com/tosin-adarabioyo/verletzungen/spieler/258878
+Benjamin Mendy,Manchester City,2020-04-10,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Benjamin Mendy,Manchester City,2020-03-07,2020-06-30,injury-knock,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Benjamin Mendy,Manchester City,2020-01-19,2020-02-18,injury-foot-injury,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Benjamin Mendy,Manchester City,2019-07-01,2019-11-17,injury-knee-injury,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Benjamin Mendy,Manchester City,2019-07-01,2019-10-18,injury-hamstring-injury,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Benjamin Mendy,Manchester City,2019-07-01,2019-09-17,injury-knee-injury,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Oleksandr Zinchenko,Manchester City,2020-02-12,2020-06-30,injury-knock,https://www.transfermarkt.com/oleksandr-zinchenko/verletzungen/spieler/203853
+Kyle Walker,Manchester City,2019-07-10,2019-10-28,injury-knock,https://www.transfermarkt.com/kyle-walker/verletzungen/spieler/95424
+Rodri,Manchester City,2019-10-22,2019-09-11,injury-muscle-injury,https://www.transfermarkt.com/rodri/verletzungen/spieler/357565
+Fernandinho,Manchester City,2020-01-23,2020-01-02,injury-knock,https://www.transfermarkt.com/fernandinho/verletzungen/spieler/26267
+İlkay Gündoğan,Manchester City,2019-07-09,2019-12-09,injury-influenza,https://www.transfermarkt.com/ilkay-gundogan/verletzungen/spieler/53622
+Kevin De Bruyne,Manchester City,2020-02-03,2020-06-30,injury-back-injury,https://www.transfermarkt.com/kevin-de-bruyne/verletzungen/spieler/88755
+David Silva,Manchester City,2020-04-12,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/david-silva/verletzungen/spieler/35518
+David Silva,Manchester City,2019-08-12,2019-12-31,injury-knock,https://www.transfermarkt.com/david-silva/verletzungen/spieler/35518
+David Silva,Manchester City,2019-11-24,2019-11-25,injury-ill,https://www.transfermarkt.com/david-silva/verletzungen/spieler/35518
+David Silva,Manchester City,2019-07-01,2019-09-11,injury-muscle-strain,https://www.transfermarkt.com/david-silva/verletzungen/spieler/35518
+Raheem Sterling,Manchester City,2020-02-02,2020-02-24,injury-hamstring-injury,https://www.transfermarkt.com/raheem-sterling/verletzungen/spieler/134425
+Leroy Sané,Manchester City,2019-07-01,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/leroy-sane/verletzungen/spieler/192565
+Phil Foden,Manchester City,2019-09-15,2019-09-25,injury-ill,https://www.transfermarkt.com/phil-foden/verletzungen/spieler/406635
+Gabriel Jesus,Manchester City,2019-12-22,2019-12-28,injury-ill,https://www.transfermarkt.com/gabriel-jesus/verletzungen/spieler/363205
+Gabriel Jesus,Manchester City,2019-08-18,2019-09-13,injury-hamstring-injury,https://www.transfermarkt.com/gabriel-jesus/verletzungen/spieler/363205
+Sergio Agüero,Manchester City,2020-06-23,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/sergio-aguero/verletzungen/spieler/26399
+Sergio Agüero,Manchester City,2019-11-24,2019-12-20,injury-muscle-injury,https://www.transfermarkt.com/sergio-aguero/verletzungen/spieler/26399
+Sergio Agüero,Manchester City,2019-07-01,2019-08-04,injury-thigh-problems,https://www.transfermarkt.com/sergio-aguero/verletzungen/spieler/26399
+David de Gea,Manchester United,2019-10-16,2019-10-19,injury-groin-strain,https://www.transfermarkt.com/david-de-gea/verletzungen/spieler/59377
+Sergio Romero,Manchester United,2019-07-01,2019-11-05,injury-knee-injury,https://www.transfermarkt.com/sergio-romero/verletzungen/spieler/30690
+Lee Grant,Manchester United,2020-01-27,2020-06-30,injury-knock,https://www.transfermarkt.com/lee-grant/verletzungen/spieler/13460
+Joel Pereira,Manchester United,2019-08-25,2019-09-09,injury-knock,https://www.transfermarkt.com/joel-pereira/verletzungen/spieler/192611
+Joel Pereira,Manchester United,2019-07-01,2019-08-16,injury-back-injury,https://www.transfermarkt.com/joel-pereira/verletzungen/spieler/192611
+Victor Lindelöf,Manchester United,2020-05-07,2020-06-30,injury-back-injury,https://www.transfermarkt.com/victor-lindelof/verletzungen/spieler/184573
+Victor Lindelöf,Manchester United,2020-01-20,2020-01-25,injury-ill,https://www.transfermarkt.com/victor-lindelof/verletzungen/spieler/184573
+Victor Lindelöf,Manchester United,2019-07-01,2019-09-11,injury-back-injury,https://www.transfermarkt.com/victor-lindelof/verletzungen/spieler/184573
+Axel Tuanzebe,Manchester United,2020-06-18,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/axel-tuanzebe/verletzungen/spieler/342046
+Axel Tuanzebe,Manchester United,2019-12-18,2020-05-03,injury-hamstring-strain,https://www.transfermarkt.com/axel-tuanzebe/verletzungen/spieler/342046
+Axel Tuanzebe,Manchester United,2019-10-19,2019-11-23,injury-hip-injury,https://www.transfermarkt.com/axel-tuanzebe/verletzungen/spieler/342046
+Phil Jones,Manchester United,2019-09-26,2019-10-19,injury-knock,https://www.transfermarkt.com/phil-jones/verletzungen/spieler/117996
+Max Taylor,Manchester United,2019-07-01,2019-10-20,injury-cancer,https://www.transfermarkt.com/max-taylor/verletzungen/spieler/460683
+Luke Shaw,Manchester United,2020-03-01,2020-06-30,injury-ill,https://www.transfermarkt.com/luke-shaw/verletzungen/spieler/183288
+Luke Shaw,Manchester United,2019-10-18,2019-11-27,injury-muscle-injury,https://www.transfermarkt.com/luke-shaw/verletzungen/spieler/183288
+Aaron Wan-Bissaka,Manchester United,2020-02-03,2020-06-30,injury-back-injury,https://www.transfermarkt.com/aaron-wan-bissaka/verletzungen/spieler/477758
+Aaron Wan-Bissaka,Manchester United,2019-09-27,2019-10-19,injury-tonsillitis,https://www.transfermarkt.com/aaron-wan-bissaka/verletzungen/spieler/477758
+Aaron Wan-Bissaka,Manchester United,2019-07-01,2019-09-13,injury-back-injury,https://www.transfermarkt.com/aaron-wan-bissaka/verletzungen/spieler/477758
+Diogo Dalot,Manchester United,2019-10-18,2020-02-01,injury-groin-injury,https://www.transfermarkt.com/diogo-dalot/verletzungen/spieler/357147
+Diogo Dalot,Manchester United,2019-07-01,2019-09-17,injury-hip-injury,https://www.transfermarkt.com/diogo-dalot/verletzungen/spieler/357147
+Timothy Fosu-Mensah,Manchester United,2019-07-01,2020-06-30,injury-cruciate-ligament-surgery,https://www.transfermarkt.com/timothy-fosu-mensah/verletzungen/spieler/315131
+Nemanja Matić,Manchester United,2019-10-20,2019-11-12,injury-unknown-injury,https://www.transfermarkt.com/nemanja-matic/verletzungen/spieler/74683
+Nemanja Matić,Manchester United,2019-07-01,2019-10-03,injury-muscle-stiffness,https://www.transfermarkt.com/nemanja-matic/verletzungen/spieler/74683
+James Garner,Manchester United,2019-08-30,2019-10-09,injury-unknown-injury,https://www.transfermarkt.com/james-garner/verletzungen/spieler/505219
+Scott McTominay,Manchester United,2019-12-27,2020-02-22,injury-knee-injury,https://www.transfermarkt.com/scott-mctominay/verletzungen/spieler/315969
+Jesse Lingard,Manchester United,2019-07-01,2019-10-23,injury-hamstring-injury,https://www.transfermarkt.com/jesse-lingard/verletzungen/spieler/141660
+Jesse Lingard,Manchester United,2019-07-09,2019-09-18,injury-ill,https://www.transfermarkt.com/jesse-lingard/verletzungen/spieler/141660
+Jesse Lingard,Manchester United,2019-07-01,2019-11-05,injury-knee-injury,https://www.transfermarkt.com/jesse-lingard/verletzungen/spieler/141660
+Marcus Rashford,Manchester United,2020-01-16,2020-05-06,injury-back-injury,https://www.transfermarkt.com/marcus-rashford/verletzungen/spieler/258923
+Marcus Rashford,Manchester United,2019-09-22,2019-09-30,injury-hip-injury,https://www.transfermarkt.com/marcus-rashford/verletzungen/spieler/258923
+Mason Greenwood,Manchester United,2020-05-11,2020-06-30,injury-bruise,https://www.transfermarkt.com/mason-greenwood/verletzungen/spieler/532826
+Mason Greenwood,Manchester United,2020-02-19,2020-02-22,injury-ill,https://www.transfermarkt.com/mason-greenwood/verletzungen/spieler/532826
+Mason Greenwood,Manchester United,2019-07-10,2019-10-19,injury-back-injury,https://www.transfermarkt.com/mason-greenwood/verletzungen/spieler/532826
+Mason Greenwood,Manchester United,2019-09-20,2019-09-23,injury-tonsillitis,https://www.transfermarkt.com/mason-greenwood/verletzungen/spieler/532826
+Mason Greenwood,Manchester United,2019-07-01,2019-11-05,injury-bruise,https://www.transfermarkt.com/mason-greenwood/verletzungen/spieler/532826
+Mason Greenwood,Manchester United,2019-11-03,2019-12-04,injury-ill,https://www.transfermarkt.com/mason-greenwood/verletzungen/spieler/532826
+Daniel James,Manchester United,2020-02-28,2020-06-30,injury-knock,https://www.transfermarkt.com/daniel-james/verletzungen/spieler/319301
+Daniel James,Manchester United,2019-10-09,2019-09-21,injury-ankle-injury,https://www.transfermarkt.com/daniel-james/verletzungen/spieler/319301
+Anthony Martial,Manchester United,2019-08-25,2019-10-20,injury-hamstring-strain,https://www.transfermarkt.com/anthony-martial/verletzungen/spieler/182877
+Odion Ighalo,Manchester United,2019-07-18,2019-11-09,injury-hamstring-injury,https://www.transfermarkt.com/odion-ighalo/verletzungen/spieler/62121
+Karl Darlow,Newcastle United,2019-09-12,2019-12-23,injury-knock,https://www.transfermarkt.com/karl-darlow/verletzungen/spieler/99397
+Jamaal Lascelles,Newcastle United,2019-09-11,2020-01-13,injury-knee-injury,https://www.transfermarkt.com/jamaal-lascelles/verletzungen/spieler/183318
+Fabian Schär,Newcastle United,2020-02-01,2020-01-17,injury-hamstring-strain,https://www.transfermarkt.com/fabian-schar/verletzungen/spieler/135343
+Fabian Schär,Newcastle United,2019-12-29,2019-12-31,injury-knock,https://www.transfermarkt.com/fabian-schar/verletzungen/spieler/135343
+Fabian Schär,Newcastle United,2019-10-20,2019-11-24,injury-knee-injury,https://www.transfermarkt.com/fabian-schar/verletzungen/spieler/135343
+Fabian Schär,Newcastle United,2019-09-15,2019-09-20,injury-calf-injury,https://www.transfermarkt.com/fabian-schar/verletzungen/spieler/135343
+Fabian Schär,Newcastle United,2019-07-01,2019-11-05,injury-knock,https://www.transfermarkt.com/fabian-schar/verletzungen/spieler/135343
+Jetro Willems,Newcastle United,2020-01-18,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/jetro-willems/verletzungen/spieler/146258
+Jetro Willems,Newcastle United,2020-02-01,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/jetro-willems/verletzungen/spieler/146258
+Jetro Willems,Newcastle United,2019-12-15,2019-12-25,injury-knee-injury,https://www.transfermarkt.com/jetro-willems/verletzungen/spieler/146258
+Jetro Willems,Newcastle United,2019-08-29,2019-08-30,injury-hamstring-injury,https://www.transfermarkt.com/jetro-willems/verletzungen/spieler/146258
+Federico Fernández,Newcastle United,2020-01-12,2020-06-30,injury-corona-virus,https://www.transfermarkt.com/federico-fernandez/verletzungen/spieler/85475
+Federico Fernández,Newcastle United,2019-07-01,2019-11-01,injury-hip-injury,https://www.transfermarkt.com/federico-fernandez/verletzungen/spieler/85475
+Ciaran Clark,Newcastle United,2020-02-16,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/ciaran-clark/verletzungen/spieler/98240
+Ciaran Clark,Newcastle United,2019-09-12,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/ciaran-clark/verletzungen/spieler/98240
+Ciaran Clark,Newcastle United,2019-07-01,2019-11-01,injury-ankle-injury,https://www.transfermarkt.com/ciaran-clark/verletzungen/spieler/98240
+Florian Lejeune,Newcastle United,2020-06-13,2020-06-30,injury-thigh-problems,https://www.transfermarkt.com/florian-lejeune/verletzungen/spieler/127108
+Florian Lejeune,Newcastle United,2020-01-23,2020-01-30,injury-groin-injury,https://www.transfermarkt.com/florian-lejeune/verletzungen/spieler/127108
+Paul Dummett,Newcastle United,2019-12-22,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/paul-dummett/verletzungen/spieler/170321
+DeAndre Yedlin,Newcastle United,2020-05-01,2020-01-23,injury-hand-injury,https://www.transfermarkt.com/deandre-yedlin/verletzungen/spieler/255916
+DeAndre Yedlin,Newcastle United,2019-11-27,2019-10-12,injury-hip-injury,https://www.transfermarkt.com/deandre-yedlin/verletzungen/spieler/255916
+DeAndre Yedlin,Newcastle United,2019-07-01,2019-09-28,injury-groin-problems,https://www.transfermarkt.com/deandre-yedlin/verletzungen/spieler/255916
+Emil Krafth,Newcastle United,2020-01-21,2020-06-20,injury-ankle-injury,https://www.transfermarkt.com/emil-krafth/verletzungen/spieler/184528
+Javier Manquillo,Newcastle United,2020-02-07,2020-04-07,injury-knock,https://www.transfermarkt.com/javier-manquillo/verletzungen/spieler/162029
+Javier Manquillo,Newcastle United,2020-02-01,2020-02-28,injury-hamstring-strain,https://www.transfermarkt.com/javier-manquillo/verletzungen/spieler/162029
+Isaac Hayden,Newcastle United,2020-05-07,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/isaac-hayden/verletzungen/spieler/206225
+Nabil Bentaleb,Newcastle United,2019-07-01,2019-11-20,injury-meniscus-tear,https://www.transfermarkt.com/nabil-bentaleb/verletzungen/spieler/245537
+Jack Colback,Newcastle United,2019-12-18,2020-01-03,injury-knee-injury,https://www.transfermarkt.com/jack-colback/verletzungen/spieler/61644
+Joelinton,Newcastle United,2020-02-07,2020-04-07,injury-ankle-injury,https://www.transfermarkt.com/joelinton/verletzungen/spieler/333241
+Joelinton,Newcastle United,2020-02-17,2020-02-21,injury-hamstring-strain,https://www.transfermarkt.com/joelinton/verletzungen/spieler/333241
+Joelinton,Newcastle United,2020-06-02,2020-02-15,injury-shoulder-injury,https://www.transfermarkt.com/joelinton/verletzungen/spieler/333241
+Joelinton,Newcastle United,2019-12-29,2019-12-31,injury-calf-problems,https://www.transfermarkt.com/joelinton/verletzungen/spieler/333241
+Sean Longstaff,Newcastle United,2020-01-07,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/sean-longstaff/verletzungen/spieler/346707
+Sean Longstaff,Newcastle United,2019-07-01,2019-09-28,injury-ankle-injury,https://www.transfermarkt.com/sean-longstaff/verletzungen/spieler/346707
+Jonjo Shelvey,Newcastle United,2020-01-18,2020-02-28,injury-hamstring-strain,https://www.transfermarkt.com/jonjo-shelvey/verletzungen/spieler/71292
+Jonjo Shelvey,Newcastle United,2019-09-12,2019-12-20,injury-calf-injury,https://www.transfermarkt.com/jonjo-shelvey/verletzungen/spieler/71292
+Jonjo Shelvey,Newcastle United,2019-12-08,2019-08-16,injury-knee-injury,https://www.transfermarkt.com/jonjo-shelvey/verletzungen/spieler/71292
+Jonjo Shelvey,Newcastle United,2019-07-01,2019-08-03,injury-hamstring-strain,https://www.transfermarkt.com/jonjo-shelvey/verletzungen/spieler/71292
+Matty Longstaff,Newcastle United,2020-06-29,2020-04-07,injury-hamstring-strain,https://www.transfermarkt.com/matty-longstaff/verletzungen/spieler/484387
+Matt Ritchie,Newcastle United,2020-06-24,2020-01-07,injury-knock,https://www.transfermarkt.com/matt-ritchie/verletzungen/spieler/92469
+Matt Ritchie,Newcastle United,2020-06-18,2020-06-20,injury-knock,https://www.transfermarkt.com/matt-ritchie/verletzungen/spieler/92469
+Matt Ritchie,Newcastle United,2019-08-28,2020-03-01,injury-ankle-injury,https://www.transfermarkt.com/matt-ritchie/verletzungen/spieler/92469
+Matt Ritchie,Newcastle United,2019-07-01,2019-10-08,injury-hamstring-injury,https://www.transfermarkt.com/matt-ritchie/verletzungen/spieler/92469
+Matt Ritchie,Newcastle United,2019-07-30,2019-10-08,injury-hamstring-injury,https://www.transfermarkt.com/matt-ritchie/verletzungen/spieler/92469
+Christian Atsu,Newcastle United,2020-02-21,2020-01-03,injury-ill,https://www.transfermarkt.com/christian-atsu/verletzungen/spieler/186997
+Christian Atsu,Newcastle United,2019-12-08,2019-08-24,injury-hamstring-injury,https://www.transfermarkt.com/christian-atsu/verletzungen/spieler/186997
+Miguel Almirón,Newcastle United,2020-06-07,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/miguel-almiron/verletzungen/spieler/272999
+Miguel Almirón,Newcastle United,2020-06-02,2020-02-15,injury-knock,https://www.transfermarkt.com/miguel-almiron/verletzungen/spieler/272999
+Miguel Almirón,Newcastle United,2020-05-01,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/miguel-almiron/verletzungen/spieler/272999
+Miguel Almirón,Newcastle United,2019-09-12,2019-12-20,injury-hamstring-injury,https://www.transfermarkt.com/miguel-almiron/verletzungen/spieler/272999
+Miguel Almirón,Newcastle United,2019-08-26,2019-08-30,injury-ankle-injury,https://www.transfermarkt.com/miguel-almiron/verletzungen/spieler/272999
+Miguel Almirón,Newcastle United,2019-07-01,2019-08-06,injury-hamstring-injury,https://www.transfermarkt.com/miguel-almiron/verletzungen/spieler/272999
+Dwight Gayle,Newcastle United,2020-05-09,2020-06-30,injury-inner-ligament-injury,https://www.transfermarkt.com/dwight-gayle/verletzungen/spieler/196522
+Dwight Gayle,Newcastle United,2020-01-05,2020-06-20,injury-calf-injury,https://www.transfermarkt.com/dwight-gayle/verletzungen/spieler/196522
+Dwight Gayle,Newcastle United,2020-02-01,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/dwight-gayle/verletzungen/spieler/196522
+Yoshinori Muto,Newcastle United,2020-04-01,2020-02-19,injury-hip-injury,https://www.transfermarkt.com/yoshinori-muto/verletzungen/spieler/230541
+Andy Carroll,Newcastle United,2020-06-07,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/andy-carroll/verletzungen/spieler/48066
+Andy Carroll,Newcastle United,2020-01-15,2020-06-15,injury-knock,https://www.transfermarkt.com/andy-carroll/verletzungen/spieler/48066
+Andy Carroll,Newcastle United,2020-02-01,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/andy-carroll/verletzungen/spieler/48066
+Andy Carroll,Newcastle United,2019-07-01,2019-09-20,injury-ankle-surgery,https://www.transfermarkt.com/andy-carroll/verletzungen/spieler/48066
+Tim Krul,Norwich City,2019-09-22,2019-10-18,injury-back-injury,https://www.transfermarkt.com/tim-krul/verletzungen/spieler/33027
+Tim Krul,Norwich City,2019-07-01,2019-09-13,injury-knock,https://www.transfermarkt.com/tim-krul/verletzungen/spieler/33027
+Ben Godfrey,Norwich City,2019-12-15,2020-01-17,injury-torn-knee-ligaments,https://www.transfermarkt.com/ben-godfrey/verletzungen/spieler/343475
+Ben Godfrey,Norwich City,2019-10-22,2019-10-26,injury-groin-injury,https://www.transfermarkt.com/ben-godfrey/verletzungen/spieler/343475
+Ben Godfrey,Norwich City,2019-11-09,2019-09-13,injury-groin-injury,https://www.transfermarkt.com/ben-godfrey/verletzungen/spieler/343475
+Christoph Zimmermann,Norwich City,2020-06-18,2020-06-30,injury-muscle-strain,https://www.transfermarkt.com/christoph-zimmermann/verletzungen/spieler/77812
+Christoph Zimmermann,Norwich City,2020-02-16,2020-06-03,injury-hamstring-injury,https://www.transfermarkt.com/christoph-zimmermann/verletzungen/spieler/77812
+Christoph Zimmermann,Norwich City,2019-07-01,2019-11-22,injury-ankle-injury,https://www.transfermarkt.com/christoph-zimmermann/verletzungen/spieler/77812
+Christoph Zimmermann,Norwich City,2019-10-07,2019-08-26,injury-knee-surgery,https://www.transfermarkt.com/christoph-zimmermann/verletzungen/spieler/77812
+Grant Hanley,Norwich City,2020-06-15,2020-01-10,injury-hamstring-injury,https://www.transfermarkt.com/grant-hanley/verletzungen/spieler/121385
+Grant Hanley,Norwich City,2020-05-01,2020-06-30,injury-ill,https://www.transfermarkt.com/grant-hanley/verletzungen/spieler/121385
+Grant Hanley,Norwich City,2019-09-29,2019-12-18,injury-groin-strain,https://www.transfermarkt.com/grant-hanley/verletzungen/spieler/121385
+Grant Hanley,Norwich City,2019-08-26,2019-10-09,injury-groin-strain,https://www.transfermarkt.com/grant-hanley/verletzungen/spieler/121385
+Timm Klose,Norwich City,2019-08-27,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/timm-klose/verletzungen/spieler/65255
+Timm Klose,Norwich City,2019-07-08,2019-08-23,injury-groin-injury,https://www.transfermarkt.com/timm-klose/verletzungen/spieler/65255
+Jamal Lewis,Norwich City,2020-05-01,2020-06-30,injury-tonsillitis,https://www.transfermarkt.com/jamal-lewis/verletzungen/spieler/346018
+Jamal Lewis,Norwich City,2019-11-18,2019-11-30,injury-knee-injury,https://www.transfermarkt.com/jamal-lewis/verletzungen/spieler/346018
+Sam Byram,Norwich City,2020-02-16,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/sam-byram/verletzungen/spieler/236953
+Sam Byram,Norwich City,2019-07-01,2019-08-04,injury-knee-surgery,https://www.transfermarkt.com/sam-byram/verletzungen/spieler/236953
+Philip Heise,Norwich City,2020-05-03,2020-06-30,injury-cold,https://www.transfermarkt.com/philip-heise/verletzungen/spieler/112617
+Max Aarons,Norwich City,2019-11-09,2019-09-27,injury-ankle-injury,https://www.transfermarkt.com/max-aarons/verletzungen/spieler/471690
+Ibrahim Amadou,Norwich City,2019-07-08,2019-08-30,injury-knock,https://www.transfermarkt.com/ibrahim-amadou/verletzungen/spieler/205503
+Tom Trybull,Norwich City,2020-04-11,2020-06-30,injury-bruised-ribs,https://www.transfermarkt.com/tom-trybull/verletzungen/spieler/93831
+Tom Trybull,Norwich City,2019-07-01,2019-10-18,injury-ankle-injury,https://www.transfermarkt.com/tom-trybull/verletzungen/spieler/93831
+Alexander Tettey,Norwich City,2019-09-27,2019-10-18,injury-groin-injury,https://www.transfermarkt.com/alexander-tettey/verletzungen/spieler/12384
+Alexander Tettey,Norwich City,2019-07-01,2019-08-16,injury-calf-injury,https://www.transfermarkt.com/alexander-tettey/verletzungen/spieler/12384
+Kenny McLean,Norwich City,2019-10-08,2019-08-16,injury-back-injury,https://www.transfermarkt.com/kenny-mclean/verletzungen/spieler/126600
+Moritz Leitner,Norwich City,2019-07-01,2019-09-20,injury-calf-injury,https://www.transfermarkt.com/moritz-leitner/verletzungen/spieler/82243
+Mario Vrancic,Norwich City,2020-06-09,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/mario-vrancic/verletzungen/spieler/39372
+Mario Vrancic,Norwich City,2019-07-01,2019-07-11,injury-calf-injury,https://www.transfermarkt.com/mario-vrancic/verletzungen/spieler/39372
+Todd Cantwell,Norwich City,2020-01-11,2020-06-12,injury-hip-injury,https://www.transfermarkt.com/todd-cantwell/verletzungen/spieler/332341
+Todd Cantwell,Norwich City,2020-01-24,2020-01-31,injury-hamstring-injury,https://www.transfermarkt.com/todd-cantwell/verletzungen/spieler/332341
+Todd Cantwell,Norwich City,2019-11-24,2019-11-30,injury-ankle-injury,https://www.transfermarkt.com/todd-cantwell/verletzungen/spieler/332341
+Emiliano Buendía,Norwich City,2020-01-09,2020-06-30,injury-shin-injury,https://www.transfermarkt.com/emiliano-buendia/verletzungen/spieler/321247
+Emiliano Buendía,Norwich City,2020-01-19,2020-01-31,injury-muscle-strain,https://www.transfermarkt.com/emiliano-buendia/verletzungen/spieler/321247
+Lukas Rupp,Norwich City,2019-07-01,2019-12-03,injury-cruciate-ligament-tear,https://www.transfermarkt.com/lukas-rupp/verletzungen/spieler/82863
+Onel Hernández,Norwich City,2020-04-10,2020-06-30,injury-adductor-injury,https://www.transfermarkt.com/onel-hernandez/verletzungen/spieler/109751
+Onel Hernández,Norwich City,2020-02-19,2020-06-15,injury-knee-injury,https://www.transfermarkt.com/onel-hernandez/verletzungen/spieler/109751
+Onel Hernández,Norwich City,2019-10-08,2019-10-18,injury-knee-injury,https://www.transfermarkt.com/onel-hernandez/verletzungen/spieler/109751
+Josh Martin,Norwich City,2020-06-09,2020-06-30,injury-calf-problems,https://www.transfermarkt.com/josh-martin/verletzungen/spieler/547534
+Teemu Pukki,Norwich City,2020-02-01,2020-01-17,injury-muscle-strain,https://www.transfermarkt.com/teemu-pukki/verletzungen/spieler/46972
+Teemu Pukki,Norwich City,2019-12-15,2019-12-20,injury-ankle-injury,https://www.transfermarkt.com/teemu-pukki/verletzungen/spieler/46972
+Josip Drmic,Norwich City,2019-09-11,2020-01-15,injury-hamstring-injury,https://www.transfermarkt.com/josip-drmic/verletzungen/spieler/140579
+Josip Drmic,Norwich City,2019-10-08,2019-08-28,injury-hamstring-injury,https://www.transfermarkt.com/josip-drmic/verletzungen/spieler/140579
+Adam Idah,Norwich City,2019-08-13,2019-10-09,injury-back-injury,https://www.transfermarkt.com/adam-idah/verletzungen/spieler/434223
+Carlton Morris,Norwich City,2019-07-01,2019-12-03,injury-cruciate-ligament-injury,https://www.transfermarkt.com/carlton-morris/verletzungen/spieler/246963
+Simon Moore,Sheffield United,2019-12-15,2020-01-23,injury-groin-injury,https://www.transfermarkt.com/simon-moore/verletzungen/spieler/123536
+Jake Eastwood,Sheffield United,2020-01-08,2020-03-11,injury-hamstring-injury,https://www.transfermarkt.com/jake-eastwood/verletzungen/spieler/526873
+Jack O'Connell,Sheffield United,2020-06-17,2020-04-07,injury-knee-injury,https://www.transfermarkt.com/jack-oconnell/verletzungen/spieler/212829
+John Egan,Sheffield United,2019-11-20,2019-11-30,injury-calf-stiffness,https://www.transfermarkt.com/john-egan/verletzungen/spieler/121324
+John Egan,Sheffield United,2019-07-01,2019-08-11,injury-knock,https://www.transfermarkt.com/john-egan/verletzungen/spieler/121324
+Phil Jagielka,Sheffield United,2020-06-22,2020-06-23,injury-ankle-injury,https://www.transfermarkt.com/phil-jagielka/verletzungen/spieler/13520
+Enda Stevens,Sheffield United,2020-02-23,2020-06-03,injury-calf-injury,https://www.transfermarkt.com/enda-stevens/verletzungen/spieler/85706
+Luke Freeman,Sheffield United,2020-03-07,2020-06-30,injury-knock,https://www.transfermarkt.com/luke-freeman/verletzungen/spieler/66923
+Lys Mousset,Sheffield United,2020-03-09,2020-06-30,injury-toe-injury,https://www.transfermarkt.com/lys-mousset/verletzungen/spieler/291422
+Lys Mousset,Sheffield United,2019-09-12,2019-12-16,injury-knock,https://www.transfermarkt.com/lys-mousset/verletzungen/spieler/291422
+Callum Robinson,Sheffield United,2019-09-12,2019-12-20,injury-ill,https://www.transfermarkt.com/callum-robinson/verletzungen/spieler/183299
+Callum Robinson,Sheffield United,2019-07-09,2019-09-13,injury-hamstring-strain,https://www.transfermarkt.com/callum-robinson/verletzungen/spieler/183299
+Callum Robinson,Sheffield United,2019-08-19,2019-08-23,injury-hamstring-strain,https://www.transfermarkt.com/callum-robinson/verletzungen/spieler/183299
+Callum Robinson,Sheffield United,2019-07-01,2019-11-03,injury-hamstring-injury,https://www.transfermarkt.com/callum-robinson/verletzungen/spieler/183299
+David McGoldrick,Sheffield United,2020-06-07,2020-06-30,injury-foot-injury,https://www.transfermarkt.com/david-mcgoldrick/verletzungen/spieler/35416
+David McGoldrick,Sheffield United,2020-06-07,2020-06-30,injury-foot-injury,https://www.transfermarkt.com/david-mcgoldrick/verletzungen/spieler/35416
+David McGoldrick,Sheffield United,2020-06-18,2020-06-23,injury-knee-injury,https://www.transfermarkt.com/david-mcgoldrick/verletzungen/spieler/35416
+David McGoldrick,Sheffield United,2019-09-22,2019-10-20,injury-groin-injury,https://www.transfermarkt.com/david-mcgoldrick/verletzungen/spieler/35416
+Jannik Vestergaard,Southampton FC,2020-06-29,2020-06-30,injury-knock,https://www.transfermarkt.com/jannik-vestergaard/verletzungen/spieler/99331
+Jannik Vestergaard,Southampton FC,2020-01-23,2020-01-31,injury-head-injury,https://www.transfermarkt.com/jannik-vestergaard/verletzungen/spieler/99331
+Jannik Vestergaard,Southampton FC,2019-11-26,2019-07-12,injury-ill,https://www.transfermarkt.com/jannik-vestergaard/verletzungen/spieler/99331
+Kevin Danso,Southampton FC,2020-01-09,2020-06-30,injury-muscular-problems,https://www.transfermarkt.com/kevin-danso/verletzungen/spieler/263236
+Maya Yoshida,Southampton FC,2019-07-01,2019-10-06,injury-virus,https://www.transfermarkt.com/maya-yoshida/verletzungen/spieler/81789
+Ryan Bertrand,Southampton FC,2020-02-11,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/ryan-bertrand/verletzungen/spieler/40611
+Ryan Bertrand,Southampton FC,2019-08-18,2019-09-13,injury-ankle-injury,https://www.transfermarkt.com/ryan-bertrand/verletzungen/spieler/40611
+Cédric Soares,Southampton FC,2020-06-17,2020-06-26,injury-broken-nose-bone,https://www.transfermarkt.com/cedric-soares/verletzungen/spieler/112988
+Cédric Soares,Southampton FC,2020-01-21,2020-02-03,injury-knee-injury,https://www.transfermarkt.com/cedric-soares/verletzungen/spieler/112988
+Cédric Soares,Southampton FC,2019-09-26,2019-08-11,injury-calf-injury,https://www.transfermarkt.com/cedric-soares/verletzungen/spieler/112988
+Kyle Walker-Peters,Southampton FC,2020-02-16,2020-02-28,injury-calf-injury,https://www.transfermarkt.com/kyle-walker-peters/verletzungen/spieler/341051
+Kyle Walker-Peters,Southampton FC,2019-08-26,2019-09-17,injury-hamstring-strain,https://www.transfermarkt.com/kyle-walker-peters/verletzungen/spieler/341051
+Yan Valery,Southampton FC,2020-06-29,2020-06-30,injury-knock,https://www.transfermarkt.com/yan-valery/verletzungen/spieler/406008
+Yan Valery,Southampton FC,2019-11-30,2020-02-21,injury-virus,https://www.transfermarkt.com/yan-valery/verletzungen/spieler/406008
+Pierre-Emile Højbjerg,Southampton FC,2020-06-26,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/pierre-emile-hojbjerg/verletzungen/spieler/167799
+Pierre-Emile Højbjerg,Southampton FC,2019-07-01,2019-08-02,injury-concussion,https://www.transfermarkt.com/pierre-emile-hojbjerg/verletzungen/spieler/167799
+James Ward-Prowse,Southampton FC,2020-06-02,2020-02-14,injury-knee-injury,https://www.transfermarkt.com/james-ward-prowse/verletzungen/spieler/181579
+Stuart Armstrong,Southampton FC,2020-06-10,2020-06-30,injury-corona-virus,https://www.transfermarkt.com/stuart-armstrong/verletzungen/spieler/130765
+Stuart Armstrong,Southampton FC,2020-01-03,2020-03-31,injury-concussion,https://www.transfermarkt.com/stuart-armstrong/verletzungen/spieler/130765
+Stuart Armstrong,Southampton FC,2020-01-26,2020-04-02,injury-groin-injury,https://www.transfermarkt.com/stuart-armstrong/verletzungen/spieler/130765
+Stuart Armstrong,Southampton FC,2019-11-24,2019-12-13,injury-hamstring-injury,https://www.transfermarkt.com/stuart-armstrong/verletzungen/spieler/130765
+Stuart Armstrong,Southampton FC,2019-07-01,2019-11-01,injury-unknown-injury,https://www.transfermarkt.com/stuart-armstrong/verletzungen/spieler/130765
+Sofiane Boufal,Southampton FC,2020-02-11,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/sofiane-boufal/verletzungen/spieler/232271
+Sofiane Boufal,Southampton FC,2020-06-20,2020-06-30,injury-muscle-strain,https://www.transfermarkt.com/sofiane-boufal/verletzungen/spieler/232271
+Sofiane Boufal,Southampton FC,2020-02-16,2020-02-21,injury-calf-injury,https://www.transfermarkt.com/sofiane-boufal/verletzungen/spieler/232271
+Sofiane Boufal,Southampton FC,2019-12-29,2020-03-01,injury-ankle-injury,https://www.transfermarkt.com/sofiane-boufal/verletzungen/spieler/232271
+Sofiane Boufal,Southampton FC,2019-11-24,2019-12-20,injury-toe-injury,https://www.transfermarkt.com/sofiane-boufal/verletzungen/spieler/232271
+Moussa Djenepo,Southampton FC,2020-05-10,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/moussa-djenepo/verletzungen/spieler/485424
+Moussa Djenepo,Southampton FC,2020-06-07,2020-06-30,injury-calf-strain,https://www.transfermarkt.com/moussa-djenepo/verletzungen/spieler/485424
+Moussa Djenepo,Southampton FC,2019-12-15,2019-12-27,injury-hamstring-strain,https://www.transfermarkt.com/moussa-djenepo/verletzungen/spieler/485424
+Moussa Djenepo,Southampton FC,2019-08-29,2019-09-13,injury-knock,https://www.transfermarkt.com/moussa-djenepo/verletzungen/spieler/485424
+Nathan Redmond,Southampton FC,2020-02-15,2020-01-06,injury-groin-injury,https://www.transfermarkt.com/nathan-redmond/verletzungen/spieler/129078
+Nathan Redmond,Southampton FC,2019-08-29,2019-09-19,injury-ankle-injury,https://www.transfermarkt.com/nathan-redmond/verletzungen/spieler/129078
+Nathan Tella,Southampton FC,2020-06-29,2020-06-30,injury-bruise,https://www.transfermarkt.com/nathan-tella/verletzungen/spieler/340322
+Mohamed Elyounoussi,Southampton FC,2019-11-20,2020-01-13,injury-foot-injury,https://www.transfermarkt.com/mohamed-elyounoussi/verletzungen/spieler/186644
+Danny Ings,Southampton FC,2020-02-11,2020-06-12,injury-knee-injury,https://www.transfermarkt.com/danny-ings/verletzungen/spieler/134294
+Michael Obafemi,Southampton FC,2019-08-29,2019-09-25,injury-hamstring-injury,https://www.transfermarkt.com/michael-obafemi/verletzungen/spieler/444208
+Shane Long,Southampton FC,2020-01-23,2020-01-31,injury-knee-injury,https://www.transfermarkt.com/shane-long/verletzungen/spieler/37304
+Shane Long,Southampton FC,2019-12-22,2019-12-31,injury-knee-injury,https://www.transfermarkt.com/shane-long/verletzungen/spieler/37304
+Hugo Lloris,Tottenham Hotspur,2020-02-23,2020-06-03,injury-groin-strain,https://www.transfermarkt.com/hugo-lloris/verletzungen/spieler/17965
+Hugo Lloris,Tottenham Hotspur,2019-07-01,2020-01-18,injury-elbow-injury,https://www.transfermarkt.com/hugo-lloris/verletzungen/spieler/17965
+Davinson Sánchez,Tottenham Hotspur,2019-12-09,2019-09-17,injury-ankle-injury,https://www.transfermarkt.com/davinson-sanchez/verletzungen/spieler/341429
+Ben Davies,Tottenham Hotspur,2019-11-21,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/ben-davies/verletzungen/spieler/192765
+Ben Davies,Tottenham Hotspur,2019-08-08,2019-08-19,injury-groin-injury,https://www.transfermarkt.com/ben-davies/verletzungen/spieler/192765
+Jan Vertonghen,Tottenham Hotspur,2019-10-31,2019-11-24,injury-muscle-injury,https://www.transfermarkt.com/jan-vertonghen/verletzungen/spieler/43250
+Juan Foyth,Tottenham Hotspur,2020-01-26,2020-06-30,injury-meniscus-injury,https://www.transfermarkt.com/juan-foyth/verletzungen/spieler/480763
+Juan Foyth,Tottenham Hotspur,2019-07-31,2019-09-22,injury-ankle-injury,https://www.transfermarkt.com/juan-foyth/verletzungen/spieler/480763
+Japhet Tanganga,Tottenham Hotspur,2020-06-15,2020-06-30,injury-back-problems,https://www.transfermarkt.com/japhet-tanganga/verletzungen/spieler/346478
+Serge Aurier,Tottenham Hotspur,2019-11-12,2019-11-12,injury-cheekbone-bruise,https://www.transfermarkt.com/serge-aurier/verletzungen/spieler/127032
+Serge Aurier,Tottenham Hotspur,2019-09-18,2019-09-18,injury-bruised-back,https://www.transfermarkt.com/serge-aurier/verletzungen/spieler/127032
+Serge Aurier,Tottenham Hotspur,2019-08-17,2019-08-28,injury-broken-arm,https://www.transfermarkt.com/serge-aurier/verletzungen/spieler/127032
+Serge Aurier,Tottenham Hotspur,2019-07-29,2019-09-08,injury-hand-injury,https://www.transfermarkt.com/serge-aurier/verletzungen/spieler/127032
+Kyle Walker-Peters,Tottenham Hotspur,2020-02-16,2020-02-28,injury-calf-injury,https://www.transfermarkt.com/kyle-walker-peters/verletzungen/spieler/341051
+Kyle Walker-Peters,Tottenham Hotspur,2019-08-26,2019-09-17,injury-hamstring-strain,https://www.transfermarkt.com/kyle-walker-peters/verletzungen/spieler/341051
+Victor Wanyama,Tottenham Hotspur,2019-08-08,2019-09-08,injury-knee-injury,https://www.transfermarkt.com/victor-wanyama/verletzungen/spieler/77760
+Victor Wanyama,Tottenham Hotspur,2019-10-05,2019-11-05,injury-muscle-strain,https://www.transfermarkt.com/victor-wanyama/verletzungen/spieler/77760
+Tanguy Ndombélé,Tottenham Hotspur,2020-05-12,2020-06-30,injury-unknown-injury,https://www.transfermarkt.com/tanguy-ndombele/verletzungen/spieler/450936
+Harry Winks,Tottenham Hotspur,2019-07-01,2019-12-14,injury-ankle-injury,https://www.transfermarkt.com/harry-winks/verletzungen/spieler/249126
+Moussa Sissoko,Tottenham Hotspur,2020-02-01,2020-03-20,injury-knee-surgery,https://www.transfermarkt.com/moussa-sissoko/verletzungen/spieler/46001
+Gedson Fernandes,Tottenham Hotspur,2019-07-16,2019-09-18,injury-metatarsal-fracture,https://www.transfermarkt.com/gedson-fernandes/verletzungen/spieler/337800
+Christian Eriksen,Tottenham Hotspur,2019-10-16,2019-10-21,injury-muscle-strain,https://www.transfermarkt.com/christian-eriksen/verletzungen/spieler/69633
+Dele Alli,Tottenham Hotspur,2020-03-07,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/dele-alli/verletzungen/spieler/207929
+Dele Alli,Tottenham Hotspur,2019-07-01,2019-08-31,injury-hamstring-injury,https://www.transfermarkt.com/dele-alli/verletzungen/spieler/207929
+Dele Alli,Tottenham Hotspur,2019-07-01,2019-09-03,injury-hamstring-strain,https://www.transfermarkt.com/dele-alli/verletzungen/spieler/207929
+Giovani Lo Celso,Tottenham Hotspur,2020-02-10,2020-06-30,injury-muscle-injury,https://www.transfermarkt.com/giovani-lo-celso/verletzungen/spieler/348795
+Heung-min Son,Tottenham Hotspur,2020-02-17,2020-04-30,injury-broken-arm,https://www.transfermarkt.com/heung-min-son/verletzungen/spieler/91845
+Georges-Kevin N'Koudou,Tottenham Hotspur,2020-01-09,2020-06-30,injury-hamstring-strain,https://www.transfermarkt.com/georges-kevin-nkoudou/verletzungen/spieler/215679
+Georges-Kevin N'Koudou,Tottenham Hotspur,2019-07-01,2019-12-19,injury-hamstring-strain,https://www.transfermarkt.com/georges-kevin-nkoudou/verletzungen/spieler/215679
+Georges-Kevin N'Koudou,Tottenham Hotspur,2019-07-01,2019-08-11,injury-hamstring-strain,https://www.transfermarkt.com/georges-kevin-nkoudou/verletzungen/spieler/215679
+Erik Lamela,Tottenham Hotspur,2020-03-11,2020-06-30,injury-calf-injury,https://www.transfermarkt.com/erik-lamela/verletzungen/spieler/111630
+Erik Lamela,Tottenham Hotspur,2020-03-02,2020-02-18,injury-groin-injury,https://www.transfermarkt.com/erik-lamela/verletzungen/spieler/111630
+Erik Lamela,Tottenham Hotspur,2019-10-23,2019-12-25,injury-hamstring-injury,https://www.transfermarkt.com/erik-lamela/verletzungen/spieler/111630
+Erik Lamela,Tottenham Hotspur,2019-10-03,2019-11-05,injury-muscle-strain,https://www.transfermarkt.com/erik-lamela/verletzungen/spieler/111630
+Erik Lamela,Tottenham Hotspur,2019-07-01,2019-12-01,injury-calf-injury,https://www.transfermarkt.com/erik-lamela/verletzungen/spieler/111630
+Harry Kane,Tottenham Hotspur,2020-02-01,2020-06-30,injury-torn-thigh-muscle,https://www.transfermarkt.com/harry-kane/verletzungen/spieler/132098
+Troy Parrott,Tottenham Hotspur,2020-01-09,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/troy-parrott/verletzungen/spieler/552655
+Troy Parrott,Tottenham Hotspur,2020-05-28,2020-06-30,injury-appendicitis,https://www.transfermarkt.com/troy-parrott/verletzungen/spieler/552655
+Craig Dawson,Watford FC,2019-11-24,2019-12-13,injury-head-injury,https://www.transfermarkt.com/craig-dawson/verletzungen/spieler/121477
+Craig Cathcart,Watford FC,2020-02-01,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/craig-cathcart/verletzungen/spieler/59606
+Craig Cathcart,Watford FC,2019-12-29,2019-12-31,injury-knock,https://www.transfermarkt.com/craig-cathcart/verletzungen/spieler/59606
+Craig Cathcart,Watford FC,2019-07-01,2019-07-11,injury-back-injury,https://www.transfermarkt.com/craig-cathcart/verletzungen/spieler/59606
+Craig Cathcart,Watford FC,2019-11-09,2019-09-27,injury-muscle-strain,https://www.transfermarkt.com/craig-cathcart/verletzungen/spieler/59606
+Sebastian Prödl,Watford FC,2020-01-02,2020-03-08,injury-knee-injury,https://www.transfermarkt.com/sebastian-prodl/verletzungen/spieler/37981
+Sebastian Prödl,Watford FC,2019-10-17,2019-10-25,injury-hamstring-injury,https://www.transfermarkt.com/sebastian-prodl/verletzungen/spieler/37981
+Jose Cholevas,Watford FC,2020-01-06,2020-06-19,injury-foot-injury,https://www.transfermarkt.com/jose-cholevas/verletzungen/spieler/41112
+Jose Cholevas,Watford FC,2019-07-01,2019-12-31,injury-ankle-injury,https://www.transfermarkt.com/jose-cholevas/verletzungen/spieler/41112
+Kiko Femenía,Watford FC,2020-02-01,2020-02-28,injury-hamstring-injury,https://www.transfermarkt.com/kiko-femenia/verletzungen/spieler/76467
+Kiko Femenía,Watford FC,2019-07-01,2019-08-03,injury-hamstring-injury,https://www.transfermarkt.com/kiko-femenia/verletzungen/spieler/76467
+Daryl Janmaat,Watford FC,2019-11-22,2020-02-22,injury-knee-injury,https://www.transfermarkt.com/daryl-janmaat/verletzungen/spieler/60744
+Étienne Capoue,Watford FC,2019-07-01,2019-11-05,injury-groin-strain,https://www.transfermarkt.com/etienne-capoue/verletzungen/spieler/63494
+Nathaniel Chalobah,Watford FC,2020-02-02,2020-06-30,injury-back-injury,https://www.transfermarkt.com/nathaniel-chalobah/verletzungen/spieler/128900
+Nathaniel Chalobah,Watford FC,2020-01-23,2020-01-31,injury-groin-injury,https://www.transfermarkt.com/nathaniel-chalobah/verletzungen/spieler/128900
+Nathaniel Chalobah,Watford FC,2020-05-01,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/nathaniel-chalobah/verletzungen/spieler/128900
+Tom Dele-Bashiru,Watford FC,2020-04-10,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/tom-dele-bashiru/verletzungen/spieler/346472
+Tom Dele-Bashiru,Watford FC,2020-01-09,2020-06-30,injury-knee-injury,https://www.transfermarkt.com/tom-dele-bashiru/verletzungen/spieler/346472
+Will Hughes,Watford FC,2019-12-29,2020-01-31,injury-groin-injury,https://www.transfermarkt.com/will-hughes/verletzungen/spieler/207014
+Roberto Pereyra,Watford FC,2019-08-12,2019-12-21,injury-knock,https://www.transfermarkt.com/roberto-pereyra/verletzungen/spieler/112302
+Roberto Pereyra,Watford FC,2019-10-11,2019-11-29,injury-hamstring-injury,https://www.transfermarkt.com/roberto-pereyra/verletzungen/spieler/112302
+Tom Cleverley,Watford FC,2019-10-30,2020-02-22,injury-heel-injury,https://www.transfermarkt.com/tom-cleverley/verletzungen/spieler/73484
+Domingos Quina,Watford FC,2020-05-01,2020-06-30,injury-muscle-strain,https://www.transfermarkt.com/domingos-quina/verletzungen/spieler/391719
+Domingos Quina,Watford FC,2019-10-30,2019-11-29,injury-groin-injury,https://www.transfermarkt.com/domingos-quina/verletzungen/spieler/391719
+Domingos Quina,Watford FC,2019-10-04,2019-10-07,injury-shoulder-injury,https://www.transfermarkt.com/domingos-quina/verletzungen/spieler/391719
+Abdoulaye Doucouré,Watford FC,2019-07-01,2019-08-02,injury-knee-injury,https://www.transfermarkt.com/abdoulaye-doucoure/verletzungen/spieler/127187
+Ken Sema,Watford FC,2019-11-21,2019-12-18,injury-muscle-fatigue,https://www.transfermarkt.com/ken-sema/verletzungen/spieler/252345
+Adalberto Peñaranda,Watford FC,2019-07-01,2019-11-01,injury-foot-injury,https://www.transfermarkt.com/adalberto-penaranda/verletzungen/spieler/308801
+Ismaïla Sarr,Watford FC,2020-01-19,2020-02-22,injury-hamstring-injury,https://www.transfermarkt.com/ismaila-sarr/verletzungen/spieler/410225
+Ismaïla Sarr,Watford FC,2019-10-21,2019-11-22,injury-unknown-injury,https://www.transfermarkt.com/ismaila-sarr/verletzungen/spieler/410225
+João Pedro,Watford FC,2019-07-21,2019-08-08,injury-ankle-injury,https://www.transfermarkt.com/joao-pedro/verletzungen/spieler/626724
+Andre Gray,Watford FC,2020-01-09,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/andre-gray/verletzungen/spieler/120565
+Troy Deeney,Watford FC,2020-01-09,2020-06-30,injury-knee-problems,https://www.transfermarkt.com/troy-deeney/verletzungen/spieler/65477
+Ignacio Pussetto,Watford FC,2019-09-11,2019-11-22,injury-ankle-sprain,https://www.transfermarkt.com/ignacio-pussetto/verletzungen/spieler/283528
+Danny Welbeck,Watford FC,2019-10-20,2020-01-31,injury-hamstring-injury,https://www.transfermarkt.com/danny-welbeck/verletzungen/spieler/67063
+Roberto,West Ham United,2020-04-02,2020-04-03,injury-knee-injury,https://www.transfermarkt.com/roberto/verletzungen/spieler/37403
+David Martin,West Ham United,2019-12-15,2020-06-30,injury-hip-injury,https://www.transfermarkt.com/david-martin/verletzungen/spieler/15930
+Winston Reid,West Ham United,2019-12-24,2019-12-27,injury-knock,https://www.transfermarkt.com/winston-reid/verletzungen/spieler/37526
+Winston Reid,West Ham United,2019-08-17,2019-10-29,injury-knee-injury,https://www.transfermarkt.com/winston-reid/verletzungen/spieler/37526
+Winston Reid,West Ham United,2019-07-01,2019-09-08,injury-knee-injury,https://www.transfermarkt.com/winston-reid/verletzungen/spieler/37526
+Aaron Cresswell,West Ham United,2020-01-11,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/aaron-cresswell/verletzungen/spieler/92571
+Aaron Cresswell,West Ham United,2020-02-01,2020-06-30,injury-knock,https://www.transfermarkt.com/aaron-cresswell/verletzungen/spieler/92571
+Aaron Cresswell,West Ham United,2019-11-12,2019-12-13,injury-hamstring-injury,https://www.transfermarkt.com/aaron-cresswell/verletzungen/spieler/92571
+Aaron Cresswell,West Ham United,2019-07-01,2019-10-24,injury-groin-injury,https://www.transfermarkt.com/aaron-cresswell/verletzungen/spieler/92571
+Aaron Cresswell,West Ham United,2019-07-01,2019-08-03,injury-head-injury,https://www.transfermarkt.com/aaron-cresswell/verletzungen/spieler/92571
+Aaron Cresswell,West Ham United,2019-07-01,2019-08-02,injury-foot-injury,https://www.transfermarkt.com/aaron-cresswell/verletzungen/spieler/92571
+Arthur Masuaku,West Ham United,2020-06-19,2020-04-07,injury-ankle-injury,https://www.transfermarkt.com/arthur-masuaku/verletzungen/spieler/181380
+Arthur Masuaku,West Ham United,2020-01-24,2020-01-28,injury-knee-injury,https://www.transfermarkt.com/arthur-masuaku/verletzungen/spieler/181380
+Ben Johnson,West Ham United,2019-07-01,2019-08-03,injury-calf-injury,https://www.transfermarkt.com/ben-johnson/verletzungen/spieler/468002
+Tomáš Souček,West Ham United,2020-03-09,2020-06-30,injury-quarantine,https://www.transfermarkt.com/tomas-soucek/verletzungen/spieler/283628
+Tomáš Souček,West Ham United,2020-02-25,2020-05-03,injury-muscular-problems,https://www.transfermarkt.com/tomas-soucek/verletzungen/spieler/283628
+Declan Rice,West Ham United,2019-07-01,2019-11-05,injury-ill,https://www.transfermarkt.com/declan-rice/verletzungen/spieler/357662
+Mark Noble,West Ham United,2020-01-07,2020-04-07,injury-hamstring-injury,https://www.transfermarkt.com/mark-noble/verletzungen/spieler/31835
+Mark Noble,West Ham United,2020-02-01,2020-06-30,injury-ankle-injury,https://www.transfermarkt.com/mark-noble/verletzungen/spieler/31835
+Mark Noble,West Ham United,2019-10-11,2019-11-22,injury-ankle-injury,https://www.transfermarkt.com/mark-noble/verletzungen/spieler/31835
+Mark Noble,West Ham United,2019-08-08,2019-08-23,injury-muscle-strain,https://www.transfermarkt.com/mark-noble/verletzungen/spieler/31835
+Jack Wilshere,West Ham United,2019-10-23,2020-05-31,injury-groin-injury,https://www.transfermarkt.com/jack-wilshere/verletzungen/spieler/74223
+Jack Wilshere,West Ham United,2019-11-08,2019-08-16,injury-groin-injury,https://www.transfermarkt.com/jack-wilshere/verletzungen/spieler/74223
+Manuel Lanzini,West Ham United,2019-10-11,2019-12-25,injury-shoulder-injury,https://www.transfermarkt.com/manuel-lanzini/verletzungen/spieler/135853
+Manuel Lanzini,West Ham United,2019-09-17,2019-09-27,injury-ankle-injury,https://www.transfermarkt.com/manuel-lanzini/verletzungen/spieler/135853
+Felipe Anderson,West Ham United,2020-02-07,2020-06-30,injury-knock,https://www.transfermarkt.com/felipe-anderson/verletzungen/spieler/159372
+Felipe Anderson,West Ham United,2019-11-08,2019-08-23,injury-chest-injury,https://www.transfermarkt.com/felipe-anderson/verletzungen/spieler/159372
+Felipe Anderson,West Ham United,2019-11-08,2019-08-23,injury-muscle-strain,https://www.transfermarkt.com/felipe-anderson/verletzungen/spieler/159372
+Felipe Anderson,West Ham United,2019-07-01,2019-11-05,injury-ill,https://www.transfermarkt.com/felipe-anderson/verletzungen/spieler/159372
+Felipe Anderson,West Ham United,2019-07-01,2019-07-04,injury-ankle-injury,https://www.transfermarkt.com/felipe-anderson/verletzungen/spieler/159372
+Robert Snodgrass,West Ham United,2020-06-19,2020-06-30,injury-back-injury,https://www.transfermarkt.com/robert-snodgrass/verletzungen/spieler/22614
+Robert Snodgrass,West Ham United,2020-01-24,2020-01-28,injury-knee-injury,https://www.transfermarkt.com/robert-snodgrass/verletzungen/spieler/22614
+Robert Snodgrass,West Ham United,2019-07-01,2019-08-12,injury-knock,https://www.transfermarkt.com/robert-snodgrass/verletzungen/spieler/22614
+Robert Snodgrass,West Ham United,2019-11-10,2019-10-18,injury-calf-strain,https://www.transfermarkt.com/robert-snodgrass/verletzungen/spieler/22614
+Grady Diangana,West Ham United,2019-12-14,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/grady-diangana/verletzungen/spieler/342048
+Sébastien Haller,West Ham United,2020-06-10,2020-06-30,injury-knock,https://www.transfermarkt.com/sebastien-haller/verletzungen/spieler/181375
+Sébastien Haller,West Ham United,2020-06-19,2020-06-30,injury-groin-injury,https://www.transfermarkt.com/sebastien-haller/verletzungen/spieler/181375
+Sébastien Haller,West Ham United,2019-11-08,2019-08-23,injury-knee-injury,https://www.transfermarkt.com/sebastien-haller/verletzungen/spieler/181375
+Michail Antonio,West Ham United,2020-02-12,2020-06-30,injury-muscle-strain,https://www.transfermarkt.com/michail-antonio/verletzungen/spieler/104124
+Michail Antonio,West Ham United,2020-01-26,2020-01-31,injury-groin-injury,https://www.transfermarkt.com/michail-antonio/verletzungen/spieler/104124
+Michail Antonio,West Ham United,2019-12-30,2020-01-21,injury-muscle-strain,https://www.transfermarkt.com/michail-antonio/verletzungen/spieler/104124
+Michail Antonio,West Ham United,2019-08-29,2019-11-22,injury-hamstring-injury,https://www.transfermarkt.com/michail-antonio/verletzungen/spieler/104124
+Chicharito,West Ham United,2019-12-19,2019-12-27,injury-virus,https://www.transfermarkt.com/chicharito/verletzungen/spieler/50935
+Albian Ajeti,West Ham United,2019-07-31,2019-08-16,injury-unknown-injury,https://www.transfermarkt.com/albian-ajeti/verletzungen/spieler/195906
+Willy Boly,Wolverhampton Wanderers,2019-10-26,2020-01-22,injury-ankle-injury,https://www.transfermarkt.com/willy-boly/verletzungen/spieler/142310
+Jesús Vallejo,Wolverhampton Wanderers,2020-03-11,2020-06-30,injury-corona-virus,https://www.transfermarkt.com/jesus-vallejo/verletzungen/spieler/251896
+Jesús Vallejo,Wolverhampton Wanderers,2019-07-01,2019-10-02,injury-hamstring-injury,https://www.transfermarkt.com/jesus-vallejo/verletzungen/spieler/251896
+Ryan Bennett,Wolverhampton Wanderers,2020-03-12,2020-06-30,injury-hamstring-injury,https://www.transfermarkt.com/ryan-bennett/verletzungen/spieler/67252
+Ryan Bennett,Wolverhampton Wanderers,2019-10-20,2019-09-11,injury-groin-strain,https://www.transfermarkt.com/ryan-bennett/verletzungen/spieler/67252
+Romain Saïss,Wolverhampton Wanderers,2019-08-10,2019-10-23,injury-hamstring-injury,https://www.transfermarkt.com/romain-saiss/verletzungen/spieler/204198
+Romain Saïss,Wolverhampton Wanderers,2019-07-01,2019-09-13,injury-knock,https://www.transfermarkt.com/romain-saiss/verletzungen/spieler/204198
+Rúben Vinagre,Wolverhampton Wanderers,2020-01-17,2020-02-22,injury-muscle-strain,https://www.transfermarkt.com/ruben-vinagre/verletzungen/spieler/357158
+Rúben Vinagre,Wolverhampton Wanderers,2019-07-01,2019-10-02,injury-virus,https://www.transfermarkt.com/ruben-vinagre/verletzungen/spieler/357158
+Jonny Otto,Wolverhampton Wanderers,2020-02-24,2020-06-06,injury-ankle-injury,https://www.transfermarkt.com/jonny-otto/verletzungen/spieler/175446
+Leander Dendoncker,Wolverhampton Wanderers,2019-08-31,2019-08-31,injury-knock,https://www.transfermarkt.com/leander-dendoncker/verletzungen/spieler/168157
+Connor Ronan,Wolverhampton Wanderers,2019-12-08,2019-08-09,injury-rib-fracture,https://www.transfermarkt.com/connor-ronan/verletzungen/spieler/337787
+Morgan Gibbs-White,Wolverhampton Wanderers,2020-04-10,2020-06-30,injury-broken-foot,https://www.transfermarkt.com/morgan-gibbs-white/verletzungen/spieler/429014
+Morgan Gibbs-White,Wolverhampton Wanderers,2020-04-03,2020-06-06,injury-ankle-injury,https://www.transfermarkt.com/morgan-gibbs-white/verletzungen/spieler/429014
+Morgan Gibbs-White,Wolverhampton Wanderers,2019-07-01,2020-06-30,injury-back-injury,https://www.transfermarkt.com/morgan-gibbs-white/verletzungen/spieler/429014
+Morgan Gibbs-White,Wolverhampton Wanderers,2019-08-08,2019-10-08,injury-knock,https://www.transfermarkt.com/morgan-gibbs-white/verletzungen/spieler/429014
+Meritan Shabani,Wolverhampton Wanderers,2019-09-25,2020-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/meritan-shabani/verletzungen/spieler/379980
+Diogo Jota,Wolverhampton Wanderers,2020-02-01,2020-01-23,injury-calf-injury,https://www.transfermarkt.com/diogo-jota/verletzungen/spieler/340950
+Diogo Jota,Wolverhampton Wanderers,2019-09-23,2019-10-21,injury-ankle-injury,https://www.transfermarkt.com/diogo-jota/verletzungen/spieler/340950
+Daniel Podence,Wolverhampton Wanderers,2020-01-07,2020-06-30,injury-quarantine,https://www.transfermarkt.com/daniel-podence/verletzungen/spieler/256977
+Adama Traoré,Wolverhampton Wanderers,2020-02-09,2020-04-09,injury-knock,https://www.transfermarkt.com/adama-traore/verletzungen/spieler/204103
+Adama Traoré,Wolverhampton Wanderers,2020-02-03,2020-06-03,injury-shoulder-injury,https://www.transfermarkt.com/adama-traore/verletzungen/spieler/204103
+Adama Traoré,Wolverhampton Wanderers,2020-02-02,2020-02-13,injury-shoulder-injury,https://www.transfermarkt.com/adama-traore/verletzungen/spieler/204103
+Adama Traoré,Wolverhampton Wanderers,2020-01-17,2020-01-17,injury-knock,https://www.transfermarkt.com/adama-traore/verletzungen/spieler/204103
+Adama Traoré,Wolverhampton Wanderers,2019-12-16,2019-12-20,injury-shoulder-injury,https://www.transfermarkt.com/adama-traore/verletzungen/spieler/204103
+Adama Traoré,Wolverhampton Wanderers,2019-11-11,2019-11-22,injury-knock,https://www.transfermarkt.com/adama-traore/verletzungen/spieler/204103
+Pedro Neto,Wolverhampton Wanderers,2020-02-07,2020-06-30,injury-knock,https://www.transfermarkt.com/pedro-neto/verletzungen/spieler/487465
+Pedro Neto,Wolverhampton Wanderers,2019-07-10,2019-10-28,injury-calf-injury,https://www.transfermarkt.com/pedro-neto/verletzungen/spieler/487465
+Pedro Neto,Wolverhampton Wanderers,2019-07-01,2019-08-04,injury-knock,https://www.transfermarkt.com/pedro-neto/verletzungen/spieler/487465
+Patrick Cutrone,Wolverhampton Wanderers,2020-03-14,2020-05-04,injury-corona-virus,https://www.transfermarkt.com/patrick-cutrone/verletzungen/spieler/265078

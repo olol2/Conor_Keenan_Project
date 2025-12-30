@@ -1,0 +1,565 @@
+player_name,team,start_date,end_date,type,source
+William Saliba,Arsenal FC,2023-03-16,2023-06-20,injury-back-injury,https://www.transfermarkt.com/william-saliba/verletzungen/spieler/495666
+Takehiro Tomiyasu,Arsenal FC,2023-03-12,2023-06-30,injury-calf-injury,https://www.transfermarkt.com/takehiro-tomiyasu/verletzungen/spieler/331560
+Takehiro Tomiyasu,Arsenal FC,2023-03-16,2023-01-07,injury-knee-surgery,https://www.transfermarkt.com/takehiro-tomiyasu/verletzungen/spieler/331560
+Takehiro Tomiyasu,Arsenal FC,2022-07-01,2022-11-15,injury-muscular-problems,https://www.transfermarkt.com/takehiro-tomiyasu/verletzungen/spieler/331560
+Rob Holding,Arsenal FC,2023-01-12,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/rob-holding/verletzungen/spieler/253341
+Oleksandr Zinchenko,Arsenal FC,2023-04-14,2023-04-17,injury-unknown-injury,https://www.transfermarkt.com/oleksandr-zinchenko/verletzungen/spieler/203853
+Kieran Tierney,Arsenal FC,2023-01-10,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/kieran-tierney/verletzungen/spieler/300716
+Kieran Tierney,Arsenal FC,2022-07-01,2022-07-07,injury-knee-surgery,https://www.transfermarkt.com/kieran-tierney/verletzungen/spieler/300716
+Ainsley Maitland-Niles,Arsenal FC,2023-06-03,2023-03-16,injury-knock,https://www.transfermarkt.com/ainsley-maitland-niles/verletzungen/spieler/285845
+Thomas Partey,Arsenal FC,2023-02-09,2023-03-10,injury-groin-injury,https://www.transfermarkt.com/thomas-partey/verletzungen/spieler/230784
+Thomas Partey,Arsenal FC,2022-09-22,2022-09-30,injury-knock,https://www.transfermarkt.com/thomas-partey/verletzungen/spieler/230784
+Thomas Partey,Arsenal FC,2022-08-25,2022-09-15,injury-thigh-problems,https://www.transfermarkt.com/thomas-partey/verletzungen/spieler/230784
+Thomas Partey,Arsenal FC,2022-07-01,2022-07-25,injury-unknown-injury,https://www.transfermarkt.com/thomas-partey/verletzungen/spieler/230784
+Jorginho,Arsenal FC,2022-07-01,2022-08-05,injury-unknown-injury,https://www.transfermarkt.com/jorginho/verletzungen/spieler/102017
+Mohamed Elneny,Arsenal FC,2023-01-14,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/mohamed-elneny/verletzungen/spieler/160438
+Martin Ødegaard,Arsenal FC,2023-03-11,2023-06-30,injury-hip-injury,https://www.transfermarkt.com/martin-odegaard/verletzungen/spieler/316264
+Emile Smith Rowe,Arsenal FC,2023-01-25,2023-02-16,injury-thigh-problems,https://www.transfermarkt.com/emile-smith-rowe/verletzungen/spieler/392765
+Emile Smith Rowe,Arsenal FC,2022-10-09,2023-06-30,injury-groin-surgery,https://www.transfermarkt.com/emile-smith-rowe/verletzungen/spieler/392765
+Emile Smith Rowe,Arsenal FC,2022-07-01,2022-09-03,injury-ill,https://www.transfermarkt.com/emile-smith-rowe/verletzungen/spieler/392765
+Fábio Vieira,Arsenal FC,2022-07-01,2022-08-18,injury-foot-injury,https://www.transfermarkt.com/fabio-vieira/verletzungen/spieler/537598
+Gabriel Martinelli,Arsenal FC,2023-05-14,2023-01-06,injury-ankle-injury,https://www.transfermarkt.com/gabriel-martinelli/verletzungen/spieler/655488
+Reiss Nelson,Arsenal FC,2022-12-22,2023-06-30,injury-thigh-problems,https://www.transfermarkt.com/reiss-nelson/verletzungen/spieler/340325
+Reiss Nelson,Arsenal FC,2022-07-01,2022-07-03,injury-knock,https://www.transfermarkt.com/reiss-nelson/verletzungen/spieler/340325
+Reiss Nelson,Arsenal FC,2022-07-01,2022-10-02,injury-corona-virus,https://www.transfermarkt.com/reiss-nelson/verletzungen/spieler/340325
+Bukayo Saka,Arsenal FC,2023-03-10,2023-06-30,injury-thigh-problems,https://www.transfermarkt.com/bukayo-saka/verletzungen/spieler/433177
+Nicolas Pépé,Arsenal FC,2023-03-12,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/nicolas-pepe/verletzungen/spieler/343052
+Nicolas Pépé,Arsenal FC,2023-04-20,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/nicolas-pepe/verletzungen/spieler/343052
+Nicolas Pépé,Arsenal FC,2023-01-28,2023-03-15,injury-knee-injury,https://www.transfermarkt.com/nicolas-pepe/verletzungen/spieler/343052
+Nicolas Pépé,Arsenal FC,2022-07-01,2022-10-04,injury-virus,https://www.transfermarkt.com/nicolas-pepe/verletzungen/spieler/343052
+Gabriel Jesus,Arsenal FC,2023-02-08,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/gabriel-jesus/verletzungen/spieler/363205
+Gabriel Jesus,Arsenal FC,2022-07-01,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/gabriel-jesus/verletzungen/spieler/363205
+Eddie Nketiah,Arsenal FC,2023-02-03,2023-04-13,injury-ankle-injury,https://www.transfermarkt.com/eddie-nketiah/verletzungen/spieler/340324
+Jed Steer,Aston Villa,2022-07-01,2022-10-31,injury-achilles-tendon-problems,https://www.transfermarkt.com/jed-steer/verletzungen/spieler/110867
+Ezri Konsa,Aston Villa,2022-07-01,2022-10-07,injury-knee-injury,https://www.transfermarkt.com/ezri-konsa/verletzungen/spieler/413403
+Diego Carlos,Aston Villa,2022-11-08,2023-06-30,injury-achilles-tendon-rupture,https://www.transfermarkt.com/diego-carlos/verletzungen/spieler/329145
+Kortney Hause,Aston Villa,2022-07-01,2023-06-30,injury-knee-surgery,https://www.transfermarkt.com/kortney-hause/verletzungen/spieler/233124
+Álex Moreno,Aston Villa,2023-05-20,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/alex-moreno/verletzungen/spieler/193098
+Lucas Digne,Aston Villa,2023-01-14,2023-03-02,injury-shoulder-injury,https://www.transfermarkt.com/lucas-digne/verletzungen/spieler/126664
+Lucas Digne,Aston Villa,2022-09-17,2022-10-27,injury-ankle-injury,https://www.transfermarkt.com/lucas-digne/verletzungen/spieler/126664
+Ludwig Augustinsson,Aston Villa,2023-06-12,2023-06-30,injury-ill,https://www.transfermarkt.com/ludwig-augustinsson/verletzungen/spieler/170646
+Ludwig Augustinsson,Aston Villa,2022-07-01,2022-10-31,injury-hamstring-injury,https://www.transfermarkt.com/ludwig-augustinsson/verletzungen/spieler/170646
+Matty Cash,Aston Villa,2023-04-05,2023-06-30,injury-fitness,https://www.transfermarkt.com/matty-cash/verletzungen/spieler/425334
+Matty Cash,Aston Villa,2023-03-29,2023-03-05,injury-calf-injury,https://www.transfermarkt.com/matty-cash/verletzungen/spieler/425334
+Matty Cash,Aston Villa,2022-07-01,2022-09-28,injury-tendon-rupture,https://www.transfermarkt.com/matty-cash/verletzungen/spieler/425334
+Boubacar Kamara,Aston Villa,2023-04-04,2023-04-30,injury-ankle-injury,https://www.transfermarkt.com/boubacar-kamara/verletzungen/spieler/394327
+Boubacar Kamara,Aston Villa,2022-09-15,2022-10-31,injury-knee-injury,https://www.transfermarkt.com/boubacar-kamara/verletzungen/spieler/394327
+Leander Dendoncker,Aston Villa,2023-01-08,2023-01-09,injury-unknown-injury,https://www.transfermarkt.com/leander-dendoncker/verletzungen/spieler/168157
+Leander Dendoncker,Aston Villa,2023-01-03,2023-03-23,injury-hand-injury,https://www.transfermarkt.com/leander-dendoncker/verletzungen/spieler/168157
+Jacob Ramsey,Aston Villa,2023-04-10,2023-06-30,injury-foot-injury,https://www.transfermarkt.com/jacob-ramsey/verletzungen/spieler/503749
+Jacob Ramsey,Aston Villa,2023-02-07,2023-06-30,injury-metatarsal-fracture,https://www.transfermarkt.com/jacob-ramsey/verletzungen/spieler/503749
+Jacob Ramsey,Aston Villa,2022-11-23,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/jacob-ramsey/verletzungen/spieler/503749
+John McGinn,Aston Villa,2023-01-01,2023-04-02,injury-hamstring-strain,https://www.transfermarkt.com/john-mcginn/verletzungen/spieler/193116
+Morgan Sanson,Aston Villa,2023-01-03,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/morgan-sanson/verletzungen/spieler/174094
+Morgan Sanson,Aston Villa,2022-10-04,2022-08-05,injury-knock,https://www.transfermarkt.com/morgan-sanson/verletzungen/spieler/174094
+Philippe Coutinho,Aston Villa,2022-07-01,2022-12-25,injury-hamstring-injury,https://www.transfermarkt.com/philippe-coutinho/verletzungen/spieler/80444
+Jaden Philogene,Aston Villa,2023-01-11,2023-06-30,injury-thigh-problems,https://www.transfermarkt.com/jaden-philogene/verletzungen/spieler/665390
+Jaden Philogene,Aston Villa,2023-04-16,2023-04-20,injury-knee-problems,https://www.transfermarkt.com/jaden-philogene/verletzungen/spieler/665390
+Jaden Philogene,Aston Villa,2022-07-01,2022-12-12,injury-groin-injury,https://www.transfermarkt.com/jaden-philogene/verletzungen/spieler/665390
+Jaden Philogene,Aston Villa,2022-11-03,2022-10-04,injury-knee-injury,https://www.transfermarkt.com/jaden-philogene/verletzungen/spieler/665390
+Leon Bailey,Aston Villa,2022-08-10,2022-10-14,injury-muscle-injury,https://www.transfermarkt.com/leon-bailey/verletzungen/spieler/387626
+Leon Bailey,Aston Villa,2022-07-01,2022-10-02,injury-thigh-problems,https://www.transfermarkt.com/leon-bailey/verletzungen/spieler/387626
+Bertrand Traoré,Aston Villa,2022-12-28,2023-02-15,injury-knee-injury,https://www.transfermarkt.com/bertrand-traore/verletzungen/spieler/131996
+Danny Ings,Aston Villa,2023-01-21,2023-01-21,injury-knee-injury,https://www.transfermarkt.com/danny-ings/verletzungen/spieler/134294
+Keinan Davis,Aston Villa,2023-02-04,2023-04-14,injury-hamstring-injury,https://www.transfermarkt.com/keinan-davis/verletzungen/spieler/412660
+Keinan Davis,Aston Villa,2023-05-01,2023-01-26,injury-hamstring-injury,https://www.transfermarkt.com/keinan-davis/verletzungen/spieler/412660
+Lloyd Kelly,AFC Bournemouth,2023-01-12,2023-06-30,injury-muscle-injury,https://www.transfermarkt.com/lloyd-kelly/verletzungen/spieler/480116
+Lloyd Kelly,AFC Bournemouth,2023-01-25,2023-06-03,injury-ankle-injury,https://www.transfermarkt.com/lloyd-kelly/verletzungen/spieler/480116
+Lloyd Kelly,AFC Bournemouth,2022-09-15,2022-12-26,injury-ankle-injury,https://www.transfermarkt.com/lloyd-kelly/verletzungen/spieler/480116
+Lloyd Kelly,AFC Bournemouth,2022-08-22,2022-08-30,injury-muscle-injury,https://www.transfermarkt.com/lloyd-kelly/verletzungen/spieler/480116
+Chris Mepham,AFC Bournemouth,2023-04-28,2023-06-05,injury-thigh-problems,https://www.transfermarkt.com/chris-mepham/verletzungen/spieler/480987
+Jack Stephens,AFC Bournemouth,2022-07-01,2022-07-01,injury-corona-virus,https://www.transfermarkt.com/jack-stephens/verletzungen/spieler/163744
+James Hill,AFC Bournemouth,2023-01-22,2023-01-30,injury-concussion,https://www.transfermarkt.com/james-hill/verletzungen/spieler/611793
+Lewis Cook,AFC Bournemouth,2023-01-14,2023-01-04,injury-knee-injury,https://www.transfermarkt.com/lewis-cook/verletzungen/spieler/249089
+Lewis Cook,AFC Bournemouth,2023-01-14,2023-01-14,injury-knee-injury,https://www.transfermarkt.com/lewis-cook/verletzungen/spieler/249089
+Marcus Tavernier,AFC Bournemouth,2023-04-28,2023-06-28,injury-hamstring-injury,https://www.transfermarkt.com/marcus-tavernier/verletzungen/spieler/399434
+Marcus Tavernier,AFC Bournemouth,2023-02-24,2023-03-20,injury-hamstring-injury,https://www.transfermarkt.com/marcus-tavernier/verletzungen/spieler/399434
+Marcus Tavernier,AFC Bournemouth,2022-11-13,2023-06-02,injury-hamstring-injury,https://www.transfermarkt.com/marcus-tavernier/verletzungen/spieler/399434
+Dango Ouattara,AFC Bournemouth,2023-06-08,2023-06-30,injury-injury-to-the-ankle,https://www.transfermarkt.com/dango-ouattara/verletzungen/spieler/823231
+David Brooks,AFC Bournemouth,2022-12-19,2023-06-30,injury-fitness,https://www.transfermarkt.com/david-brooks/verletzungen/spieler/277033
+David Brooks,AFC Bournemouth,2022-08-20,2022-12-18,injury-hamstring-injury,https://www.transfermarkt.com/david-brooks/verletzungen/spieler/277033
+David Brooks,AFC Bournemouth,2022-07-01,2022-10-05,injury-lymphatic-cancer,https://www.transfermarkt.com/david-brooks/verletzungen/spieler/277033
+Dominic Solanke,AFC Bournemouth,2023-01-13,2023-06-02,injury-knee-injury,https://www.transfermarkt.com/dominic-solanke/verletzungen/spieler/258889
+Thomas Strakosha,Brentford FC,2022-09-30,2023-01-01,injury-ankle-injury,https://www.transfermarkt.com/thomas-strakosha/verletzungen/spieler/222209
+Kristoffer Ajer,Brentford FC,2023-02-12,2023-06-30,injury-foot-injury,https://www.transfermarkt.com/kristoffer-ajer/verletzungen/spieler/328658
+Kristoffer Ajer,Brentford FC,2022-09-07,2022-08-31,injury-hamstring-injury,https://www.transfermarkt.com/kristoffer-ajer/verletzungen/spieler/328658
+Mads Bech Sørensen,Brentford FC,2023-05-02,2023-03-16,injury-forearm-fracture,https://www.transfermarkt.com/mads-bech-sorensen/verletzungen/spieler/372240
+Pontus Jansson,Brentford FC,2022-07-01,2022-11-15,injury-hamstring-injury,https://www.transfermarkt.com/pontus-jansson/verletzungen/spieler/125314
+Aaron Hickey,Brentford FC,2023-02-11,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/aaron-hickey/verletzungen/spieler/591949
+Aaron Hickey,Brentford FC,2022-10-10,2022-12-31,injury-ankle-injury,https://www.transfermarkt.com/aaron-hickey/verletzungen/spieler/591949
+Vitaly Janelt,Brentford FC,2023-03-15,2023-06-04,injury-knee-injury,https://www.transfermarkt.com/vitaly-janelt/verletzungen/spieler/270171
+Josh Dasilva,Brentford FC,2023-06-12,2023-06-30,injury-ankle-injury,https://www.transfermarkt.com/josh-dasilva/verletzungen/spieler/340321
+Frank Onyeka,Brentford FC,2023-03-25,2023-06-30,injury-thigh-problems,https://www.transfermarkt.com/frank-onyeka/verletzungen/spieler/421637
+Frank Onyeka,Brentford FC,2022-07-01,2023-02-15,injury-hamstring-injury,https://www.transfermarkt.com/frank-onyeka/verletzungen/spieler/421637
+Yegor Yarmolyuk,Brentford FC,2023-01-06,2023-06-29,injury-unknown-injury,https://www.transfermarkt.com/yegor-yarmolyuk/verletzungen/spieler/717411
+Yegor Yarmolyuk,Brentford FC,2023-03-15,2023-06-04,injury-unknown-injury,https://www.transfermarkt.com/yegor-yarmolyuk/verletzungen/spieler/717411
+Keane Lewis-Potter,Brentford FC,2023-05-03,2023-02-05,injury-knee-injury,https://www.transfermarkt.com/keane-lewis-potter/verletzungen/spieler/644401
+Keane Lewis-Potter,Brentford FC,2022-11-10,2022-10-31,injury-fitness,https://www.transfermarkt.com/keane-lewis-potter/verletzungen/spieler/644401
+Keane Lewis-Potter,Brentford FC,2022-07-01,2022-10-10,injury-ligament-injury,https://www.transfermarkt.com/keane-lewis-potter/verletzungen/spieler/644401
+Kevin Schade,Brentford FC,2022-10-03,2022-11-09,injury-abdominal-muscle-strain,https://www.transfermarkt.com/kevin-schade/verletzungen/spieler/473050
+Sergi Canós,Brentford FC,2023-02-04,2023-01-05,injury-inner-ligament-injury,https://www.transfermarkt.com/sergi-canos/verletzungen/spieler/251845
+Robert Sánchez,Brighton & Hove Albion,2023-05-13,2023-05-29,injury-knock,https://www.transfermarkt.com/robert-sanchez/verletzungen/spieler/403151
+Levi Colwill,Brighton & Hove Albion,2023-01-20,2023-02-25,injury-torn-muscle-bundle,https://www.transfermarkt.com/levi-colwill/verletzungen/spieler/614258
+Adam Webster,Brighton & Hove Albion,2022-12-20,2023-05-01,injury-minor-knock,https://www.transfermarkt.com/adam-webster/verletzungen/spieler/212847
+Adam Webster,Brighton & Hove Albion,2022-07-01,2022-08-04,injury-groin-injury,https://www.transfermarkt.com/adam-webster/verletzungen/spieler/212847
+Pervis Estupiñán,Brighton & Hove Albion,2023-02-19,2023-01-03,injury-muscular-problems,https://www.transfermarkt.com/pervis-estupinan/verletzungen/spieler/349599
+Tariq Lamptey,Brighton & Hove Albion,2023-06-10,2023-06-30,injury-muscle-injury,https://www.transfermarkt.com/tariq-lamptey/verletzungen/spieler/504148
+Tariq Lamptey,Brighton & Hove Albion,2023-05-03,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/tariq-lamptey/verletzungen/spieler/504148
+Odeluga Offiah,Brighton & Hove Albion,2023-03-11,2023-06-30,injury-ill,https://www.transfermarkt.com/odeluga-offiah/verletzungen/spieler/567597
+Odeluga Offiah,Brighton & Hove Albion,2023-01-09,2023-06-30,injury-ill,https://www.transfermarkt.com/odeluga-offiah/verletzungen/spieler/567597
+Jakub Moder,Brighton & Hove Albion,2022-07-01,2023-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/jakub-moder/verletzungen/spieler/384461
+Enock Mwepu,Brighton & Hove Albion,2022-09-30,2022-10-10,injury-heart-problems,https://www.transfermarkt.com/enock-mwepu/verletzungen/spieler/490307
+Enock Mwepu,Brighton & Hove Albion,2022-08-01,2022-11-03,injury-hamstring-injury,https://www.transfermarkt.com/enock-mwepu/verletzungen/spieler/490307
+Julio Enciso,Brighton & Hove Albion,2022-08-05,2022-08-29,injury-facial-injury,https://www.transfermarkt.com/julio-enciso/verletzungen/spieler/660867
+Facundo Buonanotte,Brighton & Hove Albion,2023-01-22,2023-01-02,injury-cervical-spine-injury,https://www.transfermarkt.com/facundo-buonanotte/verletzungen/spieler/983989
+Adam Lallana,Brighton & Hove Albion,2023-01-22,2023-04-14,injury-thigh-problems,https://www.transfermarkt.com/adam-lallana/verletzungen/spieler/43530
+Adam Lallana,Brighton & Hove Albion,2022-08-26,2022-09-28,injury-calf-injury,https://www.transfermarkt.com/adam-lallana/verletzungen/spieler/43530
+Jeremy Sarmiento,Brighton & Hove Albion,2023-01-10,2023-01-11,injury-muscle-injury,https://www.transfermarkt.com/jeremy-sarmiento/verletzungen/spieler/568005
+Jeremy Sarmiento,Brighton & Hove Albion,2023-03-25,2023-01-06,injury-metatarsal-fracture,https://www.transfermarkt.com/jeremy-sarmiento/verletzungen/spieler/568005
+Jeremy Sarmiento,Brighton & Hove Albion,2022-08-14,2022-08-31,injury-knee-injury,https://www.transfermarkt.com/jeremy-sarmiento/verletzungen/spieler/568005
+Jeremy Sarmiento,Brighton & Hove Albion,2022-07-01,2022-10-03,injury-hamstring-injury,https://www.transfermarkt.com/jeremy-sarmiento/verletzungen/spieler/568005
+Evan Ferguson,Brighton & Hove Albion,2023-05-09,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/evan-ferguson/verletzungen/spieler/648046
+Evan Ferguson,Brighton & Hove Albion,2023-04-15,2023-05-05,injury-ankle-injury,https://www.transfermarkt.com/evan-ferguson/verletzungen/spieler/648046
+Danny Welbeck,Brighton & Hove Albion,2023-04-02,2023-04-02,injury-calf-injury,https://www.transfermarkt.com/danny-welbeck/verletzungen/spieler/67063
+Danny Welbeck,Brighton & Hove Albion,2022-12-23,2023-04-01,injury-unknown-injury,https://www.transfermarkt.com/danny-welbeck/verletzungen/spieler/67063
+Aaron Connolly,Brighton & Hove Albion,2022-10-20,2022-10-23,injury-unknown-injury,https://www.transfermarkt.com/aaron-connolly/verletzungen/spieler/434207
+Edouard Mendy,Chelsea FC,2023-05-01,2023-03-16,injury-shoulder-injury,https://www.transfermarkt.com/edouard-mendy/verletzungen/spieler/442531
+Edouard Mendy,Chelsea FC,2022-08-12,2023-04-01,injury-knock,https://www.transfermarkt.com/edouard-mendy/verletzungen/spieler/442531
+Marcus Bettinelli,Chelsea FC,2023-04-27,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/marcus-bettinelli/verletzungen/spieler/116648
+Wesley Fofana,Chelsea FC,2022-12-20,2023-02-13,injury-knee-injury,https://www.transfermarkt.com/wesley-fofana/verletzungen/spieler/475411
+Wesley Fofana,Chelsea FC,2022-07-01,2022-12-16,injury-knee-injury,https://www.transfermarkt.com/wesley-fofana/verletzungen/spieler/475411
+Benoît Badiashile,Chelsea FC,2023-05-29,2023-06-30,injury-groin-injury,https://www.transfermarkt.com/benoit-badiashile/verletzungen/spieler/463603
+Benoît Badiashile,Chelsea FC,2023-05-19,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/benoit-badiashile/verletzungen/spieler/463603
+Benoît Badiashile,Chelsea FC,2022-10-13,2022-10-20,injury-adductor-injury,https://www.transfermarkt.com/benoit-badiashile/verletzungen/spieler/463603
+Benoît Badiashile,Chelsea FC,2022-07-15,2022-10-08,injury-muscle-injury,https://www.transfermarkt.com/benoit-badiashile/verletzungen/spieler/463603
+Trevoh Chalobah,Chelsea FC,2023-01-08,2023-06-30,injury-thigh-problems,https://www.transfermarkt.com/trevoh-chalobah/verletzungen/spieler/346314
+Trevoh Chalobah,Chelsea FC,2023-02-25,2023-02-28,injury-fitness,https://www.transfermarkt.com/trevoh-chalobah/verletzungen/spieler/346314
+Trevoh Chalobah,Chelsea FC,2023-02-25,2023-02-27,injury-fitness,https://www.transfermarkt.com/trevoh-chalobah/verletzungen/spieler/346314
+Trevoh Chalobah,Chelsea FC,2022-08-29,2022-08-31,injury-fitness,https://www.transfermarkt.com/trevoh-chalobah/verletzungen/spieler/346314
+Thiago Silva,Chelsea FC,2023-02-27,2023-06-30,injury-ligament-injury,https://www.transfermarkt.com/thiago-silva/verletzungen/spieler/29241
+Thiago Silva,Chelsea FC,2023-02-26,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/thiago-silva/verletzungen/spieler/29241
+Thiago Silva,Chelsea FC,2022-07-01,2022-11-01,injury-corona-virus,https://www.transfermarkt.com/thiago-silva/verletzungen/spieler/29241
+Ben Chilwell,Chelsea FC,2023-06-05,2023-03-06,injury-hamstring-injury,https://www.transfermarkt.com/ben-chilwell/verletzungen/spieler/316125
+Ben Chilwell,Chelsea FC,2022-07-01,2023-01-31,injury-hamstring-injury,https://www.transfermarkt.com/ben-chilwell/verletzungen/spieler/316125
+Marc Cucurella,Chelsea FC,2023-04-25,2023-02-06,injury-muscle-injury,https://www.transfermarkt.com/marc-cucurella/verletzungen/spieler/284857
+Abdul Rahman Baba,Chelsea FC,2023-02-15,2023-05-15,injury-unknown-injury,https://www.transfermarkt.com/abdul-rahman-baba/verletzungen/spieler/224884
+Abdul Rahman Baba,Chelsea FC,2023-01-02,2023-05-02,injury-tonsillitis,https://www.transfermarkt.com/abdul-rahman-baba/verletzungen/spieler/224884
+Abdul Rahman Baba,Chelsea FC,2022-09-29,2022-10-16,injury-hamstring-injury,https://www.transfermarkt.com/abdul-rahman-baba/verletzungen/spieler/224884
+Reece James,Chelsea FC,2023-04-25,2023-05-31,injury-hamstring-injury,https://www.transfermarkt.com/reece-james/verletzungen/spieler/472423
+Reece James,Chelsea FC,2023-03-26,2023-03-31,injury-thigh-problems,https://www.transfermarkt.com/reece-james/verletzungen/spieler/472423
+Reece James,Chelsea FC,2023-01-03,2023-05-03,injury-hamstring-injury,https://www.transfermarkt.com/reece-james/verletzungen/spieler/472423
+Reece James,Chelsea FC,2022-12-27,2023-01-31,injury-knee-injury,https://www.transfermarkt.com/reece-james/verletzungen/spieler/472423
+Reece James,Chelsea FC,2022-10-13,2022-12-12,injury-knee-injury,https://www.transfermarkt.com/reece-james/verletzungen/spieler/472423
+Jorginho,Chelsea FC,2022-07-01,2022-08-05,injury-unknown-injury,https://www.transfermarkt.com/jorginho/verletzungen/spieler/102017
+Denis Zakaria,Chelsea FC,2023-01-13,2023-02-13,injury-hamstring-injury,https://www.transfermarkt.com/denis-zakaria/verletzungen/spieler/334526
+Denis Zakaria,Chelsea FC,2022-07-01,2022-10-01,injury-corona-virus,https://www.transfermarkt.com/denis-zakaria/verletzungen/spieler/334526
+N'Golo Kanté,Chelsea FC,2023-02-20,2023-06-30,injury-fitness,https://www.transfermarkt.com/ngolo-kante/verletzungen/spieler/225083
+N'Golo Kanté,Chelsea FC,2022-08-15,2023-02-20,injury-hamstring-injury,https://www.transfermarkt.com/ngolo-kante/verletzungen/spieler/225083
+N'Golo Kanté,Chelsea FC,2022-07-01,2022-12-05,injury-knock,https://www.transfermarkt.com/ngolo-kante/verletzungen/spieler/225083
+N'Golo Kanté,Chelsea FC,2022-07-01,2022-10-01,injury-corona-virus,https://www.transfermarkt.com/ngolo-kante/verletzungen/spieler/225083
+Mateo Kovacic,Chelsea FC,2023-05-20,2023-05-27,injury-knock,https://www.transfermarkt.com/mateo-kovacic/verletzungen/spieler/51471
+Mateo Kovacic,Chelsea FC,2023-02-20,2023-02-27,injury-ill,https://www.transfermarkt.com/mateo-kovacic/verletzungen/spieler/51471
+Mateo Kovacic,Chelsea FC,2023-01-21,2023-04-02,injury-calf-problems,https://www.transfermarkt.com/mateo-kovacic/verletzungen/spieler/51471
+Mateo Kovacic,Chelsea FC,2022-12-18,2022-12-28,injury-rest,https://www.transfermarkt.com/mateo-kovacic/verletzungen/spieler/51471
+Mateo Kovacic,Chelsea FC,2022-07-08,2022-08-24,injury-knee-problems,https://www.transfermarkt.com/mateo-kovacic/verletzungen/spieler/51471
+Ruben Loftus-Cheek,Chelsea FC,2023-04-14,2023-04-17,injury-knock,https://www.transfermarkt.com/ruben-loftus-cheek/verletzungen/spieler/202886
+Ruben Loftus-Cheek,Chelsea FC,2023-02-17,2023-02-19,injury-knock,https://www.transfermarkt.com/ruben-loftus-cheek/verletzungen/spieler/202886
+Ruben Loftus-Cheek,Chelsea FC,2023-01-02,2023-05-02,injury-knock,https://www.transfermarkt.com/ruben-loftus-cheek/verletzungen/spieler/202886
+Ruben Loftus-Cheek,Chelsea FC,2022-12-11,2023-01-13,injury-calf-injury,https://www.transfermarkt.com/ruben-loftus-cheek/verletzungen/spieler/202886
+Carney Chukwuemeka,Chelsea FC,2023-04-25,2023-04-27,injury-flu,https://www.transfermarkt.com/carney-chukwuemeka/verletzungen/spieler/659459
+Carney Chukwuemeka,Chelsea FC,2022-07-01,2022-12-15,injury-hamstring-injury,https://www.transfermarkt.com/carney-chukwuemeka/verletzungen/spieler/659459
+Mason Mount,Chelsea FC,2023-04-25,2023-05-31,injury-pelvic-injury,https://www.transfermarkt.com/mason-mount/verletzungen/spieler/346483
+Mason Mount,Chelsea FC,2023-02-28,2023-03-04,injury-pelvic-contusion,https://www.transfermarkt.com/mason-mount/verletzungen/spieler/346483
+Mason Mount,Chelsea FC,2023-05-01,2023-06-30,injury-knock,https://www.transfermarkt.com/mason-mount/verletzungen/spieler/346483
+Callum Hudson-Odoi,Chelsea FC,2023-04-19,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Callum Hudson-Odoi,Chelsea FC,2023-01-28,2023-01-02,injury-knock,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Callum Hudson-Odoi,Chelsea FC,2022-10-13,2022-10-20,injury-knee-problems,https://www.transfermarkt.com/callum-hudson-odoi/verletzungen/spieler/392768
+Raheem Sterling,Chelsea FC,2023-05-01,2023-02-02,injury-hamstring-injury,https://www.transfermarkt.com/raheem-sterling/verletzungen/spieler/134425
+Noni Madueke,Chelsea FC,2023-05-12,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/noni-madueke/verletzungen/spieler/503987
+Noni Madueke,Chelsea FC,2022-07-28,2022-10-17,injury-ankle-injury,https://www.transfermarkt.com/noni-madueke/verletzungen/spieler/503987
+Noni Madueke,Chelsea FC,2022-07-01,2022-07-02,injury-muscle-injury,https://www.transfermarkt.com/noni-madueke/verletzungen/spieler/503987
+Kai Havertz,Chelsea FC,2023-04-24,2023-01-05,injury-knee-injury,https://www.transfermarkt.com/kai-havertz/verletzungen/spieler/309400
+Kai Havertz,Chelsea FC,2023-03-26,2023-03-29,injury-influenza,https://www.transfermarkt.com/kai-havertz/verletzungen/spieler/309400
+Armando Broja,Chelsea FC,2022-12-14,2023-06-30,injury-cruciate-ligament-tear,https://www.transfermarkt.com/armando-broja/verletzungen/spieler/571743
+Armando Broja,Chelsea FC,2022-08-15,2022-08-25,injury-knock,https://www.transfermarkt.com/armando-broja/verletzungen/spieler/571743
+Armando Broja,Chelsea FC,2022-07-01,2022-09-06,injury-corona-virus,https://www.transfermarkt.com/armando-broja/verletzungen/spieler/571743
+Jack Butland,Crystal Palace,2022-07-19,2022-11-13,injury-broken-finger,https://www.transfermarkt.com/jack-butland/verletzungen/spieler/128899
+Remi Matthews,Crystal Palace,2022-07-01,2022-07-11,injury-hip-injury,https://www.transfermarkt.com/remi-matthews/verletzungen/spieler/196722
+Joachim Andersen,Crystal Palace,2023-01-15,2023-02-15,injury-calf-injury,https://www.transfermarkt.com/joachim-andersen/verletzungen/spieler/260827
+Chris Richards,Crystal Palace,2022-09-18,2022-11-14,injury-leg-injury,https://www.transfermarkt.com/chris-richards/verletzungen/spieler/578539
+Nathan Ferguson,Crystal Palace,2022-07-01,2022-10-31,injury-achilles-tendon-problems,https://www.transfermarkt.com/nathan-ferguson/verletzungen/spieler/507254
+Naouirou Ahamada,Crystal Palace,2023-03-20,2023-06-30,injury-ankle-injury,https://www.transfermarkt.com/naouirou-ahamada/verletzungen/spieler/538971
+Naouirou Ahamada,Crystal Palace,2022-10-16,2022-10-18,injury-ankle-injury,https://www.transfermarkt.com/naouirou-ahamada/verletzungen/spieler/538971
+Naouirou Ahamada,Crystal Palace,2022-07-01,2022-10-01,injury-corona-virus,https://www.transfermarkt.com/naouirou-ahamada/verletzungen/spieler/538971
+Eberechi Eze,Crystal Palace,2023-03-10,2023-01-11,injury-hamstring-injury,https://www.transfermarkt.com/eberechi-eze/verletzungen/spieler/479999
+Wilfried Zaha,Crystal Palace,2023-05-08,2023-06-30,injury-fitness,https://www.transfermarkt.com/wilfried-zaha/verletzungen/spieler/145988
+Wilfried Zaha,Crystal Palace,2023-05-13,2023-05-08,injury-unknown-injury,https://www.transfermarkt.com/wilfried-zaha/verletzungen/spieler/145988
+Wilfried Zaha,Crystal Palace,2023-01-04,2023-04-26,injury-unknown-injury,https://www.transfermarkt.com/wilfried-zaha/verletzungen/spieler/145988
+Wilfried Zaha,Crystal Palace,2023-01-21,2023-02-26,injury-unknown-injury,https://www.transfermarkt.com/wilfried-zaha/verletzungen/spieler/145988
+Wilfried Zaha,Crystal Palace,2022-08-20,2022-08-28,injury-unknown-injury,https://www.transfermarkt.com/wilfried-zaha/verletzungen/spieler/145988
+Michael Olise,Crystal Palace,2023-06-26,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/michael-olise/verletzungen/spieler/566723
+Jordan Pickford,Everton FC,2022-09-09,2022-09-27,injury-thigh-problems,https://www.transfermarkt.com/jordan-pickford/verletzungen/spieler/130164
+Eldin Jakupović,Everton FC,2023-04-13,2023-06-30,injury-leg-injury,https://www.transfermarkt.com/eldin-jakupovic/verletzungen/spieler/2857
+Andy Lonergan,Everton FC,2022-12-09,2023-04-20,injury-knee-problems,https://www.transfermarkt.com/andy-lonergan/verletzungen/spieler/14044
+Ben Godfrey,Everton FC,2023-04-30,2023-05-30,injury-adductor-injury,https://www.transfermarkt.com/ben-godfrey/verletzungen/spieler/343475
+Yerry Mina,Everton FC,2022-07-01,2022-10-31,injury-ankle-injury,https://www.transfermarkt.com/yerry-mina/verletzungen/spieler/289446
+Yerry Mina,Everton FC,2022-08-02,2022-11-04,injury-hamstring-injury,https://www.transfermarkt.com/yerry-mina/verletzungen/spieler/289446
+Mason Holgate,Everton FC,2022-08-27,2022-10-16,injury-knee-injury,https://www.transfermarkt.com/mason-holgate/verletzungen/spieler/348623
+Jean-Philippe Gbamin,Everton FC,2023-05-27,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/jean-philippe-gbamin/verletzungen/spieler/182894
+Jean-Philippe Gbamin,Everton FC,2023-01-25,2023-01-29,injury-fitness,https://www.transfermarkt.com/jean-philippe-gbamin/verletzungen/spieler/182894
+Jean-Philippe Gbamin,Everton FC,2022-12-09,2022-09-17,injury-toe-injury,https://www.transfermarkt.com/jean-philippe-gbamin/verletzungen/spieler/182894
+Vitaliy Mykolenko,Everton FC,2023-05-13,2023-05-06,injury-muscle-fatigue,https://www.transfermarkt.com/vitaliy-mykolenko/verletzungen/spieler/404842
+Nathan Patterson,Everton FC,2023-03-01,2023-03-01,injury-knee-injury,https://www.transfermarkt.com/nathan-patterson/verletzungen/spieler/424015
+Nathan Patterson,Everton FC,2022-09-21,2022-10-26,injury-ankle-injury,https://www.transfermarkt.com/nathan-patterson/verletzungen/spieler/424015
+Séamus Coleman,Everton FC,2023-01-05,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/seamus-coleman/verletzungen/spieler/68390
+Amadou Onana,Everton FC,2023-04-14,2023-04-24,injury-leg-injury,https://www.transfermarkt.com/amadou-onana/verletzungen/spieler/485706
+James Garner,Everton FC,2022-12-11,2023-06-30,injury-back-injury,https://www.transfermarkt.com/james-garner/verletzungen/spieler/505219
+Tom Davies,Everton FC,2023-05-10,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/tom-davies/verletzungen/spieler/314210
+Dele Alli,Everton FC,2023-03-24,2023-06-30,injury-partial-muscle-tear,https://www.transfermarkt.com/dele-alli/verletzungen/spieler/207929
+Dele Alli,Everton FC,2022-07-01,2022-09-22,injury-hamstring-strain,https://www.transfermarkt.com/dele-alli/verletzungen/spieler/207929
+Anthony Gordon,Everton FC,2022-12-29,2023-04-01,injury-ill,https://www.transfermarkt.com/anthony-gordon/verletzungen/spieler/503733
+Demarai Gray,Everton FC,2022-07-01,2022-08-03,injury-ill,https://www.transfermarkt.com/demarai-gray/verletzungen/spieler/292417
+Andros Townsend,Everton FC,2022-07-01,2023-06-30,injury-cruciate-ligament-injury,https://www.transfermarkt.com/andros-townsend/verletzungen/spieler/61842
+Dominic Calvert-Lewin,Everton FC,2023-01-08,2023-06-30,injury-fitness,https://www.transfermarkt.com/dominic-calvert-lewin/verletzungen/spieler/306024
+Dominic Calvert-Lewin,Everton FC,2023-05-20,2023-06-20,injury-hamstring-injury,https://www.transfermarkt.com/dominic-calvert-lewin/verletzungen/spieler/306024
+Dominic Calvert-Lewin,Everton FC,2023-04-02,2023-04-20,injury-hamstring-injury,https://www.transfermarkt.com/dominic-calvert-lewin/verletzungen/spieler/306024
+Dominic Calvert-Lewin,Everton FC,2022-07-01,2022-12-28,injury-hamstring-injury,https://www.transfermarkt.com/dominic-calvert-lewin/verletzungen/spieler/306024
+Ellis Simms,Everton FC,2022-09-14,2022-10-24,injury-toe-injury,https://www.transfermarkt.com/ellis-simms/verletzungen/spieler/511550
+Shane Duffy,Fulham FC,2023-05-03,2023-03-13,injury-unknown-injury,https://www.transfermarkt.com/shane-duffy/verletzungen/spieler/119269
+Shane Duffy,Fulham FC,2023-04-01,2023-06-30,injury-ill,https://www.transfermarkt.com/shane-duffy/verletzungen/spieler/119269
+Tim Ream,Fulham FC,2023-06-12,2023-06-30,injury-calf-injury,https://www.transfermarkt.com/tim-ream/verletzungen/spieler/145466
+Tim Ream,Fulham FC,2023-04-30,2023-05-29,injury-broken-arm,https://www.transfermarkt.com/tim-ream/verletzungen/spieler/145466
+Layvin Kurzawa,Fulham FC,2023-02-27,2023-06-30,injury-collateral-ligament-tear,https://www.transfermarkt.com/layvin-kurzawa/verletzungen/spieler/126710
+Joe Bryan,Fulham FC,2022-07-17,2022-08-08,injury-broken-hand,https://www.transfermarkt.com/joe-bryan/verletzungen/spieler/194460
+Kenny Tete,Fulham FC,2022-09-29,2022-10-29,injury-knock,https://www.transfermarkt.com/kenny-tete/verletzungen/spieler/206746
+Nathaniel Chalobah,Fulham FC,2022-07-30,2022-08-08,injury-knock,https://www.transfermarkt.com/nathaniel-chalobah/verletzungen/spieler/128900
+Saša Lukić,Fulham FC,2023-01-15,2023-01-27,injury-hamstring-injury,https://www.transfermarkt.com/sasa-lukic/verletzungen/spieler/245056
+Saša Lukić,Fulham FC,2022-09-11,2022-11-21,injury-calf-problems,https://www.transfermarkt.com/sasa-lukic/verletzungen/spieler/245056
+Saša Lukić,Fulham FC,2022-07-01,2022-07-03,injury-flu,https://www.transfermarkt.com/sasa-lukic/verletzungen/spieler/245056
+Tom Cairney,Fulham FC,2023-03-09,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/tom-cairney/verletzungen/spieler/123275
+Tom Cairney,Fulham FC,2022-07-01,2022-11-04,injury-knock,https://www.transfermarkt.com/tom-cairney/verletzungen/spieler/123275
+Andreas Pereira,Fulham FC,2023-04-30,2023-05-29,injury-ankle-injury,https://www.transfermarkt.com/andreas-pereira/verletzungen/spieler/203394
+Manor Solomon,Fulham FC,2023-05-10,2023-06-30,injury-meniscus-injury,https://www.transfermarkt.com/manor-solomon/verletzungen/spieler/396638
+Manor Solomon,Fulham FC,2022-07-08,2023-01-01,injury-knee-surgery,https://www.transfermarkt.com/manor-solomon/verletzungen/spieler/396638
+Willian,Fulham FC,2023-04-25,2023-02-05,injury-torn-muscle-fiber,https://www.transfermarkt.com/willian/verletzungen/spieler/52769
+Willian,Fulham FC,2022-09-29,2022-12-10,injury-calf-injury,https://www.transfermarkt.com/willian/verletzungen/spieler/52769
+Neeskens Kebano,Fulham FC,2022-07-01,2023-04-21,injury-achilles-tendon-rupture,https://www.transfermarkt.com/neeskens-kebano/verletzungen/spieler/111422
+Neeskens Kebano,Fulham FC,2022-08-18,2022-08-29,injury-minor-knock,https://www.transfermarkt.com/neeskens-kebano/verletzungen/spieler/111422
+Martial Godo,Fulham FC,2023-02-12,2023-06-30,injury-ankle-injury,https://www.transfermarkt.com/martial-godo/verletzungen/spieler/992686
+Anthony Knockaert,Fulham FC,2022-10-08,2022-10-10,injury-muscle-injury,https://www.transfermarkt.com/anthony-knockaert/verletzungen/spieler/149237
+Rodrigo Muniz,Fulham FC,2023-05-11,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/rodrigo-muniz/verletzungen/spieler/735571
+Rodrigo Muniz,Fulham FC,2023-01-02,2023-03-14,injury-knee-problems,https://www.transfermarkt.com/rodrigo-muniz/verletzungen/spieler/735571
+Jay Stansfield,Fulham FC,2022-07-01,2022-09-01,injury-fitness,https://www.transfermarkt.com/jay-stansfield/verletzungen/spieler/696346
+Dani van den Heuvel,Leeds United,2022-07-01,2023-06-01,injury-unknown-injury,https://www.transfermarkt.com/dani-van-den-heuvel/verletzungen/spieler/559320
+Diego Llorente,Leeds United,2023-04-24,2023-05-21,injury-hamstring-muscle-injury,https://www.transfermarkt.com/diego-llorente/verletzungen/spieler/246291
+Charlie Cresswell,Leeds United,2023-05-04,2023-06-30,injury-fracture-of-the-eye-socket,https://www.transfermarkt.com/charlie-cresswell/verletzungen/spieler/597659
+Junior Firpo,Leeds United,2022-08-07,2022-12-09,injury-knee-injury,https://www.transfermarkt.com/junior-firpo/verletzungen/spieler/374139
+Junior Firpo,Leeds United,2022-11-03,2022-11-04,injury-collateral-ligament-injury,https://www.transfermarkt.com/junior-firpo/verletzungen/spieler/374139
+Tyler Adams,Leeds United,2023-03-15,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/tyler-adams/verletzungen/spieler/332705
+Tyler Adams,Leeds United,2022-07-01,2022-08-04,injury-thigh-problems,https://www.transfermarkt.com/tyler-adams/verletzungen/spieler/332705
+Weston McKennie,Leeds United,2022-10-30,2022-11-14,injury-muscle-injury,https://www.transfermarkt.com/weston-mckennie/verletzungen/spieler/332697
+Weston McKennie,Leeds United,2022-07-31,2022-08-13,injury-shoulder-injury,https://www.transfermarkt.com/weston-mckennie/verletzungen/spieler/332697
+Stuart Dallas,Leeds United,2022-07-01,2023-06-30,injury-femoral-fracture,https://www.transfermarkt.com/stuart-dallas/verletzungen/spieler/158764
+Jack Harrison,Leeds United,2023-01-07,2023-06-30,injury-hip-injury,https://www.transfermarkt.com/jack-harrison/verletzungen/spieler/417346
+Luis Sinisterra,Leeds United,2023-04-26,2023-01-06,injury-ankle-injury,https://www.transfermarkt.com/luis-sinisterra/verletzungen/spieler/512385
+Luis Sinisterra,Leeds United,2022-10-23,2022-12-19,injury-foot-injury,https://www.transfermarkt.com/luis-sinisterra/verletzungen/spieler/512385
+Crysencio Summerville,Leeds United,2023-01-13,2023-01-30,injury-unknown-injury,https://www.transfermarkt.com/crysencio-summerville/verletzungen/spieler/474701
+Patrick Bamford,Leeds United,2022-07-01,2022-12-31,injury-groin-problems,https://www.transfermarkt.com/patrick-bamford/verletzungen/spieler/183334
+Rodrigo,Leeds United,2023-01-29,2023-06-30,injury-ankle-injury,https://www.transfermarkt.com/rodrigo/verletzungen/spieler/131505
+Wesley Fofana,Leicester City,2022-12-20,2023-02-13,injury-knee-injury,https://www.transfermarkt.com/wesley-fofana/verletzungen/spieler/475411
+Wesley Fofana,Leicester City,2022-07-01,2022-12-16,injury-knee-injury,https://www.transfermarkt.com/wesley-fofana/verletzungen/spieler/475411
+Harry Souttar,Leicester City,2022-07-01,2022-10-20,injury-cruciate-ligament-tear,https://www.transfermarkt.com/harry-souttar/verletzungen/spieler/298091
+Jonny Evans,Leicester City,2022-10-12,2023-02-05,injury-calf-injury,https://www.transfermarkt.com/jonny-evans/verletzungen/spieler/42412
+Victor Kristiansen,Leicester City,2023-02-10,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/victor-kristiansen/verletzungen/spieler/564529
+Victor Kristiansen,Leicester City,2023-01-03,2023-03-25,injury-ankle-injury,https://www.transfermarkt.com/victor-kristiansen/verletzungen/spieler/564529
+Ryan Bertrand,Leicester City,2022-07-02,2023-01-07,injury-knee-surgery,https://www.transfermarkt.com/ryan-bertrand/verletzungen/spieler/40611
+James Justin,Leicester City,2022-08-11,2023-05-31,injury-achilles-tendon-rupture,https://www.transfermarkt.com/james-justin/verletzungen/spieler/413220
+James Justin,Leicester City,2022-07-01,2022-07-01,injury-cruciate-ligament-tear,https://www.transfermarkt.com/james-justin/verletzungen/spieler/413220
+Ricardo Pereira,Leicester City,2022-07-01,2023-05-02,injury-achilles-tendon-rupture,https://www.transfermarkt.com/ricardo-pereira/verletzungen/spieler/215876
+Hamza Choudhury,Leicester City,2023-04-21,2023-04-25,injury-ill,https://www.transfermarkt.com/hamza-choudhury/verletzungen/spieler/341501
+Hamza Choudhury,Leicester City,2022-11-12,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/hamza-choudhury/verletzungen/spieler/341501
+Nampalys Mendy,Leicester City,2022-07-01,2022-10-14,injury-knee-injury,https://www.transfermarkt.com/nampalys-mendy/verletzungen/spieler/111051
+Youri Tielemans,Leicester City,2023-02-26,2023-06-30,injury-torn-ankle-ligaments,https://www.transfermarkt.com/youri-tielemans/verletzungen/spieler/249565
+Dennis Praet,Leicester City,2022-12-26,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/dennis-praet/verletzungen/spieler/129588
+Kasey McAteer,Leicester City,2023-01-10,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/kasey-mcateer/verletzungen/spieler/621193
+James Maddison,Leicester City,2022-12-23,2023-01-16,injury-knee-injury,https://www.transfermarkt.com/james-maddison/verletzungen/spieler/294057
+James Maddison,Leicester City,2022-11-19,2022-11-27,injury-knee-injury,https://www.transfermarkt.com/james-maddison/verletzungen/spieler/294057
+Harvey Barnes,Leicester City,2022-07-01,2022-08-17,injury-knee-injury,https://www.transfermarkt.com/harvey-barnes/verletzungen/spieler/398065
+Ayoze Pérez,Leicester City,2023-01-14,2023-02-02,injury-knock,https://www.transfermarkt.com/ayoze-perez/verletzungen/spieler/246968
+Alisson,Liverpool FC,2022-07-01,2022-08-01,injury-corona-virus,https://www.transfermarkt.com/alisson/verletzungen/spieler/105470
+Caoimhín Kelleher,Liverpool FC,2022-07-01,2022-09-28,injury-hamstring-injury,https://www.transfermarkt.com/caoimhin-kelleher/verletzungen/spieler/340918
+Ibrahima Konaté,Liverpool FC,2023-01-30,2023-02-27,injury-muscle-injury,https://www.transfermarkt.com/ibrahima-konate/verletzungen/spieler/357119
+Ibrahima Konaté,Liverpool FC,2022-10-11,2022-12-27,injury-knock,https://www.transfermarkt.com/ibrahima-konate/verletzungen/spieler/357119
+Ibrahima Konaté,Liverpool FC,2022-12-10,2022-10-23,injury-muscle-injury,https://www.transfermarkt.com/ibrahima-konate/verletzungen/spieler/357119
+Ibrahima Konaté,Liverpool FC,2022-07-01,2022-09-25,injury-knee-injury,https://www.transfermarkt.com/ibrahima-konate/verletzungen/spieler/357119
+Virgil van Dijk,Liverpool FC,2023-02-01,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/virgil-van-dijk/verletzungen/spieler/139208
+Joe Gomez,Liverpool FC,2023-02-21,2023-03-14,injury-muscle-injury,https://www.transfermarkt.com/joe-gomez/verletzungen/spieler/256178
+Sepp van den Berg,Liverpool FC,2023-06-16,2023-06-30,injury-torn-muscle-bundle,https://www.transfermarkt.com/sepp-van-den-berg/verletzungen/spieler/541231
+Sepp van den Berg,Liverpool FC,2022-07-01,2023-01-03,injury-torn-ankle-ligaments,https://www.transfermarkt.com/sepp-van-den-berg/verletzungen/spieler/541231
+Rhys Williams,Liverpool FC,2022-09-14,2022-10-19,injury-shin-injury,https://www.transfermarkt.com/rhys-williams/verletzungen/spieler/503679
+Andrew Robertson,Liverpool FC,2022-08-09,2022-10-10,injury-knee-injury,https://www.transfermarkt.com/andrew-robertson/verletzungen/spieler/234803
+Konstantinos Tsimikas,Liverpool FC,2023-03-27,2023-03-31,injury-bruised-ribs,https://www.transfermarkt.com/konstantinos-tsimikas/verletzungen/spieler/338070
+Trent Alexander-Arnold,Liverpool FC,2023-04-09,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/trent-alexander-arnold/verletzungen/spieler/314353
+Trent Alexander-Arnold,Liverpool FC,2022-10-10,2022-10-15,injury-ankle-problems,https://www.transfermarkt.com/trent-alexander-arnold/verletzungen/spieler/314353
+Calvin Ramsay,Liverpool FC,2023-02-16,2023-06-11,injury-knee-surgery,https://www.transfermarkt.com/calvin-ramsay/verletzungen/spieler/633652
+Arthur Melo,Liverpool FC,2022-07-01,2023-02-25,injury-surgery,https://www.transfermarkt.com/arthur-melo/verletzungen/spieler/362842
+Arthur Melo,Liverpool FC,2022-08-08,2022-08-16,injury-ankle-problems,https://www.transfermarkt.com/arthur-melo/verletzungen/spieler/362842
+Stefan Bajcetic,Liverpool FC,2023-03-13,2023-05-31,injury-adductor-injury,https://www.transfermarkt.com/stefan-bajcetic/verletzungen/spieler/864799
+Jordan Henderson,Liverpool FC,2022-08-31,2022-09-25,injury-hamstring-injury,https://www.transfermarkt.com/jordan-henderson/verletzungen/spieler/61651
+Curtis Jones,Liverpool FC,2023-01-11,2023-06-30,injury-thigh-problems,https://www.transfermarkt.com/curtis-jones/verletzungen/spieler/433188
+Curtis Jones,Liverpool FC,2022-07-01,2022-10-13,injury-stress-reaction-of-the-bone,https://www.transfermarkt.com/curtis-jones/verletzungen/spieler/433188
+Thiago Alcántara,Liverpool FC,2023-04-27,2023-06-30,injury-hip-injury,https://www.transfermarkt.com/thiago-alcantara/verletzungen/spieler/60444
+Naby Keïta,Liverpool FC,2023-03-28,2023-05-31,injury-unknown-injury,https://www.transfermarkt.com/naby-keita/verletzungen/spieler/302215
+Naby Keïta,Liverpool FC,2023-02-26,2023-03-15,injury-knock,https://www.transfermarkt.com/naby-keita/verletzungen/spieler/302215
+Naby Keïta,Liverpool FC,2022-07-01,2022-12-25,injury-muscle-injury,https://www.transfermarkt.com/naby-keita/verletzungen/spieler/302215
+Alex Oxlade-Chamberlain,Liverpool FC,2022-07-16,2022-10-17,injury-hamstring-injury,https://www.transfermarkt.com/alex-oxlade-chamberlain/verletzungen/spieler/143424
+James Milner,Liverpool FC,2022-12-22,2023-01-14,injury-hamstring-injury,https://www.transfermarkt.com/james-milner/verletzungen/spieler/3333
+James Milner,Liverpool FC,2022-07-01,2022-11-11,injury-concussion,https://www.transfermarkt.com/james-milner/verletzungen/spieler/3333
+Fábio Carvalho,Liverpool FC,2022-07-01,2022-09-28,injury-muscular-problems,https://www.transfermarkt.com/fabio-carvalho/verletzungen/spieler/559263
+Luis Díaz,Liverpool FC,2022-10-10,2023-04-16,injury-knee-injury,https://www.transfermarkt.com/luis-diaz/verletzungen/spieler/480692
+Cody Gakpo,Liverpool FC,2023-03-23,2023-03-26,injury-virus,https://www.transfermarkt.com/cody-gakpo/verletzungen/spieler/434675
+Diogo Jota,Liverpool FC,2022-10-17,2023-06-30,injury-calf-injury,https://www.transfermarkt.com/diogo-jota/verletzungen/spieler/340950
+Ben Gannon-Doak,Liverpool FC,2023-03-14,2023-02-04,injury-concussion,https://www.transfermarkt.com/ben-gannon-doak/verletzungen/spieler/719673
+Darwin Núñez,Liverpool FC,2023-03-16,2023-03-30,injury-ankle-injury,https://www.transfermarkt.com/darwin-nunez/verletzungen/spieler/546543
+Darwin Núñez,Liverpool FC,2023-02-22,2023-02-27,injury-shoulder-injury,https://www.transfermarkt.com/darwin-nunez/verletzungen/spieler/546543
+Darwin Núñez,Liverpool FC,2023-02-18,2023-02-20,injury-shoulder-injury,https://www.transfermarkt.com/darwin-nunez/verletzungen/spieler/546543
+Darwin Núñez,Liverpool FC,2022-10-20,2022-10-24,injury-muscular-problems,https://www.transfermarkt.com/darwin-nunez/verletzungen/spieler/546543
+Roberto Firmino,Liverpool FC,2022-12-20,2023-06-30,injury-calf-injury,https://www.transfermarkt.com/roberto-firmino/verletzungen/spieler/131789
+Roberto Firmino,Liverpool FC,2022-07-01,2022-08-05,injury-foot-injury,https://www.transfermarkt.com/roberto-firmino/verletzungen/spieler/131789
+Roberto Firmino,Liverpool FC,2022-07-01,2022-10-03,injury-muscular-problems,https://www.transfermarkt.com/roberto-firmino/verletzungen/spieler/131789
+Roberto Firmino,Liverpool FC,2022-07-01,2022-08-01,injury-corona-virus,https://www.transfermarkt.com/roberto-firmino/verletzungen/spieler/131789
+Zack Steffen,Manchester City,2023-01-06,2023-06-30,injury-knee-surgery,https://www.transfermarkt.com/zack-steffen/verletzungen/spieler/221624
+Zack Steffen,Manchester City,2022-08-26,2022-09-18,injury-knee-problems,https://www.transfermarkt.com/zack-steffen/verletzungen/spieler/221624
+Rúben Dias,Manchester City,2022-12-22,2023-01-15,injury-hamstring-injury,https://www.transfermarkt.com/ruben-dias/verletzungen/spieler/258004
+Rúben Dias,Manchester City,2022-07-01,2022-11-04,injury-knock,https://www.transfermarkt.com/ruben-dias/verletzungen/spieler/258004
+Nathan Aké,Manchester City,2023-04-19,2023-01-05,injury-hamstring-muscle-injury,https://www.transfermarkt.com/nathan-ake/verletzungen/spieler/177476
+John Stones,Manchester City,2023-01-27,2023-01-03,injury-hamstring-injury,https://www.transfermarkt.com/john-stones/verletzungen/spieler/186590
+John Stones,Manchester City,2022-09-26,2022-10-20,injury-hamstring-injury,https://www.transfermarkt.com/john-stones/verletzungen/spieler/186590
+Manuel Akanji,Manchester City,2022-07-01,2022-10-01,injury-knee-surgery,https://www.transfermarkt.com/manuel-akanji/verletzungen/spieler/284730
+Aymeric Laporte,Manchester City,2023-02-21,2023-02-24,injury-ill,https://www.transfermarkt.com/aymeric-laporte/verletzungen/spieler/176553
+Sergio Gómez,Manchester City,2023-03-11,2023-06-30,injury-knock,https://www.transfermarkt.com/sergio-gomez/verletzungen/spieler/366930
+Benjamin Mendy,Manchester City,2023-06-10,2023-06-30,injury-dead-leg,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Benjamin Mendy,Manchester City,2023-01-08,2023-06-30,injury-knock,https://www.transfermarkt.com/benjamin-mendy/verletzungen/spieler/157495
+Nico O'Reilly,Manchester City,2023-01-08,2023-06-30,injury-surgery,https://www.transfermarkt.com/nico-oreilly/verletzungen/spieler/743413
+Kyle Walker,Manchester City,2022-11-18,2022-11-22,injury-fitness,https://www.transfermarkt.com/kyle-walker/verletzungen/spieler/95424
+Kyle Walker,Manchester City,2022-07-01,2022-11-17,injury-groin-injury,https://www.transfermarkt.com/kyle-walker/verletzungen/spieler/95424
+Kalvin Phillips,Manchester City,2022-08-26,2022-08-11,injury-shoulder-injury,https://www.transfermarkt.com/kalvin-phillips/verletzungen/spieler/351749
+Máximo Perrone,Manchester City,2022-08-23,2022-10-14,injury-pneumothorax,https://www.transfermarkt.com/maximo-perrone/verletzungen/spieler/668547
+Kevin De Bruyne,Manchester City,2023-04-26,2023-04-05,injury-foot-bruise,https://www.transfermarkt.com/kevin-de-bruyne/verletzungen/spieler/88755
+Kevin De Bruyne,Manchester City,2023-02-21,2023-02-24,injury-ill,https://www.transfermarkt.com/kevin-de-bruyne/verletzungen/spieler/88755
+Cole Palmer,Manchester City,2022-08-01,2022-11-04,injury-foot-injury,https://www.transfermarkt.com/cole-palmer/verletzungen/spieler/568177
+Phil Foden,Manchester City,2023-03-26,2023-04-17,injury-appendectomy,https://www.transfermarkt.com/phil-foden/verletzungen/spieler/406635
+Erling Haaland,Manchester City,2023-05-11,2023-06-11,injury-ankle-injury,https://www.transfermarkt.com/erling-haaland/verletzungen/spieler/418560
+Erling Haaland,Manchester City,2023-03-21,2023-03-04,injury-groin-problems,https://www.transfermarkt.com/erling-haaland/verletzungen/spieler/418560
+Erling Haaland,Manchester City,2022-07-01,2022-07-03,injury-muscular-problems,https://www.transfermarkt.com/erling-haaland/verletzungen/spieler/418560
+Dean Henderson,Manchester United,2023-01-14,2023-06-30,injury-torn-thigh-muscle,https://www.transfermarkt.com/dean-henderson/verletzungen/spieler/258919
+Jack Butland,Manchester United,2022-07-19,2022-11-13,injury-broken-finger,https://www.transfermarkt.com/jack-butland/verletzungen/spieler/128899
+Tom Heaton,Manchester United,2023-03-18,2023-05-17,injury-ankle-injury,https://www.transfermarkt.com/tom-heaton/verletzungen/spieler/34130
+Lisandro Martínez,Manchester United,2023-04-14,2023-06-30,injury-metatarsal-fracture,https://www.transfermarkt.com/lisandro-martinez/verletzungen/spieler/480762
+Raphaël Varane,Manchester United,2023-04-14,2023-06-30,injury-foot-injury,https://www.transfermarkt.com/raphael-varane/verletzungen/spieler/164770
+Raphaël Varane,Manchester United,2022-10-22,2022-11-14,injury-leg-injury,https://www.transfermarkt.com/raphael-varane/verletzungen/spieler/164770
+Raphaël Varane,Manchester United,2022-07-01,2022-08-10,injury-ankle-sprain,https://www.transfermarkt.com/raphael-varane/verletzungen/spieler/164770
+Raphaël Varane,Manchester United,2022-07-01,2022-09-03,injury-corona-virus,https://www.transfermarkt.com/raphael-varane/verletzungen/spieler/164770
+Harry Maguire,Manchester United,2022-09-26,2022-10-25,injury-hamstring-injury,https://www.transfermarkt.com/harry-maguire/verletzungen/spieler/177907
+Victor Lindelöf,Manchester United,2022-07-08,2022-08-31,injury-back-problems,https://www.transfermarkt.com/victor-lindelof/verletzungen/spieler/184573
+Victor Lindelöf,Manchester United,2022-07-01,2022-07-02,injury-ill,https://www.transfermarkt.com/victor-lindelof/verletzungen/spieler/184573
+Axel Tuanzebe,Manchester United,2022-07-13,2023-01-23,injury-unknown-injury,https://www.transfermarkt.com/axel-tuanzebe/verletzungen/spieler/342046
+Teden Mengi,Manchester United,2022-10-12,2023-04-25,injury-hamstring-injury,https://www.transfermarkt.com/teden-mengi/verletzungen/spieler/548470
+Teden Mengi,Manchester United,2022-12-02,2022-10-03,injury-hamstring-injury,https://www.transfermarkt.com/teden-mengi/verletzungen/spieler/548470
+Luke Shaw,Manchester United,2023-06-04,2023-04-19,injury-unknown-injury,https://www.transfermarkt.com/luke-shaw/verletzungen/spieler/183288
+Tyrell Malacia,Manchester United,2023-01-07,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/tyrell-malacia/verletzungen/spieler/339340
+Álvaro Carreras,Manchester United,2022-09-08,2022-08-29,injury-ankle-injury,https://www.transfermarkt.com/alvaro-carreras/verletzungen/spieler/811778
+Aaron Wan-Bissaka,Manchester United,2022-12-09,2022-10-25,injury-back-problems,https://www.transfermarkt.com/aaron-wan-bissaka/verletzungen/spieler/477758
+Casemiro,Manchester United,2022-07-01,2022-11-02,injury-stomach-flu,https://www.transfermarkt.com/casemiro/verletzungen/spieler/16306
+James Garner,Manchester United,2022-12-11,2023-06-30,injury-back-injury,https://www.transfermarkt.com/james-garner/verletzungen/spieler/505219
+Scott McTominay,Manchester United,2023-01-27,2023-02-18,injury-unknown-injury,https://www.transfermarkt.com/scott-mctominay/verletzungen/spieler/315969
+Marcel Sabitzer,Manchester United,2023-04-16,2023-04-19,injury-groin-problems,https://www.transfermarkt.com/marcel-sabitzer/verletzungen/spieler/106987
+Marcel Sabitzer,Manchester United,2023-06-03,2023-03-14,injury-unknown-injury,https://www.transfermarkt.com/marcel-sabitzer/verletzungen/spieler/106987
+Donny van de Beek,Manchester United,2023-03-01,2023-06-30,injury-knee-collateral-ligament-strain,https://www.transfermarkt.com/donny-van-de-beek/verletzungen/spieler/288255
+Donny van de Beek,Manchester United,2022-07-01,2022-10-24,injury-shingles,https://www.transfermarkt.com/donny-van-de-beek/verletzungen/spieler/288255
+Donny van de Beek,Manchester United,2022-07-01,2022-11-04,injury-thigh-problems,https://www.transfermarkt.com/donny-van-de-beek/verletzungen/spieler/288255
+Zidane Iqbal,Manchester United,2023-01-08,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/zidane-iqbal/verletzungen/spieler/686845
+Christian Eriksen,Manchester United,2023-01-29,2023-06-04,injury-ankle-injury,https://www.transfermarkt.com/christian-eriksen/verletzungen/spieler/69633
+Hannibal,Manchester United,2022-07-01,2022-08-01,injury-corona-virus,https://www.transfermarkt.com/hannibal/verletzungen/spieler/607224
+Marcus Rashford,Manchester United,2023-03-19,2023-03-31,injury-unknown-injury,https://www.transfermarkt.com/marcus-rashford/verletzungen/spieler/258923
+Marcus Rashford,Manchester United,2022-07-01,2022-09-19,injury-muscle-injury,https://www.transfermarkt.com/marcus-rashford/verletzungen/spieler/258923
+Jadon Sancho,Manchester United,2022-12-26,2023-01-31,injury-depression,https://www.transfermarkt.com/jadon-sancho/verletzungen/spieler/401173
+Jadon Sancho,Manchester United,2022-07-01,2022-11-14,injury-ill,https://www.transfermarkt.com/jadon-sancho/verletzungen/spieler/401173
+Jadon Sancho,Manchester United,2022-07-01,2022-08-05,injury-tonsillitis,https://www.transfermarkt.com/jadon-sancho/verletzungen/spieler/401173
+Alejandro Garnacho,Manchester United,2023-03-13,2023-05-05,injury-ankle-injury,https://www.transfermarkt.com/alejandro-garnacho/verletzungen/spieler/811779
+Antony,Manchester United,2023-05-02,2023-02-20,injury-leg-injury,https://www.transfermarkt.com/antony/verletzungen/spieler/602105
+Antony,Manchester United,2022-10-28,2022-11-23,injury-unknown-injury,https://www.transfermarkt.com/antony/verletzungen/spieler/602105
+Antony,Manchester United,2022-07-01,2022-07-22,injury-ankle-injury,https://www.transfermarkt.com/antony/verletzungen/spieler/602105
+Amad Diallo,Manchester United,2023-03-08,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/amad-diallo/verletzungen/spieler/536835
+Amad Diallo,Manchester United,2022-07-01,2022-09-03,injury-unknown-injury,https://www.transfermarkt.com/amad-diallo/verletzungen/spieler/536835
+Facundo Pellistri,Manchester United,2022-07-30,2022-08-31,injury-ankle-injury,https://www.transfermarkt.com/facundo-pellistri/verletzungen/spieler/676318
+Facundo Pellistri,Manchester United,2022-07-01,2022-11-02,injury-ankle-injury,https://www.transfermarkt.com/facundo-pellistri/verletzungen/spieler/676318
+Facundo Pellistri,Manchester United,2022-07-01,2022-07-01,injury-corona-virus,https://www.transfermarkt.com/facundo-pellistri/verletzungen/spieler/676318
+Cristiano Ronaldo,Manchester United,2022-09-11,2022-11-18,injury-ill,https://www.transfermarkt.com/cristiano-ronaldo/verletzungen/spieler/8198
+Cristiano Ronaldo,Manchester United,2022-07-01,2022-07-03,injury-hip-flexor-problems,https://www.transfermarkt.com/cristiano-ronaldo/verletzungen/spieler/8198
+Anthony Martial,Manchester United,2023-02-02,2023-06-30,injury-hip-injury,https://www.transfermarkt.com/anthony-martial/verletzungen/spieler/182877
+Anthony Martial,Manchester United,2023-01-14,2023-01-30,injury-unknown-injury,https://www.transfermarkt.com/anthony-martial/verletzungen/spieler/182877
+Anthony Martial,Manchester United,2022-10-10,2022-10-31,injury-back-injury,https://www.transfermarkt.com/anthony-martial/verletzungen/spieler/182877
+Anthony Martial,Manchester United,2022-08-23,2022-09-26,injury-achilles-tendon-irritation,https://www.transfermarkt.com/anthony-martial/verletzungen/spieler/182877
+Anthony Martial,Manchester United,2022-07-31,2022-08-18,injury-hamstring-injury,https://www.transfermarkt.com/anthony-martial/verletzungen/spieler/182877
+Anthony Martial,Manchester United,2022-07-01,2022-09-03,injury-muscle-injury,https://www.transfermarkt.com/anthony-martial/verletzungen/spieler/182877
+Nick Pope,Newcastle United,2023-02-12,2023-06-30,injury-shoulder-injury,https://www.transfermarkt.com/nick-pope/verletzungen/spieler/192080
+Nick Pope,Newcastle United,2023-05-23,2023-06-20,injury-hand-injury,https://www.transfermarkt.com/nick-pope/verletzungen/spieler/192080
+Nick Pope,Newcastle United,2023-03-19,2023-03-31,injury-thigh-problems,https://www.transfermarkt.com/nick-pope/verletzungen/spieler/192080
+Sven Botman,Newcastle United,2023-03-23,2023-03-30,injury-virus,https://www.transfermarkt.com/sven-botman/verletzungen/spieler/361093
+Fabian Schär,Newcastle United,2023-02-27,2023-05-03,injury-concussion,https://www.transfermarkt.com/fabian-schar/verletzungen/spieler/135343
+Dan Burn,Newcastle United,2023-04-11,2023-06-30,injury-back-injury,https://www.transfermarkt.com/dan-burn/verletzungen/spieler/134270
+Dan Burn,Newcastle United,2022-08-21,2022-08-26,injury-concussion,https://www.transfermarkt.com/dan-burn/verletzungen/spieler/134270
+Jamaal Lascelles,Newcastle United,2023-04-29,2023-05-31,injury-calf-injury,https://www.transfermarkt.com/jamaal-lascelles/verletzungen/spieler/183318
+Kell Watts,Newcastle United,2023-02-01,2023-04-22,injury-achilles-tendon-contusion,https://www.transfermarkt.com/kell-watts/verletzungen/spieler/484389
+Emil Krafth,Newcastle United,2022-08-24,2023-01-08,injury-cruciate-ligament-tear,https://www.transfermarkt.com/emil-krafth/verletzungen/spieler/184528
+Javier Manquillo,Newcastle United,2023-05-20,2023-05-31,injury-knock,https://www.transfermarkt.com/javier-manquillo/verletzungen/spieler/162029
+Isaac Hayden,Newcastle United,2023-03-01,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/isaac-hayden/verletzungen/spieler/206225
+Isaac Hayden,Newcastle United,2022-07-25,2022-10-10,injury-knee-problems,https://www.transfermarkt.com/isaac-hayden/verletzungen/spieler/206225
+Bruno Guimarães,Newcastle United,2023-01-02,2023-02-20,injury-ankle-injury,https://www.transfermarkt.com/bruno-guimaraes/verletzungen/spieler/520624
+Bruno Guimarães,Newcastle United,2022-08-25,2022-09-16,injury-hamstring-injury,https://www.transfermarkt.com/bruno-guimaraes/verletzungen/spieler/520624
+Joelinton,Newcastle United,2023-05-22,2023-05-31,injury-knock,https://www.transfermarkt.com/joelinton/verletzungen/spieler/333241
+Joe Willock,Newcastle United,2023-01-08,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/joe-willock/verletzungen/spieler/340329
+Joe Willock,Newcastle United,2023-05-18,2023-05-06,injury-hamstring-injury,https://www.transfermarkt.com/joe-willock/verletzungen/spieler/340329
+Joe Willock,Newcastle United,2022-07-01,2022-10-04,injury-knee-injury,https://www.transfermarkt.com/joe-willock/verletzungen/spieler/340329
+Sean Longstaff,Newcastle United,2023-04-27,2023-05-20,injury-outer-ligament-problems,https://www.transfermarkt.com/sean-longstaff/verletzungen/spieler/346707
+Jonjo Shelvey,Newcastle United,2022-07-26,2022-10-10,injury-hamstring-injury,https://www.transfermarkt.com/jonjo-shelvey/verletzungen/spieler/71292
+Jeff Hendrick,Newcastle United,2023-05-12,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/jeff-hendrick/verletzungen/spieler/148262
+Matty Longstaff,Newcastle United,2022-12-26,2023-01-07,injury-knee-injury,https://www.transfermarkt.com/matty-longstaff/verletzungen/spieler/484387
+Matty Longstaff,Newcastle United,2022-11-24,2022-12-24,injury-hamstring-injury,https://www.transfermarkt.com/matty-longstaff/verletzungen/spieler/484387
+Matty Longstaff,Newcastle United,2022-12-10,2022-11-14,injury-hamstring-injury,https://www.transfermarkt.com/matty-longstaff/verletzungen/spieler/484387
+Anthony Gordon,Newcastle United,2022-12-29,2023-04-01,injury-ill,https://www.transfermarkt.com/anthony-gordon/verletzungen/spieler/503733
+Allan Saint-Maximin,Newcastle United,2023-06-04,2023-05-05,injury-hamstring-injury,https://www.transfermarkt.com/allan-saint-maximin/verletzungen/spieler/272642
+Allan Saint-Maximin,Newcastle United,2023-06-01,2023-06-30,injury-ill,https://www.transfermarkt.com/allan-saint-maximin/verletzungen/spieler/272642
+Allan Saint-Maximin,Newcastle United,2022-10-14,2022-10-26,injury-muscle-injury,https://www.transfermarkt.com/allan-saint-maximin/verletzungen/spieler/272642
+Allan Saint-Maximin,Newcastle United,2022-07-03,2022-12-03,injury-ill,https://www.transfermarkt.com/allan-saint-maximin/verletzungen/spieler/272642
+Ryan Fraser,Newcastle United,2022-07-20,2022-08-25,injury-groin-injury,https://www.transfermarkt.com/ryan-fraser/verletzungen/spieler/146795
+Ryan Fraser,Newcastle United,2022-08-04,2022-09-05,injury-hamstring-injury,https://www.transfermarkt.com/ryan-fraser/verletzungen/spieler/146795
+Miguel Almirón,Newcastle United,2023-03-15,2023-04-15,injury-thigh-problems,https://www.transfermarkt.com/miguel-almiron/verletzungen/spieler/272999
+Alexander Isak,Newcastle United,2022-09-20,2023-04-01,injury-thigh-problems,https://www.transfermarkt.com/alexander-isak/verletzungen/spieler/349066
+Callum Wilson,Newcastle United,2022-07-01,2022-11-11,injury-corona-virus,https://www.transfermarkt.com/callum-wilson/verletzungen/spieler/123682
+Callum Wilson,Newcastle United,2022-08-21,2022-09-25,injury-hamstring-injury,https://www.transfermarkt.com/callum-wilson/verletzungen/spieler/123682
+Chris Wood,Newcastle United,2023-03-30,2023-03-07,injury-hamstring-injury,https://www.transfermarkt.com/chris-wood/verletzungen/spieler/108725
+Dean Henderson,Nottingham Forest,2023-01-14,2023-06-30,injury-torn-thigh-muscle,https://www.transfermarkt.com/dean-henderson/verletzungen/spieler/258919
+Keylor Navas,Nottingham Forest,2023-05-20,2023-06-30,injury-groin-injury,https://www.transfermarkt.com/keylor-navas/verletzungen/spieler/79422
+Keylor Navas,Nottingham Forest,2022-10-11,2022-11-14,injury-rest,https://www.transfermarkt.com/keylor-navas/verletzungen/spieler/79422
+Keylor Navas,Nottingham Forest,2022-10-31,2022-10-11,injury-back-injury,https://www.transfermarkt.com/keylor-navas/verletzungen/spieler/79422
+Keylor Navas,Nottingham Forest,2022-12-09,2022-09-15,injury-minor-knock,https://www.transfermarkt.com/keylor-navas/verletzungen/spieler/79422
+Keylor Navas,Nottingham Forest,2022-08-20,2022-08-22,injury-lumbar-vertebra-problems,https://www.transfermarkt.com/keylor-navas/verletzungen/spieler/79422
+Adnan Kanuric,Nottingham Forest,2023-04-15,2023-05-15,injury-unknown-injury,https://www.transfermarkt.com/adnan-kanuric/verletzungen/spieler/354017
+Moussa Niakhaté,Nottingham Forest,2022-08-15,2023-03-17,injury-hamstring-injury,https://www.transfermarkt.com/moussa-niakhate/verletzungen/spieler/291200
+Moussa Niakhaté,Nottingham Forest,2022-07-01,2022-11-01,injury-corona-virus,https://www.transfermarkt.com/moussa-niakhate/verletzungen/spieler/291200
+Loïc Badé,Nottingham Forest,2023-02-17,2023-06-30,injury-torn-thigh-muscle,https://www.transfermarkt.com/loic-bade/verletzungen/spieler/730581
+Loïc Badé,Nottingham Forest,2022-07-01,2022-12-05,injury-adductor-pain,https://www.transfermarkt.com/loic-bade/verletzungen/spieler/730581
+Scott McKenna,Nottingham Forest,2023-04-22,2023-05-06,injury-shoulder-injury,https://www.transfermarkt.com/scott-mckenna/verletzungen/spieler/255906
+Giulian Biancone,Nottingham Forest,2022-07-01,2023-01-08,injury-knee-injury,https://www.transfermarkt.com/giulian-biancone/verletzungen/spieler/536507
+Steve Cook,Nottingham Forest,2023-05-02,2023-01-07,injury-knee-injury,https://www.transfermarkt.com/steve-cook/verletzungen/spieler/90836
+Steve Cook,Nottingham Forest,2023-05-02,2023-02-15,injury-foot-injury,https://www.transfermarkt.com/steve-cook/verletzungen/spieler/90836
+Neco Williams,Nottingham Forest,2023-02-09,2023-01-10,injury-arch-problems,https://www.transfermarkt.com/neco-williams/verletzungen/spieler/503680
+Neco Williams,Nottingham Forest,2023-04-26,2023-05-29,injury-facial-fracture,https://www.transfermarkt.com/neco-williams/verletzungen/spieler/503680
+Omar Richards,Nottingham Forest,2022-07-20,2023-06-30,injury-broken-leg,https://www.transfermarkt.com/omar-richards/verletzungen/spieler/424881
+Omar Richards,Nottingham Forest,2022-07-01,2022-12-01,injury-corona-virus,https://www.transfermarkt.com/omar-richards/verletzungen/spieler/424881
+Serge Aurier,Nottingham Forest,2023-05-12,2023-06-30,injury-calf-strain,https://www.transfermarkt.com/serge-aurier/verletzungen/spieler/127032
+Serge Aurier,Nottingham Forest,2023-02-18,2023-05-03,injury-calf-injury,https://www.transfermarkt.com/serge-aurier/verletzungen/spieler/127032
+Danilo,Nottingham Forest,2023-02-09,2023-04-11,injury-unknown-injury,https://www.transfermarkt.com/danilo/verletzungen/spieler/808509
+Orel Mangala,Nottingham Forest,2022-07-20,2022-07-26,injury-corona-virus,https://www.transfermarkt.com/orel-mangala/verletzungen/spieler/289592
+Cheikhou Kouyaté,Nottingham Forest,2022-11-21,2023-03-01,injury-hamstring-injury,https://www.transfermarkt.com/cheikhou-kouyate/verletzungen/spieler/66934
+Ryan Yates,Nottingham Forest,2023-03-17,2023-06-30,injury-shoulder-injury,https://www.transfermarkt.com/ryan-yates/verletzungen/spieler/425902
+Ryan Yates,Nottingham Forest,2023-01-21,2023-02-24,injury-ill,https://www.transfermarkt.com/ryan-yates/verletzungen/spieler/425902
+Jonjo Shelvey,Nottingham Forest,2022-07-26,2022-10-10,injury-hamstring-injury,https://www.transfermarkt.com/jonjo-shelvey/verletzungen/spieler/71292
+Gustavo Scarpa,Nottingham Forest,2023-06-04,2023-06-30,injury-knee-injury,https://www.transfermarkt.com/gustavo-scarpa/verletzungen/spieler/330085
+Jesse Lingard,Nottingham Forest,2022-12-27,2023-01-16,injury-hamstring-injury,https://www.transfermarkt.com/jesse-lingard/verletzungen/spieler/141660
+Alex Mighten,Nottingham Forest,2022-07-01,2022-11-02,injury-knee-injury,https://www.transfermarkt.com/alex-mighten/verletzungen/spieler/503988
+Taiwo Awoniyi,Nottingham Forest,2023-04-01,2023-01-04,injury-groin-injury,https://www.transfermarkt.com/taiwo-awoniyi/verletzungen/spieler/295313
+Chris Wood,Nottingham Forest,2023-03-30,2023-03-07,injury-hamstring-injury,https://www.transfermarkt.com/chris-wood/verletzungen/spieler/108725
+Sam Surridge,Nottingham Forest,2022-07-01,2022-07-25,injury-groin-surgery,https://www.transfermarkt.com/sam-surridge/verletzungen/spieler/398402
+Armel Bella-Kotchap,Southampton FC,2023-04-26,2023-04-29,injury-unknown-injury,https://www.transfermarkt.com/armel-bella-kotchap/verletzungen/spieler/467563
+Armel Bella-Kotchap,Southampton FC,2023-03-19,2023-06-30,injury-shoulder-injury,https://www.transfermarkt.com/armel-bella-kotchap/verletzungen/spieler/467563
+Armel Bella-Kotchap,Southampton FC,2023-04-01,2023-06-30,injury-knee-problems,https://www.transfermarkt.com/armel-bella-kotchap/verletzungen/spieler/467563
+Mohammed Salisu,Southampton FC,2023-01-08,2023-06-30,injury-adductor-injury,https://www.transfermarkt.com/mohammed-salisu/verletzungen/spieler/563963
+Mohammed Salisu,Southampton FC,2023-03-20,2023-06-30,injury-hip-injury,https://www.transfermarkt.com/mohammed-salisu/verletzungen/spieler/563963
+Mohammed Salisu,Southampton FC,2023-02-14,2023-02-03,injury-knock,https://www.transfermarkt.com/mohammed-salisu/verletzungen/spieler/563963
+Jack Stephens,Southampton FC,2022-07-01,2022-07-01,injury-corona-virus,https://www.transfermarkt.com/jack-stephens/verletzungen/spieler/163744
+Nico Lawrence,Southampton FC,2023-03-11,2023-06-30,injury-shoulder-injury,https://www.transfermarkt.com/nico-lawrence/verletzungen/spieler/989472
+Romain Perraud,Southampton FC,2023-04-28,2023-05-30,injury-injury-to-the-ankle,https://www.transfermarkt.com/romain-perraud/verletzungen/spieler/318523
+Romain Perraud,Southampton FC,2022-08-25,2022-08-28,injury-groin-injury,https://www.transfermarkt.com/romain-perraud/verletzungen/spieler/318523
+Juan Larios,Southampton FC,2022-07-11,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/juan-larios/verletzungen/spieler/646738
+Kyle Walker-Peters,Southampton FC,2023-01-02,2023-02-13,injury-hamstring-injury,https://www.transfermarkt.com/kyle-walker-peters/verletzungen/spieler/341051
+Tino Livramento,Southampton FC,2022-07-01,2023-04-13,injury-cruciate-ligament-tear,https://www.transfermarkt.com/tino-livramento/verletzungen/spieler/503981
+Ainsley Maitland-Niles,Southampton FC,2023-06-03,2023-03-16,injury-knock,https://www.transfermarkt.com/ainsley-maitland-niles/verletzungen/spieler/285845
+Stuart Armstrong,Southampton FC,2023-05-01,2023-05-02,injury-groin-problems,https://www.transfermarkt.com/stuart-armstrong/verletzungen/spieler/130765
+Kamaldeen Sulemana,Southampton FC,2023-01-08,2023-02-09,injury-muscle-injury,https://www.transfermarkt.com/kamaldeen-sulemana/verletzungen/spieler/746695
+Kamaldeen Sulemana,Southampton FC,2022-07-01,2022-07-11,injury-injury-to-the-ankle,https://www.transfermarkt.com/kamaldeen-sulemana/verletzungen/spieler/746695
+Kamaldeen Sulemana,Southampton FC,2022-09-29,2022-10-10,injury-knee-problems,https://www.transfermarkt.com/kamaldeen-sulemana/verletzungen/spieler/746695
+Nathan Tella,Southampton FC,2023-04-15,2023-01-05,injury-muscle-injury,https://www.transfermarkt.com/nathan-tella/verletzungen/spieler/340322
+Nathan Redmond,Southampton FC,2023-01-06,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/nathan-redmond/verletzungen/spieler/129078
+Nathan Redmond,Southampton FC,2023-01-31,2023-06-02,injury-unknown-injury,https://www.transfermarkt.com/nathan-redmond/verletzungen/spieler/129078
+Nathan Redmond,Southampton FC,2022-09-23,2022-09-29,injury-metacarpal-fracture,https://www.transfermarkt.com/nathan-redmond/verletzungen/spieler/129078
+Theo Walcott,Southampton FC,2022-12-20,2023-01-27,injury-calf-strain,https://www.transfermarkt.com/theo-walcott/verletzungen/spieler/33713
+Sékou Mara,Southampton FC,2022-07-01,2022-07-01,injury-virus,https://www.transfermarkt.com/sekou-mara/verletzungen/spieler/557612
+Hugo Lloris,Tottenham Hotspur,2023-04-24,2023-02-10,injury-thigh-problems,https://www.transfermarkt.com/hugo-lloris/verletzungen/spieler/17965
+Hugo Lloris,Tottenham Hotspur,2023-06-02,2023-03-22,injury-knee-injury,https://www.transfermarkt.com/hugo-lloris/verletzungen/spieler/17965
+Alfie Whiteman,Tottenham Hotspur,2023-03-08,2023-06-30,injury-ankle-injury,https://www.transfermarkt.com/alfie-whiteman/verletzungen/spieler/282823
+Cristian Romero,Tottenham Hotspur,2022-10-28,2022-11-19,injury-hamstring-injury,https://www.transfermarkt.com/cristian-romero/verletzungen/spieler/355915
+Ben Davies,Tottenham Hotspur,2023-03-18,2023-04-20,injury-hamstring-injury,https://www.transfermarkt.com/ben-davies/verletzungen/spieler/192765
+Clément Lenglet,Tottenham Hotspur,2022-10-08,2022-08-18,injury-adductor-injury,https://www.transfermarkt.com/clement-lenglet/verletzungen/spieler/182904
+Clément Lenglet,Tottenham Hotspur,2022-07-01,2022-07-01,injury-stomach-problems,https://www.transfermarkt.com/clement-lenglet/verletzungen/spieler/182904
+Japhet Tanganga,Tottenham Hotspur,2023-01-08,2023-06-30,injury-knee-problems,https://www.transfermarkt.com/japhet-tanganga/verletzungen/spieler/346478
+Japhet Tanganga,Tottenham Hotspur,2022-10-10,2022-10-17,injury-knock,https://www.transfermarkt.com/japhet-tanganga/verletzungen/spieler/346478
+Ryan Sessegnon,Tottenham Hotspur,2022-07-03,2022-07-04,injury-hamstring-injury,https://www.transfermarkt.com/ryan-sessegnon/verletzungen/spieler/392775
+Ryan Sessegnon,Tottenham Hotspur,2022-07-01,2022-07-01,injury-muscle-injury,https://www.transfermarkt.com/ryan-sessegnon/verletzungen/spieler/392775
+Pedro Porro,Tottenham Hotspur,2022-09-22,2022-09-10,injury-knock,https://www.transfermarkt.com/pedro-porro/verletzungen/spieler/553875
+Emerson Royal,Tottenham Hotspur,2023-03-25,2023-01-05,injury-knee-surgery,https://www.transfermarkt.com/emerson-royal/verletzungen/spieler/476344
+Pierre-Emile Højbjerg,Tottenham Hotspur,2023-05-20,2023-06-30,injury-bruise,https://www.transfermarkt.com/pierre-emile-hojbjerg/verletzungen/spieler/167799
+Pierre-Emile Højbjerg,Tottenham Hotspur,2022-10-23,2022-10-28,injury-dead-leg,https://www.transfermarkt.com/pierre-emile-hojbjerg/verletzungen/spieler/167799
+Oliver Skipp,Tottenham Hotspur,2022-07-18,2022-08-29,injury-foot-injury,https://www.transfermarkt.com/oliver-skipp/verletzungen/spieler/406638
+Rodrigo Bentancur,Tottenham Hotspur,2022-07-01,2023-01-16,injury-adductor-pain,https://www.transfermarkt.com/rodrigo-bentancur/verletzungen/spieler/354362
+Pape Matar Sarr,Tottenham Hotspur,2022-07-01,2022-12-01,injury-corona-virus,https://www.transfermarkt.com/pape-matar-sarr/verletzungen/spieler/568693
+Alfie Devine,Tottenham Hotspur,2022-11-08,2022-09-25,injury-hamstring-injury,https://www.transfermarkt.com/alfie-devine/verletzungen/spieler/728734
+Heung-min Son,Tottenham Hotspur,2023-05-29,2023-06-18,injury-groin-surgery,https://www.transfermarkt.com/heung-min-son/verletzungen/spieler/91845
+Heung-min Son,Tottenham Hotspur,2022-07-01,2022-11-20,injury-facial-fracture,https://www.transfermarkt.com/heung-min-son/verletzungen/spieler/91845
+Arnaut Danjuma,Tottenham Hotspur,2022-07-01,2022-09-19,injury-muscular-problems,https://www.transfermarkt.com/arnaut-danjuma/verletzungen/spieler/355861
+Bryan Gil,Tottenham Hotspur,2023-02-08,2023-05-10,injury-inflammation-of-pubic-bone,https://www.transfermarkt.com/bryan-gil/verletzungen/spieler/537382
+Bryan Gil,Tottenham Hotspur,2022-08-29,2022-12-09,injury-knock,https://www.transfermarkt.com/bryan-gil/verletzungen/spieler/537382
+Ivan Perišić,Tottenham Hotspur,2022-07-01,2022-08-03,injury-muscle-fatigue,https://www.transfermarkt.com/ivan-perisic/verletzungen/spieler/42460
+Richarlison,Tottenham Hotspur,2022-09-12,2023-01-13,injury-hamstring-injury,https://www.transfermarkt.com/richarlison/verletzungen/spieler/378710
+Richarlison,Tottenham Hotspur,2022-10-15,2022-08-11,injury-calf-injury,https://www.transfermarkt.com/richarlison/verletzungen/spieler/378710
+Richarlison,Tottenham Hotspur,2022-07-01,2022-12-01,injury-calf-injury,https://www.transfermarkt.com/richarlison/verletzungen/spieler/378710
+Joseph Anang,West Ham United,2022-08-18,2023-03-01,injury-broken-arm,https://www.transfermarkt.com/joseph-anang/verletzungen/spieler/576099
+Thilo Kehrer,West Ham United,2023-03-03,2023-04-03,injury-ill,https://www.transfermarkt.com/thilo-kehrer/verletzungen/spieler/228948
+Angelo Ogbonna,West Ham United,2023-04-14,2023-04-19,injury-back-problems,https://www.transfermarkt.com/angelo-ogbonna/verletzungen/spieler/48002
+Angelo Ogbonna,West Ham United,2022-07-01,2022-07-21,injury-cruciate-ligament-tear,https://www.transfermarkt.com/angelo-ogbonna/verletzungen/spieler/48002
+Vladimír Coufal,West Ham United,2023-03-05,2023-05-16,injury-hamstring-injury,https://www.transfermarkt.com/vladimir-coufal/verletzungen/spieler/157672
+Vladimír Coufal,West Ham United,2023-01-03,2023-03-20,injury-heel-injury,https://www.transfermarkt.com/vladimir-coufal/verletzungen/spieler/157672
+Nikola Vlašić,West Ham United,2023-02-19,2023-03-16,injury-hamstring-injury,https://www.transfermarkt.com/nikola-vlasic/verletzungen/spieler/293200
+Gianluca Scamacca,West Ham United,2023-03-12,2023-06-30,injury-adductor-injury,https://www.transfermarkt.com/gianluca-scamacca/verletzungen/spieler/315867
+Gianluca Scamacca,West Ham United,2023-04-18,2023-06-30,injury-knee-surgery,https://www.transfermarkt.com/gianluca-scamacca/verletzungen/spieler/315867
+Gianluca Scamacca,West Ham United,2023-01-04,2023-04-18,injury-meniscus-injury,https://www.transfermarkt.com/gianluca-scamacca/verletzungen/spieler/315867
+Gianluca Scamacca,West Ham United,2023-01-20,2023-02-19,injury-knee-injury,https://www.transfermarkt.com/gianluca-scamacca/verletzungen/spieler/315867
+Gianluca Scamacca,West Ham United,2022-11-14,2022-12-27,injury-unknown-injury,https://www.transfermarkt.com/gianluca-scamacca/verletzungen/spieler/315867
+Gianluca Scamacca,West Ham United,2022-08-29,2022-07-09,injury-ill,https://www.transfermarkt.com/gianluca-scamacca/verletzungen/spieler/315867
+Gianluca Scamacca,West Ham United,2022-07-01,2022-09-01,injury-unknown-injury,https://www.transfermarkt.com/gianluca-scamacca/verletzungen/spieler/315867
+Danny Ings,West Ham United,2023-01-21,2023-01-21,injury-knee-injury,https://www.transfermarkt.com/danny-ings/verletzungen/spieler/134294
+José Sá,Wolverhampton Wanderers,2022-07-01,2022-07-20,injury-unknown-injury,https://www.transfermarkt.com/jose-sa/verletzungen/spieler/249994
+Matija Sarkic,Wolverhampton Wanderers,2023-03-09,2023-06-30,injury-muscle-injury,https://www.transfermarkt.com/matija-sarkic/verletzungen/spieler/293257
+Rayan Aït-Nouri,Wolverhampton Wanderers,2022-10-17,2022-10-22,injury-ill,https://www.transfermarkt.com/rayan-ait-nouri/verletzungen/spieler/578391
+Matheus Nunes,Wolverhampton Wanderers,2022-07-01,2022-12-11,injury-shoulder-injury,https://www.transfermarkt.com/matheus-nunes/verletzungen/spieler/601883
+Nélson Semedo,Wolverhampton Wanderers,2022-07-01,2022-12-08,injury-hamstring-injury,https://www.transfermarkt.com/nelson-semedo/verletzungen/spieler/231572
+Leander Dendoncker,Wolverhampton Wanderers,2023-01-08,2023-01-09,injury-unknown-injury,https://www.transfermarkt.com/leander-dendoncker/verletzungen/spieler/168157
+Leander Dendoncker,Wolverhampton Wanderers,2023-01-03,2023-03-23,injury-hand-injury,https://www.transfermarkt.com/leander-dendoncker/verletzungen/spieler/168157
+Boubacar Traoré,Wolverhampton Wanderers,2023-04-01,2023-05-20,injury-groin-injury,https://www.transfermarkt.com/boubacar-traore/verletzungen/spieler/649020
+Boubacar Traoré,Wolverhampton Wanderers,2022-07-03,2022-08-04,injury-dead-leg,https://www.transfermarkt.com/boubacar-traore/verletzungen/spieler/649020
+João Moutinho,Wolverhampton Wanderers,2022-07-01,2022-08-18,injury-ankle-injury,https://www.transfermarkt.com/joao-moutinho/verletzungen/spieler/29364
+Gonçalo Guedes,Wolverhampton Wanderers,2023-01-03,2023-05-03,injury-unknown-injury,https://www.transfermarkt.com/goncalo-guedes/verletzungen/spieler/225122
+Daniel Podence,Wolverhampton Wanderers,2023-05-01,2023-06-30,injury-unknown-injury,https://www.transfermarkt.com/daniel-podence/verletzungen/spieler/256977
+Daniel Podence,Wolverhampton Wanderers,2022-07-01,2022-12-05,injury-foot-injury,https://www.transfermarkt.com/daniel-podence/verletzungen/spieler/256977
+Pedro Neto,Wolverhampton Wanderers,2022-07-01,2023-05-02,injury-ankle-injury,https://www.transfermarkt.com/pedro-neto/verletzungen/spieler/487465
+Adama Traoré,Wolverhampton Wanderers,2022-07-20,2022-08-13,injury-hamstring-injury,https://www.transfermarkt.com/adama-traore/verletzungen/spieler/204103
+Matheus Cunha,Wolverhampton Wanderers,2022-07-01,2022-09-09,injury-muscle-injury,https://www.transfermarkt.com/matheus-cunha/verletzungen/spieler/517894
+Sasa Kalajdzic,Wolverhampton Wanderers,2022-07-01,2023-05-06,injury-cruciate-ligament-tear,https://www.transfermarkt.com/sasa-kalajdzic/verletzungen/spieler/369567
+Sasa Kalajdzic,Wolverhampton Wanderers,2022-07-01,2022-11-04,injury-corona-virus,https://www.transfermarkt.com/sasa-kalajdzic/verletzungen/spieler/369567
+Hee-chan Hwang,Wolverhampton Wanderers,2023-05-02,2023-06-30,injury-hamstring-injury,https://www.transfermarkt.com/hee-chan-hwang/verletzungen/spieler/292246
+Hee-chan Hwang,Wolverhampton Wanderers,2022-11-14,2022-11-21,injury-hamstring-injury,https://www.transfermarkt.com/hee-chan-hwang/verletzungen/spieler/292246
+Raúl Jiménez,Wolverhampton Wanderers,2022-09-30,2022-11-14,injury-hip-problems,https://www.transfermarkt.com/raul-jimenez/verletzungen/spieler/206040
+Raúl Jiménez,Wolverhampton Wanderers,2022-07-23,2022-08-17,injury-knee-injury,https://www.transfermarkt.com/raul-jimenez/verletzungen/spieler/206040
