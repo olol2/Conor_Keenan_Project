@@ -1,9 +1,9 @@
 {
   "run_name": "build_injury_panel",
-  "timestamp_utc": "2025-12-17T14:23:33.022987+00:00",
+  "timestamp_utc": "2025-12-30T07:25:21.378318+00:00",
   "python_version": "3.13.5 | packaged by conda-forge | (main, Jun 16 2025, 08:27:50) [GCC 13.3.0]",
   "platform": "Linux-5.15.0-1092-azure-x86_64-with-glibc2.39",
-  "git_commit": "5963ac4fb0771969d2bea8dc9dcc3c02271a2894",
+  "git_commit": "c347914212ec2d930d5d146fa0ca0457999ec122",
   "packages": {
     "pandas": "2.3.1",
     "numpy": "2.3.1",
