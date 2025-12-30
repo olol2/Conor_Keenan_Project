@@ -169,6 +169,10 @@ __marimo__/
 !/data/processed/understat/
 !/data/processed/understat/understat_player_matches_master.csv
 
+# Allow points-to-pounds mapping directory required by proxy2_injury_did_points
+!/data/processed/points_to_pounds/
+!/data/processed/points_to_pounds/**
+
 # R / OS artifacts
 .Rproj.user/
 .DS_Store
