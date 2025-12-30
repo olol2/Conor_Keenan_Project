@@ -7,4 +7,5 @@ requests
 beautifulsoup4
 python-dateutil
 aiohttp
-understat        
+understat
+pyarrow>=14
