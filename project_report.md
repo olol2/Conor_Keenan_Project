@@ -42,33 +42,62 @@ To address this objective, the report is structured into three research question
 2. **Injury-related performance cost:** When a player is unavailable due to injury, what is the associated change in team performance, and can this be attributed at the player-season level in a comparable way?
 3. **"Fair value" interpretation:** Do the resulting proxies provide meaningful differentiation between players (e.g., core starters vs. situational players; high-impact absences vs. low-impact absences) that complements conventional performance measures?
 
-- **Objectives and goals**:
+- **Objectives and goals**
+
 The project’s objective is not to directly estimate transfer fees or wages, but to provide actionable inputs for downstream analysis in scouting, squad planning, and performance diagnostics. Specifically, the project aims to produce two proxy measures with four design properties: interpretability, scalability, reproducibility, and season comparability.
 
 The deliverables include:
         **Proxy 1 - Rotation Elasticity (player-season):** a measure of selective deployment, defined as the change in a player’s starting likelihood between “hard” and “easy” fixtures.
         **Proxy 2 - Injury Impact (player-season):** a measure of the associated change in team outcomes during a player’s injury absences, constructed using within-team comparisons to reduce sensitivity to persistent team quality.
     
-- **Report organization**:
+- **Report organization**
+
 The remainder of the report is structured as follows. Section 2 reviews relevant literature on fixture congestion and rotation, injury incidence and player availability, and performance measurement in football. Section 3 describes the datasets, preprocessing steps, match-context definitions, and the construction of the two proxies. Section 4 presents empirical results and validation figures. Section 5 discusses interpretation, limitations, and robustness considerations. Section 6 concludes and outlines extensions, including alternative context definitions, stronger identification strategies, and applications to recruitment and squad optimisation.
 
 # 2. Literature Review
 
-Discuss relevant prior work, existing solutions, or theoretical background:
-
-- Previous approaches to similar problems
-- Relevant algorithms or methodologies
-- Datasets used in related studies
-- Gap in existing work that your project addresses
-
-This section situates the project with three adjacent research streams:
-    - squad rotation and workload management
-    - injury occurence and player availability
-    - performance measurement frameworks that allow player-level attribution (or, at minimum, interpretable player-season summaries)
+This project draws on four closely related bodies of work:
+1. squad rotation and fixture congestion
+2. injury incidence and player availability
+3. public injury datasets (and limitations)
+4. Football performance measurement frameworks (xG/xPts and attribution methods)
+Together, these streams motivate the proxy-based approach used here and clarify the gap the project addresses.
 
 ## 2.1 Squat rotation, fixture congestion, and performance trade-offs
 
-Squad rotation is typically discussed as a managerial response to constrained recovery time, match congestion, and heterogeneous opponent difficulty. Sports-science evidence has long examined whether congested schedules degrade match running outputs or elevate injury risk, and to what extent rotation and recovery protocols mitigate these effects. Early club-based evidence suggested that high-intensity running and injury risk may be relatively stable across short congested periods, plausibly
+Rotation is commonly framed as a managerial response to congested schedules and cumulative fatigue, with the aim of sustaining performance and mitigating injury risk. Systematic evidence indicates that injury risk is generally higher during fixture-congested periods, although effects can vary by injury definition and setting. At the club-study level, Carling et al. (2012) report that high-intensity running and injury risk were largely unchanged during a prolonged congested period—an outcome they interpret as consistent with compensatory strategies such as squad rotation and recovery protocols.
+Beyond congestion, recent applied research has begun to quantify whether rotation correlates with results. Mehta et al. (2024) examine squad rotation in top European leagues and suggest that rotation is not uniformly beneficial for points accumulation; effects depend on context such as team resources/quality. At the match level, Yang et al. (2025) find evidence consistent with the idea that excessive rotation is associated with worse outcomes, partly mediated through passing and shooting performance.
+
+Relevance for this project. The literature motivates a rotation measure that is contextual, since “rotation” is not only about total minutes but also about selective deployment across match difficulty.
+
+## 2.2 Injuries, availability and team success
+
+Elite football injury epidemiology is well established. The UEFA injury study documents stable but substantial injury incidence in professional football and provides benchmark rates and patterns for match versus training injuries.Importantly, research also links injuries to competitive outcomes. Hägglund et al. (2013), using an 11-year follow-up of UEFA Champions League teams, report that higher injury burden and lower match availability are associated with worse performance outcomes in league and European competition.
+A complementary practitioner-facing scientific stream emphasises player availability as an operational performance driver in elite team sports, arguing that keeping key players selectable may matter more than maintaining occasional peak performance.
+
+Relevance for this project. This evidence supports treating injuries as availability shocks with potential downstream performance costs, motivating an “injury impact” proxy anchored in team outcomes during absence periods.
+
+## 2.3 Public injury data (Transfermarkt) and measurement constraints
+
+Because verified medical datasets are rarely public, many applied studies rely on media-compiled injury records such as Transfermarkt. However, the validity of media-based injury reporting is not uniform. Krutsch et al. (2020) evaluate media-reported injuries against clinical information and conclude that validity is higher for certain severe injury types, implying that researchers should apply cautious designs when using such data.
+Despite these limitations, public databases can support large-scale analysis: Hoenig et al. (2022) analyse more than 20,000 injuries using a citizen-science approach and discuss both the opportunity and caveats for epidemiological research.
+
+Relevance for this project. These findings motivate conservative claims and robustness-oriented proxy construction—specifically, relying on within-team comparisons rather than assuming high-fidelity medical labels.
+
+## 2.4 Performance measurement: xG, xPts and player attribution
+
+Football outcomes are low-scoring and noisy, motivating the use of model-based metrics such as expected goals (xG) and derived probability-based outcomes. Mead et al. (2023) provide recent peer-reviewed evidence that expected-goals models can be strong predictors of future team success relative to traditional statistics and discuss evaluation of xG modelling choices.
+For player-level impact estimation, plus–minus frameworks adapt methods used in basketball and hockey to football. Kharrat, López Peña, and McHale propose variants using expected goals and expected points to reduce variance and align contributions with probabilistic match outcomes.
+
+Relevance for this project. Rather than estimating a full regularised plus–minus model (which is data- and modelling-intensive), this project adopts a proxy approach using expected-points-facing outcomes (xPts) and transparent within-team contrasts, prioritising interpretability and reproducibility.
+
+## 2.5 Gap addressed by this project
+
+Across the literature, two practical gaps remain for a reproducible, player-season framework using public data:
+    1. **Context-dependent rotation at the player-season level.** Existing rotation work often focuses on team-level rotation rates or match-level stability and links rotation to points or performance channels.Fewer approaches produce an interpretable player-season statistic capturing how a player’s starting likelihood changes by match difficulty (i.e., selective deployment).
+    2. Outcome-linked injury cost measures robust to public injury data limitations. Injuries and availability are strongly connected to team performance, yet public injury logs contain measurement error. This creates scope for a method that remains informative under noisy injury reporting while still linking absences to expectation-based performance outcomes.
+
+This project addresses these gaps by constructing two interpretable player-season proxies Rotation Elasticity (contextual starting selectivity) and Injury Impact (within-team outcome change during injury absences) and delivering a reproducible dataset suitable for downstream ranking, profiling, and squad-level aggregation.
 
 
 # 3. Methodology
