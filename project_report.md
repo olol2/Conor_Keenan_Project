@@ -255,24 +255,52 @@ Lastly, outputs are written using atomic writes to protect against partial or co
 # 4. Results
 
 ## 4.1 Experimental Setup
+- **Hardware**
+All development and execution were performed on a MacBook Pro (13-inch, 2019) running macOS Sequoia 15.7.2, equipped with a 2.4 GHz Quad-Core Intel Core i5, 8 GB 2133 MHz LPDDR3 RAM, and Intel Iris Plus Graphics 655 (1536 MB). The project was developed primarily in VS Code within a Nuvolos environment (with some early development performed in PyCharm before consolidating in VS Code). From a computational perspective, the workflow is effectively CPU-bound: no GPU acceleration is required or explicitly used for proxy construction, regression estimation, or figure generation. The only stage that is time-intensive in an end-to-end run is the optional Transfermarkt scraping, which is constrained mainly by request pacing and throttling avoidance rather than heavy numerical computation. Importantly, the reproducible entrypoint used for evaluation (main.py) operates on already processed and cleaned CSV/Parquet artefacts, and therefore does not trigger scraping.
+- **Software**
+The pipeline is implemented in Python 3.13.5. Core data processing and analysis rely on standard scientific Python libraries, including pandas and NumPy for tabular manipulation and aggregation, statsmodels for regression-based estimation of the injury proxy, and matplotlib and plotly for visualisation. Data extraction and parsing utilities include requests, beautifulsoup4, and python-dateutil. Where available, pyarrow (>=14) is used to support Parquet outputs alongside CSV. For asynchronous extraction of Understat data during data collection, the project uses aiohttp and the understat package. The project is organised as a modular set of scripts executed through a single orchestrator, and reproducibility is supported by consistent logging and run metadata written at runtime.
+- **Hyperparameters**
+Because the project is measurement-focused rather than model-training-focused, the relevant “hyperparameters” consist of pipeline thresholds and estimation settings rather than learning rates or batch sizes.
 
-Describe your experimental environment:
+Proxy 1 (Rotation Elasticity): match context is defined within each team-season by assigning matches to hard/medium/easy terciles based on match-level xPts. Rotation Elasticity is computed per player–team–season as the difference in starting rates between hard and easy matches. Player-seasons are retained only if supported by minimum observations (default thresholds: min_matches = 3, min_hard = 1, min_easy = 1).
 
-- **Hardware**: CPU/GPU specifications
-- **Software**: Python version, key library versions
-- **Hyperparameters**: Learning rate, batch size, etc.
-- **Training details**: Number of epochs, cross-validation
+Proxy 2 (Injury Impact): estimated separately for each player–team–season using an OLS specification with an unavailability indicator and additional controls (opponent fixed effects, within-season time trend, and squad-level injury burden). Player-seasons are retained only if both states are observed (default thresholds: min_unavail = 2, min_avail = 2). Standard errors are clustered by opponent when sufficient opponent clusters exist; otherwise heteroskedasticity-robust (HC1) standard errors are used.
+- **Training details**
+No machine learning model is trained in this project, so epochs, batch size, learning rate, and cross-validation are not applicable. Instead, Proxy 1 is computed deterministically via aggregation on a match-level panel, and Proxy 2 is estimated via repeated per player–team–season regressions under a fixed specification. Evaluation therefore focuses on reproducibility, coverage, and diagnostic validity (summary statistics and figures) rather than predictive performance on a held-out set.
 
 ## 4.2 Performance Evaluation
 
-Present your results with tables and figures.
+This section reports the outputs of the end-to-end pipeline executed via `main.py`. The orchestrator rebuilds the intermediate match-aligned panels from already processed artefacts, constructs both player-season proxies, merges them into a combined dataset, and generates the project’s diagnostic tables and figures.
 
-| Model | Accuracy | Precision | Recall | F1-Score |
-|-------|----------|-----------|--------|----------|
-| Baseline | 0.75 | 0.72 | 0.78 | 0.75 |
-| Your Model | 0.85 | 0.83 | 0.87 | 0.85 |
+### 4.2.1 Panel construction and coverage
 
-*Table 1: Model performance comparison*
+The pipeline begins by constructing two match-aligned panels that serve as the inputs to proxy estimation.
+
+The injury panel (`panel_injury`) is built at match level with one row per `(match_id, team_id, player_name)` for players observed in the injury spell data. In the executed run, the injury panel contains **78,243 rows** and an average match-level unavailability rate of **0.355**. This rate reflects that the spell data contains both injury and suspension windows and that the panel is defined over player–team–seasons with at least one recorded spell.
+
+The rotation panel (`panel_rotation`) is constructed by merging Understat player-match participation (minutes and a starter indicator) with the EPL team-match schedule on `(season, date, team_id)` after date normalisation and join-key validation. The resulting rotation panel contains **67,042 rows**. During alignment, **2,228** Understat rows are dropped because they do not correspond to league fixtures (most plausibly cup matches, friendlies, or residual date mismatches). This exclusion is intentional: it restricts downstream estimation to the EPL schedule and prevents non-league matches from contaminating the proxy definitions.
+
+### 4.2.2 Proxy 1 — Rotation Elasticity
+
+Proxy 1 produces a player–team–season measure of selective deployment across match contexts. Within each team-season, matches are assigned to **hard / medium / easy** terciles based on match-level xPts, and Rotation Elasticity is computed as the difference in starting rates between hard and easy matches. Using the default support thresholds (`min_matches=3`, `min_hard=1`, `min_easy=1`), the pipeline produces **2,924 player-season estimates** covering **1,134 players** and **27 teams** across seasons **2019–2024**.
+
+The Rotation Elasticity distribution is centred close to zero, with a mean of **0.0021** and a standard deviation of **0.2471**. A mean near zero is consistent with the proxy definition: many player-seasons show broadly similar starting likelihoods across contexts, while dispersion reflects heterogeneous managerial selectivity (both positive and negative) across squads, roles, and seasons. Supporting figures—including a histogram, team-level boxplots, and season trend plots—are saved to facilitate interpretation and cross-season comparison.
+
+### 4.2.3 Proxy 2 — Injury Impact (DiD-style OLS)
+
+Proxy 2 estimates a match-level association between team expected points and player unavailability within each player–team–season under the fixed specification described in Section 3.2. Applying the default support thresholds (`min_unavail=2`, `min_avail=2`), the pipeline retains **1,968** candidate player–team–seasons and successfully estimates **1,967** injury coefficients (one player-season fails estimation due to a numerical issue). The mean estimated unavailability coefficient is **-0.0041** in match-level xPts units, indicating that the average fitted within-team association is small in magnitude.
+
+To improve interpretability, the regression output is translated into season-level aggregates (e.g., `xpts_season_total`) and then optionally expressed in approximate monetary terms using season-specific points-to-GBP mappings. A final “named” injury proxy file is produced with **1,967 rows**, and the Understat ID match rate in that file is **83.427%** (**326 missing**), reflecting partial name/ID linkage coverage across sources. The pipeline also generates summary visualisations, including a top-10 ranking of injury totals and club-level injury “bills.”
+
+### 4.2.4 Combined proxy dataset and relationship between proxies
+
+The two proxy outputs are merged into a single player–team–season dataset using an outer join on `(player_id, season, team_id)` to preserve proxy-specific coverage. The combined dataset contains **3,471 rows** across **27 teams**, with **2,924** rows containing a valid Rotation Elasticity estimate, **1,967** rows containing a valid Injury Impact estimate, and **1,420** rows where both proxies are observed simultaneously. The difference in coverage is expected because the proxies have different estimability requirements: Proxy 1 depends on sufficient “hard” and “easy” exposure, while Proxy 2 requires observed matches in both availability states.
+
+Within the overlapping subset, the correlation between Rotation Elasticity and the injury proxy’s season-level expected-points total (`xpts_season_total`, also stored as `inj_xpts` in the combined output) is approximately **-0.010**, indicating essentially no linear relationship between the two measures in the merged sample. This statistic is reported as a diagnostic rather than an identification result: it suggests that the proxies capture distinct dimensions (selective deployment versus performance differences associated with unavailability) rather than mechanically duplicating the same signal. The diagnostic is produced both as a static scatter plot and as an interactive Plotly HTML figure to support exploratory inspection of outliers and heterogeneity across clubs and seasons.
+
+### 4.2.5 Summary of key outputs
+
+Overall, the run produces: (i) match-aligned panels suitable for player-level proxy estimation, (ii) two interpretable player-season proxy tables with substantial coverage across the six-season sample, (iii) a combined player-season dataset designed for downstream analysis and reporting, and (iv) a suite of summary and validation figures. The results demonstrate that season-comparable rotation and injury measures can be constructed from public football data within a reproducible and auditable workflow.
 
 ## 4.3 Visualizations
 
@@ -288,42 +316,142 @@ Include relevant plots and figures:
 
 # 5. Discussion
 
-Analyze and interpret your results:
+## What worked well?
 
-- **What worked well?** Successful aspects of your approach
-- **Challenges encountered**: Problems faced and how you solved them
-- **Comparison with expectations**: How do results compare to hypotheses?
-- **Limitations**: What are the constraints of your approach?
-- **Surprising findings**: Unexpected discoveries
+A key strength of the project is that the pipeline consistently produces **computable, interpretable player-season measures** from heterogeneous public sources, while remaining reproducible end-to-end via `main.py`. The engineering design—explicit intermediate artefacts (CSV/Parquet), defensive join validation, and deterministic proxy scripts—worked well in practice: panels were rebuilt reliably (e.g., rotation and injury panels aligned to the EPL schedule), proxy outputs were generated with meaningful coverage, and downstream figures and summary tables were produced without manual intervention.
+
+Methodologically, both proxies achieve the intended outcome of **season-comparable measurement** rather than prediction. Rotation Elasticity is straightforward to interpret as a *within-team-season* difference in starting propensity across match contexts. The Injury Impact proxy also delivers an interpretable quantity (a per player–team–season coefficient on unavailability), with opponent fixed effects and a time trend providing a structured within-season comparison. Finally, translating injury effects into xPts totals and GBP equivalents (using points-to-GBP mappings) materially improves interpretability for a finance-oriented framing.
+
+## Challenges encountered
+
+The most persistent challenge was **data integration across sources that are not designed to merge**. Team-name discrepancies and inconsistent identifiers posed a real risk of silent merge failures. This was addressed through canonical team mappings, strict required-column checks, and join constraints (e.g., `validate="many_to_one"`). A second practical challenge was ensuring that player-match rows corresponded to league fixtures only; Understat includes non-league matches, which created mismatches when aligning to the Football-Data schedule. The pipeline resolves this by joining on `(season, date, team_id)` after date normalisation and explicitly dropping unmatched rows, ensuring that proxies are estimated on a consistent EPL match universe.
+
+The most operationally heavy challenge was Transfermarkt scraping. Runtime is driven more by **request pacing and throttling avoidance** than computational complexity. This was handled with backoff logic and respectful delays, and—importantly—kept outside the grading-critical pipeline by relying on already processed injury CSVs when running `main.py`.
+
+Finally, some estimation edge cases appeared in the injury regressions (e.g., an occasional numerical failure in a player-season regression). This is an expected consequence of running many small regressions across heterogeneous samples; the pipeline logs these failures and continues, rather than failing silently or terminating the full run.
+
+## Comparison with expectations
+
+Conceptually, the expectation was that the proxies would capture **distinct dimensions** of player usage and value: rotation as selective deployment across match difficulty, and injuries as performance costs of unavailability. The empirical output aligns with this: Rotation Elasticity is centered close to zero across the population, consistent with many players having similar starting probabilities across contexts, while still showing dispersion that can identify situational usage and tactical rotation. Injury Impact estimates are also centered near zero on average, which is plausible given that (i) many absences are short or occur in already-rotated contexts, and (ii) teams adapt tactically and through squad depth.
+
+A particularly informative result is the **near-zero correlation** between Rotation Elasticity and the season-level injury proxy in the overlapping sample. This supports the hypothesis that the measures do not collapse into a single latent “player importance” dimension; instead they behave more like complementary proxies capturing different mechanisms (selection vs. unavailability cost).
+
+## Limitations
+
+The primary limitations stem from measurement constraints of public data and from identification limits of the proxy designs:
+
+1. **Injury spell measurement error (Transfermarkt):** reported start/end dates can be approximate, and players may appear in Understat during nominal injury windows. This introduces unavoidable noise in match-level unavailability labels.
+2. **Proxy 1 context definition:** using team-season xPts terciles to classify matches as “hard/easy” is an internally consistent operational rule, but it captures “expected match difficulty” through odds-based expectations rather than direct opponent-strength ratings. It also implies that “hard” matches are defined relative to the team’s own schedule distribution, not on an absolute league-wide scale.
+3. **Proxy 2 is associational, not causal:** the injury regression is “DiD-style” in spirit (within-team-season comparisons, controls, fixed effects), but it is not a fully identified causal DiD design. Unavailability is not random; it can correlate with schedule timing, simultaneous squad injuries, tactical shifts, or opponent difficulty beyond what the controls absorb.
+4. **Small-sample instability:** many player-seasons are sparse in either starts (Proxy 1) or unavailability episodes (Proxy 2). The project mitigates this via support thresholds, but the tradeoff is reduced coverage and possible selection toward more frequently observed players.
+5. **Identity linkage gaps:** the Understat ID match rate in the injury output is high but incomplete, reflecting name inconsistencies and missing identifiers across sources.
+
+## Surprising findings
+
+Two results stand out as unexpectedly informative:
+
+- **Rotation Elasticity is tightly centered around zero** at the population level. Intuitively, one might expect many starters to be deployed more in “hard” matches and rotated in “easy” matches, but the overall mean near zero suggests that selective deployment is heterogeneous and may offset across roles (e.g., some players are rested in “hard” matches due to fatigue management, while others are prioritised).
+- **The near-zero relationship between the two proxies** indicates that rotation patterns and injury-related performance costs behave largely independently in the data. This is substantively useful: it implies that combining the proxies may add information rather than redundancy, supporting the project’s goal of producing a richer player-season measurement framework.
+
 
 # 6. Conclusion
 
 ## 6.1 Summary
 
-Summarize your key findings and contributions:
+This project set out to translate two frequently cited but rarely quantified concepts in football performance analysis—**squad rotation** and **injury-related unavailability**—into **player-specific, season-comparable measures** using only public data. The guiding choice was to prioritise **transparent measurement** and an **auditable workflow** over building a complex predictive model.
 
-- Main achievements
-- Project objectives met
-- Impact of your work
+The first contribution is **Proxy 1: Rotation Elasticity**, which captures selective deployment by comparing a player’s probability of starting in “hard” versus “easy” match contexts. Match context is defined in a consistent, reproducible way within each team-season using xPts terciles, producing an interpretable statistic:
+\[
+\text{rotation\_elasticity}=\text{start\_rate}_{hard}-\text{start\_rate}_{easy}.
+\]
+Empirically, Rotation Elasticity is centered near zero on average but displays meaningful dispersion, consistent with heterogeneous managerial usage across squads and roles (e.g., trusted core starters, situational players, and rotation options).
+
+The second contribution is **Proxy 2: Injury Impact**, which estimates the within-team association between team expected points and a player’s unavailability over a season. The design intentionally relies on **within-team-season comparisons** (with opponent fixed effects and a time trend) to reduce sensitivity to persistent team quality and schedule composition. Outputs are expressed in expected-points units and can be translated into approximate monetary terms (GBP) to support the report’s “fair value” framing.
+
+From an engineering and reproducibility perspective, the project delivers a **modular pipeline** with stable intermediate artefacts (CSV/Parquet), **defensive data validation**, logging, and run metadata. The grading entrypoint (`main.py`) reliably rebuilds the match-aligned panels, constructs both proxies, merges outputs into a combined player–team–season dataset, and generates a set of summary tables and diagnostic figures. Overall, the project meets its objectives of producing interpretable proxies with substantial coverage across **six EPL seasons** and **27 clubs**, enabling downstream ranking, profiling, and squad-level aggregation.
 
 ## 6.2 Future Work
 
-Suggest potential improvements or extensions:
+Several extensions could strengthen both the methodological interpretation of the proxies and their usefulness in practical decision-making.
 
-- Methodological improvements
-- Additional experiments to try
-- Real-world applications
-- Scalability considerations
+**Methodological improvements.**  
+First, match context could be refined beyond team-season terciles. Alternatives include an opponent-strength index (e.g., Elo-style ratings, rolling xPts form, league table position at match time) or a combined context score incorporating home/away and rest days. Second, the injury proxy could be strengthened by integrating richer controls for match conditions (e.g., bookmaker probabilities directly, travel proxies, or congestion measures) and by exploring specifications that better separate opponent difficulty from availability effects. Third, uncertainty could be reported more prominently, for example by attaching confidence intervals or stability flags to player-season estimates and incorporating shrinkage for small samples.
+
+**Additional experiments and validation.**  
+A natural extension is to test robustness to alternative support thresholds (e.g., stricter minimum hard/easy exposure for Proxy 1 or minimum unavailable matches for Proxy 2) and to compare distributions and rankings under these settings. Another useful validation would be to benchmark the proxies against external indicators of player importance (minutes, wages, market values, or expert ratings) and to assess whether proxies add incremental explanatory power for team outcomes beyond these conventional measures. Finally, season-to-season persistence tests could help distinguish structural player usage patterns from noisy one-off estimates.
+
+**Real-world applications.**  
+The combined dataset can support several applied use cases: identifying players who are systematically prioritised in high-stakes contexts, quantifying the expected-points (and approximate financial) cost of losing specific players, and producing squad-level “rotation profiles” and “injury bills.” These outputs can complement recruitment, squad planning, and performance diagnostics by highlighting dimensions of player value that are not captured by goals, assists, or total minutes.
+
+**Scalability and generalisation.**  
+The approach is designed to be scalable to additional leagues and seasons, but the main operational bottleneck remains data collection—especially scraping injury spells. A future production-oriented version would prioritise (i) stronger caching, (ii) rate-limit aware asynchronous requests where appropriate, (iii) automated monitoring for schema changes in upstream sources, and (iv) more robust identifier linkage (e.g., persistent IDs across providers). Extending the pipeline beyond the EPL would also require expanded canonical mappings and additional checks to ensure that match alignment remains league-specific and reproducible.
 
 # References
 
-1. Author, A. (2024). *Title of Article*. Journal Name, 10(2), 123-145.
+# References
 
-2. Smith, B. & Jones, C. (2023). *Book Title*. Publisher.
+1. Carling, C., Le Gall, F., & Dupont, G. (2012). *Are physical performance and injury risk in a professional soccer team in match-play affected over a prolonged period of fixture congestion?* International Journal of Sports Medicine, 33(1), 36–42. `https://doi.org/10.1055/s-0031-1283190`
 
-3. Dataset Source. (2024). Dataset Name. Available at: https://example.com
+2. Calleja-González, J., Mallo, J., Cos, F., et al. (2023). *A commentary of factors related to player availability and its influence on performance in elite team sports.* Frontiers in Sports and Active Living, 4, 1077934. `https://doi.org/10.3389/fspor.2022.1077934`
 
-4. Library Documentation. (2024). *Library Name Documentation*. https://docs.example.com
+3. Ekstrand, J., Hägglund, M., & Waldén, M. (2011). *Injury incidence and injury patterns in professional football: The UEFA injury study.* British Journal of Sports Medicine, 45(7), 553–558. `https://doi.org/10.1136/bjsm.2009.060582`
+
+4. Hägglund, M., Waldén, M., Magnusson, H., et al. (2013). *Injuries affect team performance negatively in professional football: An 11-year follow-up of the UEFA Champions League injury study.* British Journal of Sports Medicine, 47(12), 738–742. `https://doi.org/10.1136/bjsports-2013-092215`
+
+5. Hoenig, T., Edouard, P., Krause, M., et al. (2022). *Analysis of more than 20,000 injuries in European professional football by using a citizen science-based approach: An opportunity for epidemiological research?* Journal of Science and Medicine in Sport, 25(4), 300–305. `https://doi.org/10.1016/j.jsams.2021.11.038`
+
+6. Kharrat, T., López Peña, J., & McHale, I. G. (2020). *Plus–minus player ratings for soccer.* European Journal of Operational Research, 283(2), 726–736. `https://doi.org/10.1016/j.ejor.2019.11.026`
+
+7. Krutsch, V., Grechenig, S., Loose, O., et al. (2020). *Injury analysis in professional soccer by means of media reports—Only severe injury types show high validity.* Open Access Journal of Sports Medicine, 11, 123–131. `https://doi.org/10.2147/OAJSM.S251081`
+
+8. Mead, J., O’Hare, A., & McMenemy, P. (2023). *Expected goals in football: Improving model performance and demonstrating value.* PLOS ONE, 18(4), e0282295. `https://doi.org/10.1371/journal.pone.0282295`
+
+9. Mehta, S., Bassek, M., & Memmert, D. (2024). *“Chop and Change”: Examining the occurrence of squad rotation and its effect on team performance in top European football leagues.* International Journal of Sports Science & Coaching. `https://doi.org/10.1177/17479541241274438`
+
+10. Page, R. M., Field, A., Langley, B., Harper, L. D., & Julian, R. (2023). *The effects of fixture congestion on injury in professional male soccer: A systematic review.* Sports Medicine, 53(3), 667–685. `https://doi.org/10.1007/s40279-022-01799-5`
+
+11. Yang, X., Zhou, C., Xu, Z., Yan, D., & Gómez-Ruano, M. Á. (2025). *The negative impact of squad rotation on football match outcomes: Mediating roles of passing and shooting performance.* Journal of Sports Sciences. `https://doi.org/10.1080/02640414.2025.2561345`
+
+---
+
+## Data sources
+
+12. Football-Data.co.uk. (n.d.). *English Premier League (E0) results/odds datasets (season CSV files).* `https://www.football-data.co.uk/`
+
+13. Understat. (n.d.). *Understat (match and player participation data).* `https://understat.com/`
+
+14. Transfermarkt. (n.d.). *Injury and suspension spell pages (player/club histories).* `https://www.transfermarkt.com/`
+
+15. Premier League. (n.d.). *Club finances and distribution mechanisms (central payments / merit payments context).* `https://www.premierleague.com/about/finance`
+
+---
+
+## Software and library documentation
+
+16. Python Software Foundation. (2025). *Python 3.13 Documentation.* `https://docs.python.org/3.13/`
+
+17. pandas development team. (n.d.). *pandas Documentation.* `https://pandas.pydata.org/docs/`
+
+18. NumPy Developers. (n.d.). *NumPy Documentation.* `https://numpy.org/doc/`
+
+19. statsmodels developers. (n.d.). *statsmodels Documentation.* `https://www.statsmodels.org/`
+
+20. Matplotlib Development Team. (n.d.). *Matplotlib Documentation.* `https://matplotlib.org/stable/`
+
+21. Plotly Technologies Inc. (n.d.). *Plotly Python Documentation.* `https://plotly.com/python/`
+
+22. Requests contributors. (n.d.). *Requests Documentation.* `https://requests.readthedocs.io/`
+
+23. Beautiful Soup contributors. (n.d.). *Beautiful Soup 4 Documentation.* `https://www.crummy.com/software/BeautifulSoup/bs4/doc/`
+
+24. python-dateutil contributors. (n.d.). *python-dateutil Documentation.* `https://dateutil.readthedocs.io/`
+
+25. Apache Arrow Developers. (n.d.). *PyArrow Documentation.* `https://arrow.apache.org/docs/python/`
+
+26. aio-libs contributors. (n.d.). *aiohttp Documentation.* `https://docs.aiohttp.org/`
+
+27. understat (Python package). (n.d.). *understat Documentation.* `https://understat.readthedocs.io/`
+
 
 # Appendices
 
@@ -333,31 +461,45 @@ Include supplementary figures or tables that support but aren't essential to the
 
 ## Appendix B: Code Repository
 
-**GitHub Repository:** https://github.com/yourusername/project-repo
+**GitHub Repository:** https://github.com/olol2/Conor_Keenan_Project
 
 ### Repository Structure
 
-```
-project-repo/
+```text
+Conor_Keenan_Project/
+├── main.py
 ├── README.md
-├── requirements.txt
+├── PROPOSAL.md
+├── requirements.txt                  # grading/runtime dependencies
+├── requirements-scrape.txt           # optional scraping dependencies
+│
 ├── data/
-│   ├── raw/
-│   └── processed/
-├── src/
-│   ├── preprocessing.py
-│   ├── models.py
-│   └── evaluation.py
-├── notebooks/
-│   └── exploration.ipynb
-└── results/
-    └── figures/
+│   ├── raw/                          # not required for grading (may be empty / partial)
+│   └── processed/                    # required by main.py
+│       ├── matches/
+│       ├── injuries/
+│       ├── understat/
+│       ├── points_to_pounds/
+│       ├── standings/
+│       └── (panels created/updated by pipeline)
+│
+├── results/                          # outputs written by pipeline
+│   ├── figures/                      # generated (ignored by git)
+│   ├── logs/                         # generated (ignored by git)
+│   ├── metadata/                     # generated (ignored by git)
+│   └── (csv outputs; some are tracked, some ignored; see Section 7)
+│
+└── src/
+    ├── data_collection/              # optional: reproduction from scratch (scraping)
+    ├── proxies/                      # proxy construction
+    └── analysis/                     # summaries, validation, plotting
+
 ```
 
 ### Installation Instructions
 
 ```bash
-git clone https://github.com/yourusername/project-repo
+git clone https://github.com/olol2/Conor_Keenan_Project
 cd project-repo
 pip install -r requirements.txt
 ```
