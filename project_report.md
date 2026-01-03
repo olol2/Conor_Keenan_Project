@@ -102,80 +102,155 @@ This project addresses these gaps by constructing two interpretable player-seaso
 
 # 3. Methodology
 
-There are three major steps in my project, the first being data collection/processing. This step relied on scraping the data from several websites to obtain the data needed for the project. Once this raw per-season data was in a csv format, an extra but optional step was to create a master dataset with all seasons combined in one csv file per source. Then, some master datasets needed to be merged and derive new columns or remove some. Secondly, creating the proxies, this is where the main pipeline starts, using the processed data to create two seperate proxies followed by a combined version of both proxies. Lastly, the analysis, this part is mainly evaluating the results of the proxies created and printing results, graphs and figures.
+This project is implemented as a reproducible three-stage pipeline that starts from public football data and ends with two interpretable player-season proxy measures. The guiding methodological choice is to prioritise transparent, season-comparable measurement over a complex predictive model. In practice, turning rotation behaviour and injury impact into player-specific quantities requires careful data integration, consistent operational definitions, and conservative handling of noisy public injury records. The pipeline therefore proceeds in three steps: data collection and processing, proxy construction, and evaluation and reporting.
 
 ## 3.1 Data Description
 
-Describe your dataset(s):
 
-- **Source**: Where did the data come from?
-Data was extracted from multiple sources depending on the data needed. Football-data.co.uk provides a csv file that can be downloaded directly from the website for each match per season with many statistical information with the main purpose of match logs and betting odds. Understat provides detailed per-game player statistics, including minutes played and whether they started or not. One of the most important and "difficult" data sources was transfermarkt, providing every injury absence for every player for every season. Finally the official Premier League website provides the prize money per season that each team earned.
+- **Source**
+The dataset combines four sources, each covering a distinct component of the measurement problem. Match structure and basic match-level information are taken from Football-Data.co.uk (per-season CSV files). Player match participation and lineup usage are taken from Understat, which provides match-level player data including minutes played and whether a player started. Injury absences are taken from Transfermarkt, which lists injury spells (start and end dates) and is one of the few sources available at scale for multiple EPL seasons. Finally, the official Premier League website provides season-level prize money by league position, which can be used to express expected performance differences in approximate monetary terms (GBP) as an optional translation layer.
 
-- **Size**: Number of samples, features
-Gathering all of this data, there is essentially 3 big datasets from Understat, Transfermarkt and Football-Data, the PL prize money is very small in comparison to these. The various big datasets provided thousands of entries which then had to be combined into structured panels for the main pipeline. An important step in merging these datasets was to standardize team names (e.g., one source presents a team such as: Man United, where another might be Man Utd), this step involved checking every single of the 27 team names across the four data sources and to create one canonical team name per team. There were many data samples, but it was important to remove those with too fewer appearances (e.g., a rotation / often injured player that played for a team that only played one season -> bad estimates)
+- **Size**
+After extraction, the data are transformed into structured panels that support proxy estimation. The primary competition is the EPL, covering six seasons (2019/20–2024/25). Across this period there are 27 unique clubs due to promotion and relegation (20 teams per season, with three changing each year). The pipeline produces three main data structures. First, a match–team / match–player panel aligns each match to season, match identifier, date, team and opponent identifiers, and the key player usage fields required for rotation measurement (starter indicator and minutes). Second, an injury spell panel represents each injury as an interval with a start and end date, linked to season, team, and player. Third, the pipeline generates player-season proxy tables, one row per player-season-team, which form the final outputs.
 
-- **Characteristics**: Type of data, distribution
-The competition is the EPL, the dataset consists of 27 unique teams, with 20 teams per season with 3 teams changing per season (relegation/promotion). All collected data was transformed into csv files, with values such as strings, integers and binaries. The primary units are match-team observations (team performance + lineup usage per match), player-season observations (final proxy outputs), Injury spells (player availability intervals).
+- **Characteristics**
+All collected data are stored in consistent CSV formats and include a mix of string identifiers, numeric fields, and binary indicators. A critical preprocessing task is entity harmonisation. Team names differ across sources (e.g., “Man United” vs “Man Utd”), which can silently break merges and induce missingness. To prevent this, the pipeline constructs a canonical mapping of all 27 club names and applies it consistently across datasets prior to merging. Where player name discrepancies occur, they are handled conservatively: because the number of inconsistent spellings is small relative to the overall dataset, unresolved cases are excluded rather than risking incorrect matches. 
+A key intermediate dataset its the rotation panel, built by joining a team-match panel containing match-level xPts (from the processed match pipeline), and understat per-player match rows containing minutes and a starter indicator.
+Concretely, the join is performed on (season, date, team_id) after normalising dates to midnight to avoid timestamp mismatches. The match panel is validated to ensure uniqueness on these join keys (one row per team per league match), and the merge is constrained as a many-to-one join (many player rows per team-match). Understat rows that do not match the league schedule (e.g., cup matches, friendlies, or remaining date inconsistencies) are dropped. The resulting output is written as panel_rotation.csv (and optionally as Parquet), with one row per player–team–match containing identifiers and core analysis fields.
 
-- **Features**: Description of important variables
+- **Features**
 At minimum, the pipeline relies on the following fields,
-1. Match panel:
-    - season,match_id,date
-    - team_id,opponent_id, home_away
-    - player_name (or player_id)
-    - started (binary), minutes(integer)
-    - xpts (or translated into GBP through prize money)
-    - difficulty_label (hard/easy)
+1. Rotation panel:
+    - identifiers: season, match_id, date
+    - context: team_id, opponent_id, home_away
+    - player usage: player_name (or player_id), started (binary), minutes(integer)
+    - performance: xpts (or optionally translated into GBP based on prize money)
+    - derived: days_rest (days since the player's previous appearance, capped to a maximum to avoid extreme values)
 
-2. Injury panel
-    - season, team_id, player_name
-    - injury_start, injury_end
-    - derived: missed_match_id list or match-level availability indicator
-- **Data quality**: Missing values, outliers, etc.
-There are a few issues regarding the data, transfermarkt injury data provides the expected absence of a certain injury, which in reality, sometimes players can be back sooner than expected (e.g., a player is expected to be out for 9 months with an ACL injury, but in reality was back on the pitch 8 months later), this creates inconsistencies between Understat data which says he played X minutes, even though transfermarkt said he was unavailable due to injury.
+2. Injury panel:
+    - identifiers: season, team_id, player_name
+    - injury spell: injury_start, injury_end
+    - derived fields: match-level availability indicator or a list of missed matches generated by intersecting injury windows with match dates
+    
+- **Data quality**
+Public injury data introduces important measurement constraints. Transfermarkt injury windows can be approximate: players may return earlier or later than listed, creating apparent inconsistencies when Understat records minutes played during a nominal injury spell. The methodology treats this as noise inherent to public injury reporting rather than as a data “error” that can be fully corrected. To reduce sensitivity to this issue, the Injury Impact proxy relies on within-team comparisons, and the pipeline applies sample restrictions to exclude player-seasons with insufficient support for stable estimation (e.g., very few appearances or too few matches in relevant categories). These restrictions limit extreme values driven by small samples and improve the comparability of proxy estimates across seasons and teams.
 
 ## 3.2 Approach
 
-Detail your technical approach:
+The project’s central methodological contribution is the construction of two proxies that translate qualitative football concepts—rotation and injury-related unavailability—into player-season measures that are interpretable and comparable across clubs and seasons. The approach is deliberately measurement-focused rather than model-heavy: the priority is to build transparent and auditable quantities from public data, while acknowledging and mitigating the limitations that come with scraping and integrating heterogeneous sources.
 
-- **Algorithms**: Which methods did you use and why?
-To retrieve data from websties such as Understat and football-data, the algorithm's were relatively basic and for football-data, this could have been done manually very easily by downloading the csv file directly on their website. For transfermarkt, this data collection was more complex, this involved writing a script that would scrape the data from their website and took around 25 minutes to create an csv files with injury data per season.
-- **Preprocessing**: Data cleaning and transformation steps
+- **Algorithms**
+Data acquisition combines direct downloads and scripted extraction depending on the source. Football-Data.co.uk provides season-level CSV files that can be downloaded directly, so the “algorithmic” component is primarily automated ingestion and consistent season-by-season organisation. Understat does not provide a simple bulk export for the player-match fields required here (minutes played and starter indicators). Understat data are therefore collected programmatically by extracting match-level player participation and compiling it into structured season files and a consolidated master dataset.
 
-In order to process data, it was important to remove some NaN values, to do so I did not take into account any players with some type of NaN values. When merging, very important to standardise team names to avoid missing values. Very few players has different spellings in the datasets, because they were so little, they were not taking into account for this analysis. Deduplication; collapse duplicate injury windows where applicable. Sample restrictions; excluded player-seasons without sufficient observations (e.g., too few matches in a category to estimate stable rates or impacts)
-- **Model architecture**: If using ML/DL, describe the model
-- **Evaluation metrics**: How do you measure success?
+Transfermarkt injuries are the most operationally complex source. Injury spells must be scraped from web pages and transformed into season-level injury logs with start and end dates per player. This extraction step is also the most time-consuming (roughly 20–25 minutes per season), reflecting both the volume of pages and the need for respectful request pacing.
+
+Two implementation choices that materially improved reliability without changing the statistical logic were logging and run metadata. Logging records what each script did (inputs read, outputs written, rows dropped, validation checks passed/failed), which is critical when multi-source integration can otherwise fail silently. Run metadata records execution context (timestamp, script name, key parameters such as thresholds and dry-run flags, and output paths). Together, these produce an audit trail that improves debugging, reproducibility, and external verifiability.
+
+- **Preprocessing**
+Preprocessing is designed to produce merge-ready panels and to prevent silent inconsistencies from contaminating proxy estimates. First, identifiers and types are standardised across sources: dates are parsed and normalised, numeric variables are coerced consistently, and starter indicators are converted robustly to binary. Rows with missing values in fields essential for proxy construction are excluded rather than imputed, since imputation would introduce additional assumptions and could mechanically affect rate-based or regression-based estimates.
+
+Second, entity harmonisation is treated as a core requirement. Team names differ across sources and can otherwise lead to missed joins or duplicate entities. A canonical mapping is applied prior to merging so that each club is represented consistently across seasons and datasets. Player-name discrepancies occur less frequently; unresolved cases are handled conservatively by exclusion rather than uncertain matching.
+
+Third, the project constructs two intermediate panels that form the input to proxy estimation:
+- A team-match panel with expected points (xPts), built from 1X2 betting odds.
+- A player-team-match rotation panel and a player-team-match injury panel, both aligned to the team-match panel by (season, date, team).
+The rotation panel is produced via a validated many-to-one merge (many player rows to one team-match row), and Understat rows that do not match the league schedule (e.g., cups/friendlies or residual date mismatches) are dropped. The injury panel is built by expanding each player–team–season in the injury spell data to all matches for that team-season, then marking match-level unavailability by intersecting match dates with injury windows. Where available, Understat minutes/starts are merged into the injury panel as additional context.
+
+Finally, the pipeline applies sample restrictions to limit instability from sparse player-seasons (e.g., minimum match counts for Proxy 1 and minimum unavailable/available matches for Proxy 2).
+
+- **Model architecture**
+No machine learning or deep learning architecture is used; instead, the “model” is the proxy construction logic and the associated estimation design. The pipeline produces two player-season outputs and then merges them into a single combined player-season panel to support downstream analysis.
+
+Expected points (xPts) construction (input to both proxies).
+Match-level expected points are computed from 1X2 betting odds by converting odds into implied probabilities and normalising to remove the bookmaker margin. Let $p_H$, $p_D$, and $p_A$ denote the normalised implied probabilities of a home win, draw, and away win, respectively. Expected points are then computed per side as:
+
+$$
+xPts_{home} = 3p_H + 1p_D, \qquad xPts_{away} = 3p_A + 1p_D.
+$$
+
+This produces a long-form team–match panel with two rows per match (home and away), which is used downstream in both proxy construction and validation.
+
+**Proxy 1 — Rotation Elasticity (player–team–season)**
+
+Rotation Elasticity is computed from the player–team–match rotation panel (joined on $(season, date, team\_id)$), which contains `started`, `minutes`, and match-level `xpts`. Match context is defined within each team-season using the distribution of team match-level xPts. For each $(team\_id, season)$ pair, tercile thresholds are computed:
+
+$$
+q_{low} = \text{quantile}(xPts, 1/3), \qquad q_{high} = \text{quantile}(xPts, 2/3).
+$$
+
+Each match is assigned a stakes category:
+
+- **hard** if $xPts \le q_{low}$
+- **easy** if $xPts \ge q_{high}$
+- **medium** otherwise
+
+For each player–team–season, starting rates are computed within the hard and easy groups:
+
+$$
+\text{start\_rate}_{hard} = \Pr(\text{started}=1 \mid \text{hard}), \qquad
+\text{start\_rate}_{easy} = \Pr(\text{started}=1 \mid \text{easy}).
+$$
+
+Rotation Elasticity is then defined as:
+
+$$
+\text{rotation\_elasticity} = \text{start\_rate}_{hard} - \text{start\_rate}_{easy}.
+$$
+
+Player–team–seasons are retained only if the estimate is supported by sufficient observations (default thresholds: `min_matches = 3`, `min_hard = 1`, `min_easy = 1`) and the resulting elasticity is non-missing.
+
+**Proxy 2 - Injury Impact (DiD-style OLS per player-team-season)**
+
+Injury Impact is estimated using a player–team–match injury panel with one row per $(match\_id, team\_id, player)$, where `unavailable` indicates whether the match date falls within any recorded injury spell for that player in the same team-season. The panel also includes match-level `xpts`, opponent identity, and the number of injured players in the squad (`n_injured_squad`). Where available, Understat `minutes` and `started` are merged in as additional context.
+
+Estimation is performed separately for each player–team–season using an OLS specification:
+
+$$
+xPts_m = \alpha + \beta \cdot \text{unavailable}_m + \gamma \cdot \text{n\_injured\_squad}_m
++ \delta_{\text{opponent}(m)} + \tau \cdot \text{match\_index}_m + \varepsilon_m.
+$$
+
+The model includes opponent fixed effects ($C(opponent\_id)$) and a numeric within-sample time trend (`match_index`) to reduce sensitivity to gradual within-season changes. The coefficient $\beta$ on `unavailable` is retained as the player-season injury proxy (`beta_unavailable`). Player–team–seasons are filtered to ensure estimability and support in both states (default thresholds: `min_unavail = 2`, `min_avail = 2`). Standard errors are clustered by opponent when enough opponent clusters are available; otherwise heteroskedasticity-robust (HC1) standard errors are used.
+
+**Combined dataset**
+Finally, the rotation and injury proxy outputs are merged into a single player-season-team dataset using an outer join on $(player\_id, season, team\_id)$. An outer merge is used because coverage differs across proxies; retaining unmatched player-seasons supports inspection and robustness checks. The combined file also includes simple coverage flags (e.g., whether a player-season has a valid rotation proxy and/or injury proxy).
+
+- **Evaluation metrics**
+
+Because the project’s objective is measurement rather than prediction, evaluation focuses on whether the proxies are computable, stable, and interpretable at scale. Success is assessed through reproducibility of outputs given fixed inputs (supported by deterministic scripts, logging, and run metadata), coverage and stability ensuring estimates are not driven by sparse player-seasons and face-validity diagnostics, including summary statistics and plots that verify whether the proxies behave plausibly (e.g., differentiating core starters from situational players and exhibiting meaningful variation across roles and squads). The analysis phase therefore emphasises diagnostic evidence that the proxies capture interpretable structure in the data, rather than optimising a predictive score.
 
 ## 3.3 Implementation
 
-Discuss the implementation details:
+The project is implemented entirely in Python and organised as a modular, file-based pipeline. The implementation philosophy is pragmatic: each stage produces clearly defined intermediate artefacts (CSV and, where available, Parquet), so downstream steps operate on stable inputs rather than recomputing upstream work. This design improves reproducibility, makes failures easier to diagnose, and allows individual components (e.g., a panel builder or a proxy script) to be executed and tested in isolation.
 
-- **Languages and libraries**: Python packages used
-- **System architecture**: How components fit together
-- **Key code components**: Important functions/classes
+- **Languages and libraries**
+All code is written in Python 3 using a standard data-science stack. pandas and NumPy provide the core functionality for tabular manipulation—type coercion, joins, group-by aggregation, and feature engineering. statsmodels is used for the regression-based estimation of the injury proxy, where the goal is not prediction but a structured within-season comparison that returns an interpretable coefficient. The scripts use argparse to expose a consistent command-line interface (input paths, output paths, thresholds, and dry-run flags), and pathlib to ensure file paths are handled robustly across environments. In the analysis stage, figures and summary outputs rely on common plotting utilities (e.g., matplotlib) and descriptive summarisation in pandas.
 
-Example code snippet:
+Beyond these external libraries, a small set of internal utilities supports robustness and engineering quality. A central configuration object (Config.load()) standardises directory structure and default paths; logging helpers (setup_logger) provide consistent run-time traces; and run metadata (write_run_metadata) records execution context and key parameters so results can be reproduced and audited. Finally, outputs are written using an atomic write utility (atomic_write_csv) to avoid partial files if a run is interrupted.
 
-```python
-def preprocess_data(df):
-    """
-    Preprocess the input dataframe.
-    
-    Args:
-        df: Input pandas DataFrame
-    
-    Returns:
-        Preprocessed DataFrame
-    """
-    # Remove missing values
-    df = df.dropna()
-    
-    # Normalize numerical features
-    scaler = StandardScaler()
-    df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
-    
-    return df
-```
+- **System architecture**
+The system architecture follows a “build panels → build proxies → merge → analyse” pattern. Conceptually, the pipeline is a directed chain of transformations where each component has a narrow responsibility and communicates with the next stage through explicit data products on disk.
+
+At the foundation is a team–match panel that provides match-level expected points (xPts). In the implementation, xPts is derived from 1X2 betting odds by converting odds into implied probabilities, normalising to remove the bookmaker margin, and then translating those probabilities into expected points for the home and away teams. The result is a long-form match panel with two rows per match (home and away), which becomes the shared performance backbone for both proxies.
+
+On top of this match backbone, the pipeline constructs two player-oriented panels. The rotation panel is produced by aligning Understat player-match participation (minutes and a starter indicator) with the team–match panel. The merge is performed on (season, date, team_id) after normalising dates to prevent timestamp mismatches, and it is guarded by key-uniqueness checks that prevent unintended many-to-many joins. Rows that cannot be matched to league fixtures (typically cups, friendlies, or residual date inconsistencies) are dropped so the panel represents the EPL schedule only. This panel is then enriched with derived fields such as days_rest, computed as the number of days since a player’s previous recorded appearance and capped to avoid extreme values.
+
+The injury panel is built in a way that reflects the structure of injury data itself. Injury information enters as spell intervals (start date and end date) rather than match-level observations. The implementation therefore expands each player–team–season present in the injury spell data to all matches in the corresponding team-season, and then flags match-level unavailability by checking whether each match date falls within any injury interval. Where available, Understat minutes and starter information are merged into this panel to provide additional context. The resulting dataset is indexed at the match level (one row per (match_id, team_id, player)), which is the natural format for the regression-based injury proxy.
+
+Proxy estimation is then performed as dedicated, deterministic scripts. Proxy 1 (Rotation Elasticity) assigns match context using team-season xPts terciles and computes the difference between starting rates in “hard” and “easy” contexts. Proxy 2 (Injury Impact) estimates a per player–team–season OLS model of xPts on a match-level unavailability indicator, controlling for opponent fixed effects, a within-season time trend, and squad-level injury burden. Both scripts implement minimum-support filters to reduce small-sample instability and output one row per player–team–season.
+
+Finally, the proxy outputs are combined into a single player-season dataset through a controlled merge step. The implementation uses an outer join on (player_id, season, team_id) because coverage differs across proxies; retaining player-seasons that appear in only one proxy supports later inspection, robustness checks, and transparent reporting of sample sizes. The combined dataset is then used in downstream analysis scripts to generate summary tables, validation figures, and descriptive insights.
+
+- **Key code components**
+
+Implementation quality relies on a small number of recurring patterns that appear across scripts and materially reduce the risk of silent errors.
+
+First, the code consistently applies schema validation before and after major transformations. Required columns are checked explicitly, and non-empty assertions fail fast when an upstream step has not produced valid outputs. Second, joins are treated as a high-risk operation and are therefore handled defensively: match panels are validated for uniqueness on join keys, merges use validate="many_to_one" where appropriate, and duplicate-key checks prevent many-to-many merges that would silently inflate row counts.
+
+Third, reproducibility is supported by an explicit execution trace. Logging records the shape of key datasets, the number of dropped rows (e.g., unmatched Understat rows), the thresholds used in filtering, and the location of outputs. Run metadata complements this by recording the runtime context (script name, timestamp, parameter values such as min_matches, min_unavail, and min_avail). This combination is particularly valuable in a multi-stage pipeline: it makes it possible to understand exactly how a given output was produced, and it allows the pipeline to be rerun under identical conditions.
+
+Lastly, outputs are written using atomic writes to protect against partial or corrupted files. This is a small engineering detail, but it is important in practice: many pipeline issues stem from incomplete outputs produced by interrupted runs. Atomic writes ensure that a file is only replaced once a full write has completed successfully, which helps keep intermediate artefacts reliable for downstream stages.
+
 
 # 4. Results
 
