@@ -1,5 +1,5 @@
 # Conor_Keenan_Project
-**Fair Value in the Premier League** — MSc Finance  
+**Fair Value in the English Premier League** — MSc Finance  
 Course: **Data Science and Advanced Programming (Capstone Project)**  
 Author: **Conor Keenan**  
 Institution: **HEC Lausanne, University of Lausanne**  

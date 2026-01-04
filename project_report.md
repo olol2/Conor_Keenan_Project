@@ -8,36 +8,21 @@ Using match-level lineups and injury logs across six seasons (2019/20–2024/25)
 
 # 1. Introduction
 
-**Background and motivation**
+The English Premier League (EPL) is one of the most financially and competitively intense football leagues worldwide. Clubs operate under congested calendars, high physical demands, and steep payoffs to league position (broadcast revenue, prize money, and European qualification). In this setting, two operational issues repeatedly arise: **rotation** (how managers allocate starts/minutes across fixtures) and **availability shocks** (injury-driven absences). Both are widely discussed by practitioners and analysts, yet they are rarely quantified in a **player-specific, season-comparable, outcome-linked** way using public data.
 
-The EPL is one of the most prominent football leagues globally in terms of viewership, competetive intensity and financial stakes. Clubs operate under tight constraints such as congested match calendars, high physical demands and substantial incentives linked to league position through broadcast revenue, prize money and European qualification. Within this environment, teams continuously manage two closely related challenges:
+**Problem statement.** Standard descriptive metrics (minutes, appearances, goals/assists) do not capture *when* a player is used (e.g., whether they are trusted more in high-difficulty fixtures) nor the *performance cost* when a player becomes unavailable. Building comparable player-season measures is non-trivial because match context must be defined consistently, stronger players are selected into harder games, and injury logs from public sources contain noise. This project addresses that measurement gap by constructing two interpretable proxies from public lineup and injury data that link squad management to expected-performance outcomes.
 
-First, rotation decisions determine how minutes and starts are allocated across the squad. Managers must balance short-term match objectives against longer-horizon considerations such as fatigue accumulation, readiness across competitions, and injury prevention. Second, injury risk and player availability constrain selection decisions. Injuries disrupt planned lineups, force tactical adjustments, and can shift responsibilities to less-preferred alternatives—effects that may be meaningful even when traditional season totals (minutes, appearances, goals/assists) appear similar across players.
+**Research questions.**
+1. **Rotation behaviour:** Can match difficulty be operationalised consistently and summarised as a player-season statistic that reflects selective deployment (hard vs easy fixtures)?
+2. **Injury-related performance cost:** When a player is unavailable due to injury, what is the associated change in team performance, and can this be measured at the player-season level using within-team comparisons?
+3. **“Fair value” interpretation:** Do these proxies meaningfully differentiate player-seasons (e.g., core starters vs situational players; high-cost vs low-cost absences) in a way that complements conventional statistics?
 
-Despite extensive discussion in football analytics and the industry, quantifying rotation and injury impact in a manner that is player-specific, season-comparable and outcome-linked remains non-trivial. Standard descriptive statistics typically do not capture when a player is used (e.g., whether a player is trusted in higher-difficulty fixtures) or the performance cost of a player's unavailability in a way that can be compared across teams and seasons.
+**Contributions and deliverables.** The project delivers (i) a reproducible pipeline integrating match schedules, player participation, and injury spells across six EPL seasons (2019/20–2024/25) and 27 clubs, and (ii) two player–team–season proxies:
+- **Proxy 1 — Rotation Elasticity:** the change in starting likelihood between “hard” and “easy” fixtures (context defined using expected match difficulty).
+- **Proxy 2 — Injury Impact:** a within-team estimate of how team expected points change in matches where the player is unavailable, controlling for opponent effects and within-season trends. Results are reported in expected points (xPts) and can be expressed in approximate GBP terms using season-specific points-to-money mappings.
 
-- **Problem statement**
+**Report structure.** Section 2 reviews literature on rotation/fixture congestion, injuries and availability, public injury data limitations, and expectation-based performance metrics. Section 3 describes data sources, preprocessing, match-context definitions, and proxy construction. Section 4 presents summary statistics, diagnostic validation, and figures. Section 5 discusses interpretation, limitations, and robustness. Section 6 concludes and outlines extensions (alternative context definitions, stronger identification strategies, and recruitment/squad-planning applications).
 
-The central problem addressed in this report is measurement. Rotation and injury impact are frequently referenced qualitatively, but rigorous player-season quantification requires defining match context consistently, dealing with selection effects (e.g., stronger players start more often), and separating the effect of a player’s absence from broader team dynamics such as tactics, form, and opponent quality. Moreover, because verified medical datasets are rarely available publicly, the approach must remain robust to the limitations of public injury logs.
-
-Accordingly, the project asks whether robust, interpretable player-season measures can be constructed from broadly obtainable lineup and injury data to capture context-dependent rotation and the performance cost of injury-related unavailability. 
-
-To address this objective, the report is structured into three research questions:
-1. **Rotation behavior:** Do teams systematically vary the probability that a given player starts depending on match difficulty and can this be summarized as a player-season statistic?
-2. **Injury-related performance cost:** When a player is unavailable due to injury, what is the associated change in team performance, and can this be attributed at the player-season level in a comparable way?
-3. **"Fair value" interpretation:** Do the resulting proxies provide meaningful differentiation between players (e.g., core starters vs. situational players; high-impact absences vs. low-impact absences) that complements conventional performance measures?
-
-- **Objectives and goals**
-
-The project’s objective is not to directly estimate transfer fees or wages, but to provide actionable inputs for downstream analysis in scouting, squad planning, and performance diagnostics. Specifically, the project aims to produce two proxy measures with four design properties: interpretability, scalability, reproducibility, and season comparability.
-
-The deliverables include:
-        **Proxy 1 - Rotation Elasticity (player-season):** a measure of selective deployment, defined as the change in a player’s starting likelihood between “hard” and “easy” fixtures.
-        **Proxy 2 - Injury Impact (player-season):** a measure of the associated change in team outcomes during a player’s injury absences, constructed using within-team comparisons to reduce sensitivity to persistent team quality.
-    
-- **Report organization**
-
-The remainder of the report is structured as follows. Section 2 reviews relevant literature on fixture congestion and rotation, injury incidence and player availability, and performance measurement in football. Section 3 describes the datasets, preprocessing steps, match-context definitions, and the construction of the two proxies. Section 4 presents empirical results and validation figures. Section 5 discusses interpretation, limitations, and robustness considerations. Section 6 concludes and outlines extensions, including alternative context definitions, stronger identification strategies, and applications to recruitment and squad optimisation.
 
 # 2. Literature Review
 
@@ -289,10 +274,32 @@ Overall, the run produces: (i) match-aligned panels suitable for player-level pr
 
 ## 4.3 Visualizations
 
+### Proxy 1 - Rotation Elasticity
+
 **Distribution**
 Figure 4.1 summarises the league-wide distribution of Rotation Elasticity across player–team–season observations. The distribution is centred close to zero, indicating that for many player-seasons the estimated probability of starting is broadly similar in “hard” versus “easy” fixtures. At the same time, the spread is substantial, implying heterogeneous usage patterns: some player-seasons exhibit strongly positive elasticity (more likely to start in hard matches), while others are negative (more likely to start in easy matches). This dispersion is consistent with the interpretation of the proxy as a measure of selective deployment rather than an overall minutes-played statistic.
 ![Figure 4.1](results/figures/proxy1_hist_rotation_elasticity.png)
 
+**Heterogeneity by club.**
+Figure 4.2 reports Rotation Elasticity by club using boxplots. While median values are generally near zero across teams, the within-team dispersion is meaningful, with some clubs exhibiting broader spreads and more extreme outliers. This supports the idea that the proxy captures differences in squad management and role specialisation: within a given club, certain players are prioritised for high-stakes fixtures while others are used more heavily in lower-stakes contexts. The club-level view is therefore a useful diagnostic for comparing how strongly selective deployment patterns vary across squads.
+![Figure 4.2](results/figures/proxy1_team_boxplot_rotation_elasticity.png)
+
+### Proxy 2 - Injury Impact
+
+**Distribution of season-level injury impact**
+
+Figure 4.3 shows the distribution of the season-level injury impact measure (in xPts units) derived from the per-match unavailability coefficient and aggregated over the season. The mass of the distribution is concentrated near zero, implying that many player-seasons have small estimated associations between unavailability and expected points once within-team comparisons and controls are applied. However, the tails are non-trivial, indicating that for a subset of player-seasons, unavailability is associated with materially negative (or positive) season-level differences in expected points. These extremes are consistent with heterogeneous player importance and substitution quality, while also reflecting the inherent noise of public injury reporting and small-sample player-seasons (which is mitigated via minimum-support thresholds).
+![Figure 4.3](results/figures/proxy2_hist_xpts_season_total.png)
+
+**Club-level aggregation**
+
+To improve interpretability and connect the proxy to squad planning, Figure 4.4 aggregates Injury Impact to the club level. This shifts the focus from individual player-seasons to total expected-points “lost” (or gained) due to recorded unavailability across a team-season. The resulting ranking highlights that injury burden is not only a player-level phenomenon but also a squad-level risk factor that varies meaningfully across clubs and seasons. In this sense, the club totals provide a high-level diagnostic for where injury-related availability shocks appear most consequential in expectation-based performance terms.
+![Figure 4.4](results/figures/proxy2_total_injury_xpts_by_club.png)
+
+### Relationship between proxies
+
+Figure 4.5 visualises the relationship between Rotation Elasticity (selective deployment across match difficulty) and Injury Impact (expected-points differences associated with unavailability). The scatter is diffuse with no strong linear pattern, consistent with the view that the proxies capture distinct dimensions of player-season “value”: (i) how a player is deployed across contexts and (ii) the expected performance cost when that player is unavailable. This is an important diagnostic because it suggests that the two proxies are not mechanically duplicating the same signal and can be used jointly for profiling and ranking.
+![Figure 4.5](results/figures/proxies_scatter_rotation_vs_injury_xpts.png)
 
 # 5. Discussion
 
