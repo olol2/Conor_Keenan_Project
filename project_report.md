@@ -6,21 +6,6 @@ Using match-level lineups and injury logs across six seasons (2019/20–2024/25)
 
 **Keywords:** Data Science, Python, Sports Analytics, Football, Premier League, Expected Points, Player Availability, Squad Rotation
 
-\newpage
-
-# Table of Contents
-
-1. [Introduction](#introduction)
-2. [Literature Review](#literature-review)
-3. [Methodology](#methodology)
-4. [Results](#results)
-5. [Discussion](#discussion)
-6. [Conclusion](#conclusion)
-7. [References](#references)
-8. [Appendices](#appendices)
-
-\newpage
-
 # 1. Introduction
 
 **Background and motivation**
@@ -304,15 +289,10 @@ Overall, the run produces: (i) match-aligned panels suitable for player-level pr
 
 ## 4.3 Visualizations
 
-Include relevant plots and figures:
+**Distribution**
+Figure 4.1 summarises the league-wide distribution of Rotation Elasticity across player–team–season observations. The distribution is centred close to zero, indicating that for many player-seasons the estimated probability of starting is broadly similar in “hard” versus “easy” fixtures. At the same time, the spread is substantial, implying heterogeneous usage patterns: some player-seasons exhibit strongly positive elasticity (more likely to start in hard matches), while others are negative (more likely to start in easy matches). This dispersion is consistent with the interpretation of the proxy as a measure of selective deployment rather than an overall minutes-played statistic.
+![Figure 4.1](results/figures/proxy1_hist_rotation_elasticity.png)
 
-- Learning curves
-- Confusion matrices
-- Feature importance plots
-- Results visualizations
-
-![Example Results](path/to/figure.png)
-*Figure 1: Description of your results*
 
 # 5. Discussion
 
