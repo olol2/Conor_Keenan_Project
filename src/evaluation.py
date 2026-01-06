@@ -1,17 +1,25 @@
 # src/evaluation.py
+"""
+Evaluation / visualization entry point.
+
+This module is intentionally thin. It delegates to the analysis pipeline
+and can run evaluation directly via:
+
+    python -m src.evaluation
+"""
 
 from __future__ import annotations
 
-from src.analysis.proxy_summary_and_validation import main as run_proxy_summary
+import subprocess
+import sys
 
 
-def run_full_evaluation() -> None:
-    """
-    Run the full evaluation / visualization pipeline.
+def main() -> None:
+    # Run the evaluation/validation script as a module to avoid import/path issues.
+    cmd = [sys.executable, "-m", "src.analysis.proxy_summary_and_validation"]
+    print("RUN:", " ".join(cmd))
+    subprocess.run(cmd, check=True)
 
-    Currently this just delegates to proxy_summary_and_validation.main(),
-    which reads the proxy CSVs and produces summary tables & figures.
-    """
-    print("Running evaluation: proxy summary and validation ...")
-    run_proxy_summary()
-    print("Evaluation finished.")
+
+if __name__ == "__main__":
+    main()

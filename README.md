@@ -52,33 +52,26 @@ To ensure the project runs reliably for grading:
 
 ```text
 Conor_Keenan_Project/
-├── main.py
+├── main.py                      # single entrypoint
 ├── README.md
 ├── PROPOSAL.md
-├── requirements.txt                  # grading/runtime dependencies
-├── requirements-scrape.txt           # optional scraping dependencies
+├── environment.yml              # conda environment
+├── requirements.txt             # grading/runtime dependencies
+├── requirements-scrape.txt      # optional scraping dependencies
 │
 ├── data/
-│   ├── raw/                          # not required for grading (may be empty / partial)
-│   └── processed/                    # required by main.py
-│       ├── matches/
-│       ├── injuries/
-│       ├── understat/
-│       ├── points_to_pounds/
-│       ├── standings/
-│       └── (panels created/updated by pipeline)
+│   ├── raw/                     # optional (not required for main.py)
+│   └── processed/               # required inputs/outputs for pipeline
 │
-├── results/                          # outputs written by pipeline
-│   ├── figures/                      # generated (ignored by git)
-│   ├── logs/                         # generated (ignored by git)
-│   ├── metadata/                     # generated (ignored by git)
-│   └── (csv outputs; some are tracked, some ignored; see Section 7)
+├── results/                     # pipeline outputs (figures/tables/metadata)
 │
 └── src/
-    ├── data_collection/              # optional: reproduction from scratch (scraping)
-    ├── proxies/                      # proxy construction
-    └── analysis/                     # summaries, validation, plotting
-
+    ├── data_collection/         # parts are optional: scraping/build-from-scratch scripts
+    ├── proxies/                 # proxy construction (rotation/injury)
+    ├── analysis/                # validation, tables, figures
+    ├── data_loader.py           # convenience loader for processed panels (optional)
+    ├── models.py                # optional: template wrapper
+    └── evaluation.py            # evaluation shim (optional)
 ```
 ## 5. Quickstart (How to Run)
 
