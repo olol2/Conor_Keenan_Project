@@ -1,26 +1,40 @@
-# src/proxies/proxy1_rotation_elasticity.py
-from __future__ import annotations
-
 """
-Run Proxy 1: rotation elasticity.
+Run Proxy 1: Rotation Elasticity (fixture-context selectivity).
 
-Input (default):
-  <cfg.processed>/panel_rotation.parquet
-
-Output (default):
-  <project_root>/results/proxy1_rotation_elasticity.csv
+Concept:
+- A player is “rotated” if their starting probability changes across match contexts.
+- We proxy match context using team-level expected points (xPts) from odds.
 
 Definition:
-For each player–team–season, classify matches into hard/medium/easy based on
-team-season xPts terciles, then compute:
+For each player–team–season:
+1) Classify that team’s matches into hard/medium/easy based on team-season xPts terciles:
+     hard   = low xPts (matches where the team is expected to perform worse)
+     medium = middle tercile
+     easy   = high xPts
+2) Compute start rates by context:
+     start_rate_hard = P(start | hard matches)
+     start_rate_easy = P(start | easy matches)
+3) Rotation Elasticity:
+     rotation_elasticity = start_rate_hard - start_rate_easy
 
-  rotation_elasticity = start_rate_hard - start_rate_easy
+Interpretation:
+- Negative elasticity: player starts more in “easy” matches (more likely to be rotated out in hard matches).
+- Positive elasticity: player starts more in “hard” matches (trusted/important in tougher contexts).
+
+Input (default):
+- <cfg.processed>/panel_rotation.parquet
+  (If parquet is unavailable, will try <cfg.processed>/panel_rotation.csv)
+
+Output (default):
+- <project_root>/results/proxy1_rotation_elasticity.csv
 
 One row per (player_id, player_name, team_id, season).
 """
 
-from pathlib import Path
+from __future__ import annotations
+
 import argparse
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -35,76 +49,101 @@ from src.utils.io import atomic_write_csv
 # Load rotation panel
 # ---------------------------------------------------------------------
 
+REQUIRED_COLS = [
+    "match_id",
+    "player_id",
+    "player_name",
+    "team_id",
+    "season",
+    "date",
+    "opponent_id",
+    "is_home",
+    "xpts",
+    "minutes",
+    "started",
+    "days_rest",
+]
+
+
 def load_panel_rotation(path: Path) -> pd.DataFrame:
+    """
+    Load the rotation panel.
+
+    Supports:
+    - parquet (preferred)
+    - csv fallback (if parquet engine missing)
+
+    Returns a DataFrame with standardised dtypes and required columns only.
+    """
     if not path.exists():
-        raise FileNotFoundError(f"panel_rotation.parquet not found: {path}")
+        raise FileNotFoundError(f"Rotation panel not found: {path}")
 
-    df = pd.read_parquet(path)
+    if path.suffix.lower() == ".parquet":
+        df = pd.read_parquet(path)
+    elif path.suffix.lower() == ".csv":
+        df = pd.read_csv(path)
+    else:
+        raise ValueError(f"Unsupported file type for rotation panel: {path.suffix}")
 
-    needed = [
-        "match_id",
-        "player_id",
-        "player_name",
-        "team_id",
-        "season",
-        "date",
-        "opponent_id",
-        "is_home",
-        "xpts",
-        "minutes",
-        "started",
-        "days_rest",
-    ]
-    missing = [c for c in needed if c not in df.columns]
+    missing = [c for c in REQUIRED_COLS if c not in df.columns]
     if missing:
         raise ValueError(f"Missing columns in panel_rotation: {missing}")
 
-    # Basic typing
-    df["season"] = pd.to_numeric(df["season"], errors="coerce").astype(int)
-    df["player_id"] = df["player_id"].astype(str)
-    df["player_name"] = df["player_name"].astype(str)
-    df["team_id"] = df["team_id"].astype(str)
-    df["opponent_id"] = df["opponent_id"].astype(str)
-    df["date"] = pd.to_datetime(df["date"], errors="coerce")
-    df["xpts"] = pd.to_numeric(df["xpts"], errors="coerce")
-    df["started"] = df["started"].astype(bool)
+    # Basic typing (keeps subsequent groupby logic stable)
+    out = df[REQUIRED_COLS].copy()
+    out["season"] = pd.to_numeric(out["season"], errors="coerce").astype(int)
+    out["player_id"] = out["player_id"].astype(str)
+    out["player_name"] = out["player_name"].astype(str)
+    out["team_id"] = out["team_id"].astype(str)
+    out["opponent_id"] = out["opponent_id"].astype(str)
+    out["date"] = pd.to_datetime(out["date"], errors="coerce")
+    out["xpts"] = pd.to_numeric(out["xpts"], errors="coerce")
+    out["started"] = out["started"].astype(bool)
 
-    if df["date"].isna().any():
-        bad = int(df["date"].isna().sum())
-        raise ValueError(f"panel_rotation has {bad} rows with invalid dates")
+    bad_dates = int(out["date"].isna().sum())
+    if bad_dates:
+        raise ValueError(f"panel_rotation has {bad_dates} rows with invalid dates")
 
-    return df[needed].copy()
+    return out
 
 
 # ---------------------------------------------------------------------
-# Classify match stakes using team-season xPts terciles
+# Classify match contexts using team-season xPts terciles
 # ---------------------------------------------------------------------
 
 def add_stakes_category(df: pd.DataFrame) -> pd.DataFrame:
     """
-    For each team-season, classify matches into:
-      - hard   (bottom tercile of team-season xPts)
-      - medium
-      - easy   (top tercile of team-season xPts)
+    For each team-season, classify matches into stakes categories using xPts terciles.
+
+    hard   = bottom tercile of xPts (team expected points are low)
+    medium = middle tercile
+    easy   = top tercile of xPts
+
+    Note:
+    - Using xPts (rather than opponent table position) keeps the definition consistent
+      with the odds-based expected performance approach used elsewhere in the project.
     """
     df = df.copy()
 
     def team_season_stakes(sub: pd.DataFrame) -> pd.DataFrame:
-        q_low = sub["xpts"].quantile(1 / 3)
-        q_high = sub["xpts"].quantile(2 / 3)
+        # Drop missing xpts inside group to avoid quantile issues
+        sub = sub.copy()
+        x = sub["xpts"]
 
-        def categorize(x: float) -> str:
-            if x <= q_low:
+        q_low = x.quantile(1 / 3)
+        q_high = x.quantile(2 / 3)
+
+        def categorize(v: float) -> str:
+            if v <= q_low:
                 return "hard"
-            if x >= q_high:
+            if v >= q_high:
                 return "easy"
             return "medium"
 
-        sub = sub.copy()
         sub["stakes"] = sub["xpts"].apply(categorize)
         return sub
 
-    # Group by team + season (important)
+    # Group by team + season (context must be team-season specific)
     out = df.groupby(["team_id", "season"], group_keys=False).apply(team_season_stakes)
     return out
 
@@ -120,8 +159,11 @@ def compute_rotation_elasticity(
     min_easy: int = 1,
 ) -> pd.DataFrame:
     """
-    For each player-team-season, compute:
-      start_rate_hard, start_rate_easy, and rotation_elasticity = hard - easy.
+    For each player-team-season, compute start rates by context and the elasticity metric.
+
+    Filters:
+    - min_matches: minimum total matches observed for that player-team-season
+    - min_hard/min_easy: minimum matches in the hard/easy terciles
     """
     df = df.copy()
     df["appearance"] = 1
@@ -142,10 +184,11 @@ def compute_rotation_elasticity(
         n_easy_starts = int(easy["started_int"].sum())
         start_rate_easy = n_easy_starts / n_easy if n_easy > 0 else np.nan
 
-        if (not np.isnan(start_rate_hard)) and (not np.isnan(start_rate_easy)):
-            rotation_elasticity = float(start_rate_hard - start_rate_easy)
-        else:
-            rotation_elasticity = np.nan
+        rotation_elasticity = (
+            float(start_rate_hard - start_rate_easy)
+            if np.isfinite(start_rate_hard) and np.isfinite(start_rate_easy)
+            else np.nan
+        )
 
         return pd.Series(
             {
@@ -168,14 +211,13 @@ def compute_rotation_elasticity(
         .reset_index()
     )
 
-    grouped["keep"] = (
+    keep = (
         (grouped["n_matches"] >= min_matches)
         & (grouped["n_hard"] >= min_hard)
         & (grouped["n_easy"] >= min_easy)
         & grouped["rotation_elasticity"].notna()
     )
-
-    filtered = grouped.loc[grouped["keep"]].drop(columns=["keep"]).copy()
+    filtered = grouped.loc[keep].copy()
     return filtered
 
 
@@ -185,7 +227,7 @@ def compute_rotation_elasticity(
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Run Proxy 1: rotation elasticity.")
-    p.add_argument("--panel", type=str, default=None, help="Override panel_rotation.parquet path")
+    p.add_argument("--panel", type=str, default=None, help="Override rotation panel path (.parquet or .csv)")
     p.add_argument("--out-csv", type=str, default=None, help="Override output CSV path")
     p.add_argument("--min-matches", type=int, default=3, help="Minimum matches per player-season")
     p.add_argument("--min-hard", type=int, default=1, help="Minimum hard matches per player-season")
@@ -211,22 +253,20 @@ def main() -> None:
     )
     logger.info("Run metadata saved to: %s", meta_path)
 
-    # Resolve project root/results dir robustly (Config may not define project_root/results)
-    project_root = (
-        getattr(cfg, "project_root", None)
-        or getattr(cfg, "root", None)
-        or Path(__file__).resolve().parents[2]
-    )
+    # Results dir: default to <project_root>/results
+    project_root = getattr(cfg, "project_root", None) or getattr(cfg, "root", None) or Path(__file__).resolve().parents[2]
     results_dir = getattr(cfg, "results", None) or (project_root / "results")
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    # Default panel path: prefer cfg.processed if available
-    default_panel = (
-        (getattr(cfg, "processed", None) / "panel_rotation.parquet")
-        if getattr(cfg, "processed", None) is not None
-        else (project_root / "data" / "processed" / "panel_rotation.parquet")
-    )
-    panel_path = Path(args.panel) if args.panel else default_panel
+    # Default panel path: prefer parquet; fallback to CSV if parquet missing
+    processed_dir = getattr(cfg, "processed", None) or (project_root / "data" / "processed")
+    default_parquet = processed_dir / "panel_rotation.parquet"
+    default_csv = processed_dir / "panel_rotation.csv"
+
+    if args.panel:
+        panel_path = Path(args.panel)
+    else:
+        panel_path = default_parquet if default_parquet.exists() else default_csv
 
     out_csv = Path(args.out_csv) if args.out_csv else (results_dir / "proxy1_rotation_elasticity.csv")
 
@@ -245,20 +285,20 @@ def main() -> None:
         min_easy=int(args.min_easy),
     )
 
-    logger.info("Rotation proxy built: shape=%s | mean_elasticity=%.6f",
-                rot.shape, float(rot["rotation_elasticity"].mean()) if len(rot) else float("nan"))
+    mean_el = float(rot["rotation_elasticity"].mean()) if len(rot) else float("nan")
+    logger.info("Rotation proxy built: shape=%s | mean_elasticity=%.6f", rot.shape, mean_el)
 
     if args.dry_run:
         logger.info("Dry-run complete. Output not written.")
-        print(f"✅ dry-run complete | rotation proxy shape: {rot.shape} | output NOT written")
+        print(f"[OK] dry-run complete | rotation proxy shape: {rot.shape} | output NOT written")
         return
 
     out_csv.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_csv(rot, out_csv, index=False)
 
     logger.info("Saved rotation elasticity proxy: %s (rows=%s)", out_csv, len(rot))
-    print(f"✅ Saved rotation elasticity proxy | shape={rot.shape}")
-    print(f"   - {out_csv}")
+    print(f"[OK] Saved rotation elasticity proxy | shape={rot.shape}")
+    print(f"     {out_csv}")
 
 
 if __name__ == "__main__":

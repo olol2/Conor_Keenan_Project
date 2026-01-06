@@ -1,4 +1,3 @@
-# src/proxies/add_injuries_to_matches.py
 """
 Attach injury exposure measures to the team–match panel.
 
@@ -15,7 +14,7 @@ Output:
 - <cfg.processed>/matches/matches_with_injuries_all_seasons.csv
 
 Notes:
-- This is deterministic and fast on your dataset sizes.
+- This is deterministic and fast on the dataset sizes.
 - Data collection (scraping) is not performed here; only saved CSVs are read.
 """
 
@@ -87,6 +86,7 @@ def _compute_counts_for_group(m: pd.DataFrame, inj: pd.DataFrame) -> pd.DataFram
     """
     Compute injured_players and injury_spells for a single (Season, Team) group.
     This avoids a global cartesian merge.
+    Intervals are inclusive, active if from_date <= Date <= to_date.
     """
     dates = m["Date"].to_numpy(dtype="datetime64[ns]")
 

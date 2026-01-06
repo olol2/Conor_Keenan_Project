@@ -1,54 +1,68 @@
-# src/proxies/make_standings.py
 """
-Build Premier League final standings from processed odds_master.csv.
+Build Premier League final standings from the processed odds master file.
 
 Input (default):
-  data/processed/odds/odds_master.csv
+  <cfg.processed>/odds/odds_master.csv
 
 Outputs (default):
-  data/processed/standings/standings_<season>.csv
-  data/processed/standings/standings_all_seasons.csv
+  <cfg.processed>/standings/standings_<season>.csv
+  <cfg.processed>/standings/standings_all_seasons.csv
 
 Assumptions:
-  - One row per league match
-  - Columns include season, home_team, away_team, FTHG, FTAG, FTR
-  - FTR is "H"/"D"/"A"
+- One row per Premier League match in odds_master.csv.
+- Required columns in odds_master.csv:
+    season, home_team, away_team, FTHG, FTAG, FTR
+  where FTR is "H"/"D"/"A" from the home-team perspective.
+
+Notes:
+- Standings are computed deterministically from match results only.
+- This is fast and does not require any web scraping.
 """
 
 from __future__ import annotations
 
-from pathlib import Path
 import argparse
 import logging
+from pathlib import Path
 
 import pandas as pd
 
-
-ROOT_DIR = Path(__file__).resolve().parents[2]
-DEFAULT_ODDS_MASTER = ROOT_DIR / "data" / "processed" / "odds" / "odds_master.csv"
-DEFAULT_OUT_DIR = ROOT_DIR / "data" / "processed" / "standings"
+from src.utils.config import Config
 
 
 def build_standings(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
     """
-    df_season: matches for one season (expects columns: HomeTeam, AwayTeam, FTHG, FTAG, FTR)
-    season_label: e.g. '2019-2020'
+    Compute a final league table for one season.
+
+    Parameters
+    ----------
+    df_season:
+        Match-level data for one season. Expects columns:
+          HomeTeam, AwayTeam, FTHG, FTAG, FTR
+    season_label:
+        e.g. '2019-2020'
+
+    Returns
+    -------
+    DataFrame with columns:
+      Season, Position, Team, MP, W, D, L, GF, GA, GD, Pts
     """
     required = {"HomeTeam", "AwayTeam", "FTHG", "FTAG", "FTR"}
     missing = required - set(df_season.columns)
     if missing:
         raise ValueError(f"Season {season_label}: missing columns {sorted(missing)}")
 
-    # Ensure clean team names
     df = df_season.copy()
+
+    # Clean team names
     df["HomeTeam"] = df["HomeTeam"].astype(str).str.strip()
     df["AwayTeam"] = df["AwayTeam"].astype(str).str.strip()
 
-    # Ensure numeric goals
+    # Ensure numeric goals (robust to any parsing issues)
     df["FTHG"] = pd.to_numeric(df["FTHG"], errors="coerce")
     df["FTAG"] = pd.to_numeric(df["FTAG"], errors="coerce")
 
-    # Home stats
+    # Home-side aggregates
     home = df.groupby("HomeTeam").agg(
         MP_home=("HomeTeam", "size"),
         GF_home=("FTHG", "sum"),
@@ -58,7 +72,7 @@ def build_standings(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
         L_home=("FTR", lambda s: (s == "A").sum()),
     )
 
-    # Away stats
+    # Away-side aggregates (away goals are FTAG; away conceded are FTHG)
     away = df.groupby("AwayTeam").agg(
         MP_away=("AwayTeam", "size"),
         GF_away=("FTAG", "sum"),
@@ -68,7 +82,7 @@ def build_standings(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
         L_away=("FTR", lambda s: (s == "H").sum()),
     )
 
-    # Combine
+    # Combine home + away stats
     table = home.join(away, how="outer").fillna(0)
 
     # Totals
@@ -81,12 +95,12 @@ def build_standings(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
     table["GD"] = table["GF"] - table["GA"]
     table["Pts"] = 3 * table["W"] + table["D"]
 
-    # Sort by points, goal difference, goals for
+    # Sort by points, then goal difference, then goals for (standard tie-break ordering)
     table = table.sort_values(by=["Pts", "GD", "GF"], ascending=[False, False, False])
 
-    # Clean + cast to int where appropriate
+    # Keep final columns and cast to int
     table = table[["MP", "W", "D", "L", "GF", "GA", "GD", "Pts"]].copy()
-    for c in ["MP", "W", "D", "L", "GF", "GA", "GD", "Pts"]:
+    for c in table.columns:
         table[c] = pd.to_numeric(table[c], errors="coerce").fillna(0).astype(int)
 
     table = table.reset_index().rename(columns={"index": "Team"})
@@ -96,23 +110,32 @@ def build_standings(df_season: pd.DataFrame, season_label: str) -> pd.DataFrame:
     return table
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(cfg: Config) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Build league standings from odds_master.csv.")
-    p.add_argument("--odds-master", type=str, default=str(DEFAULT_ODDS_MASTER),
-                   help="Path to odds_master.csv")
-    p.add_argument("--out-dir", type=str, default=str(DEFAULT_OUT_DIR),
-                   help="Output directory for standings CSVs")
-    p.add_argument("--dry-run", action="store_true",
-                   help="Compute but do not write outputs")
+    p.add_argument(
+        "--odds-master",
+        type=Path,
+        default=cfg.processed / "odds" / "odds_master.csv",
+        help="Path to odds_master.csv (default: <cfg.processed>/odds/odds_master.csv)",
+    )
+    p.add_argument(
+        "--out-dir",
+        type=Path,
+        default=cfg.processed / "standings",
+        help="Output directory for standings CSVs (default: <cfg.processed>/standings)",
+    )
+    p.add_argument("--dry-run", action="store_true", help="Compute but do not write outputs")
     return p.parse_args()
 
 
 def main() -> None:
-    args = parse_args()
+    cfg = Config.load()
+    args = parse_args(cfg)
+
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
 
-    odds_master_path = Path(args.odds_master)
-    out_dir = Path(args.out_dir)
+    odds_master_path = args.odds_master
+    out_dir = args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if not odds_master_path.exists():
@@ -127,16 +150,16 @@ def main() -> None:
 
     all_standings: list[pd.DataFrame] = []
 
-    for season_label, df_season_raw in df_all.groupby("season"):
+    for season_label, df_season_raw in df_all.groupby("season", dropna=False):
+        season_label = str(season_label)
         logging.info("Building standings for %s...", season_label)
 
-        df_season = df_season_raw.rename(
-            columns={"home_team": "HomeTeam", "away_team": "AwayTeam"}
-        ).copy()
+        # Rename to the HomeTeam/AwayTeam schema used inside build_standings()
+        df_season = df_season_raw.rename(columns={"home_team": "HomeTeam", "away_team": "AwayTeam"}).copy()
 
-        standings = build_standings(df_season, str(season_label))
+        standings = build_standings(df_season, season_label)
 
-        # Basic sanity check (warn only)
+        # Sanity checks (warnings only)
         n_teams = len(standings)
         mp_vals = standings["MP"].unique().tolist()
         if n_teams != 20:
@@ -145,24 +168,29 @@ def main() -> None:
             logging.warning("Season %s: teams have different MP values: %s", season_label, mp_vals)
 
         out_path = out_dir / f"standings_{season_label}.csv"
-        if not args.dry_run:
+        if args.dry_run:
+            logging.info("Dry-run: would write %s (rows=%d)", out_path, len(standings))
+        else:
             standings.to_csv(out_path, index=False)
             logging.info("Saved %s", out_path)
 
         all_standings.append(standings)
 
-    if all_standings:
-        combined = pd.concat(all_standings, ignore_index=True)
-        combined_path = out_dir / "standings_all_seasons.csv"
-        if args.dry_run:
-            logging.info("Dry-run: combined standings would be written to %s (rows=%s).", combined_path, len(combined))
-            print("✅ dry-run complete | combined shape:", combined.shape)
-        else:
-            combined.to_csv(combined_path, index=False)
-            logging.info("Saved %s", combined_path)
-            print("✅ wrote standings | combined shape:", combined.shape)
-    else:
+    if not all_standings:
         logging.warning("No seasons found in odds_master.")
+        return
+
+    combined = pd.concat(all_standings, ignore_index=True)
+    combined_path = out_dir / "standings_all_seasons.csv"
+
+    if args.dry_run:
+        logging.info("Dry-run: combined standings would be written to %s (rows=%d).", combined_path, len(combined))
+        print("[OK] dry-run complete | combined shape:", combined.shape)
+        return
+
+    combined.to_csv(combined_path, index=False)
+    logging.info("Saved %s", combined_path)
+    print("[OK] wrote standings | combined shape:", combined.shape)
 
 
 if __name__ == "__main__":

@@ -1,11 +1,32 @@
-# src/analysis/proxy2_injury_plots.py
-from __future__ import annotations
+"""
+Summary figures for Proxy 2 (injury DiD) outputs.
 
+Purpose:
+- Generates basic distribution and “top-N” charts for the injury proxy outputs.
+- Intended as lightweight reporting; no data construction happens here.
+
+Input (default):
+- <project_root>/results/proxy2_injury_final_named.csv
+
+Output (default):
+- <project_root>/results/figures/*.png
+
+Notes:
+- If expected columns are missing, they are created as NA and plots are skipped gracefully.
+- Uses the non-interactive matplotlib backend ("Agg") so it works in headless/grader environments.
+"""
+
+from __future__ import annotations
 from pathlib import Path
 import argparse
 
 import pandas as pd
-import matplotlib.pyplot as plt
+
+# Headless-safe backend (must be set before importing pyplot)
+import matplotlib
+matplotlib.use("Agg")  # noqa: E402
+
+import matplotlib.pyplot as plt  # noqa: E402
 
 from src.utils.config import Config
 from src.utils.logging_setup import setup_logger
@@ -15,15 +36,19 @@ from src.utils.run_metadata import write_run_metadata
 # ---------------------------------------------------------------------
 # Load data
 # ---------------------------------------------------------------------
-
 def load_injury_data(path: Path, logger) -> pd.DataFrame:
+    """
+    Load the final named Proxy 2 output and enforce a minimal schema for plotting.
+
+    If some expected columns are missing, they are created as NA so plotting functions
+    can skip those plots rather than crashing.
+    """
     if not path.exists():
         raise FileNotFoundError(f"Input file not found: {path}")
 
     df = pd.read_csv(path)
     df.columns = [c.strip() for c in df.columns]
 
-    # Expected columns; if missing, create as NA (so plots can be skipped gracefully)
     expected_cols = [
         "player_name",
         "team_id",
@@ -36,14 +61,11 @@ def load_injury_data(path: Path, logger) -> pd.DataFrame:
         if col not in df.columns:
             df[col] = pd.NA
 
-    # Basic cleanup
+    # Basic cleanup / typing
     df["player_name"] = df["player_name"].astype(str).str.strip()
     df["team_id"] = df["team_id"].astype(str).str.strip()
-
-    # season can be Int64 (nullable) if anything odd slips through
     df["season"] = pd.to_numeric(df["season"], errors="coerce").astype("Int64")
 
-    # numeric columns
     for col in ["xpts_per_match_present", "xpts_season_total", "value_gbp_season_total"]:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
@@ -54,8 +76,8 @@ def load_injury_data(path: Path, logger) -> pd.DataFrame:
 # ---------------------------------------------------------------------
 # Plot helpers
 # ---------------------------------------------------------------------
-
 def _savefig(fig_dir: Path, name: str, logger) -> None:
+    """Save current matplotlib figure to fig_dir/name and close it."""
     out_path = fig_dir / name
     plt.tight_layout()
     plt.savefig(out_path, dpi=150)
@@ -63,7 +85,17 @@ def _savefig(fig_dir: Path, name: str, logger) -> None:
     logger.info("Saved figure: %s", out_path)
 
 
-def plot_hist(df: pd.DataFrame, col: str, xlabel: str, title: str, fig_dir: Path, fname: str, bins: int, logger) -> None:
+def plot_hist(
+    df: pd.DataFrame,
+    col: str,
+    xlabel: str,
+    title: str,
+    fig_dir: Path,
+    fname: str,
+    bins: int,
+    logger,
+) -> None:
+    """Histogram of a single numeric column; skips if no non-NA data exists."""
     data = df[col].dropna()
     if data.empty:
         logger.warning("No data for %s; skipping %s.", col, fname)
@@ -78,7 +110,17 @@ def plot_hist(df: pd.DataFrame, col: str, xlabel: str, title: str, fig_dir: Path
     _savefig(fig_dir, fname, logger)
 
 
-def plot_top10_barh(df: pd.DataFrame, col: str, xlabel: str, title: str, fig_dir: Path, fname: str, top_n: int, logger) -> None:
+def plot_top10_barh(
+    df: pd.DataFrame,
+    col: str,
+    xlabel: str,
+    title: str,
+    fig_dir: Path,
+    fname: str,
+    top_n: int,
+    logger,
+) -> None:
+    """Horizontal bar chart of the top-N rows by a numeric column; skips if no data exists."""
     sub = df.dropna(subset=[col]).copy()
     if sub.empty:
         logger.warning("No data for %s; skipping %s.", col, fname)
@@ -99,7 +141,16 @@ def plot_top10_barh(df: pd.DataFrame, col: str, xlabel: str, title: str, fig_dir
     _savefig(fig_dir, fname, logger)
 
 
-def plot_scatter(df: pd.DataFrame, x: str, y: str, title: str, fig_dir: Path, fname: str, logger) -> None:
+def plot_scatter(
+    df: pd.DataFrame,
+    x: str,
+    y: str,
+    title: str,
+    fig_dir: Path,
+    fname: str,
+    logger,
+) -> None:
+    """Scatter plot for two numeric columns; skips if either column has no data."""
     sub = df.dropna(subset=[x, y]).copy()
     if sub.empty:
         logger.warning("No data for scatter (%s vs %s); skipping %s.", x, y, fname)
@@ -107,8 +158,8 @@ def plot_scatter(df: pd.DataFrame, x: str, y: str, title: str, fig_dir: Path, fn
 
     plt.figure(figsize=(7, 5))
     plt.scatter(sub[x], sub[y])
-    plt.xlabel("Season impact in xPts")
-    plt.ylabel("Season impact in £")
+    plt.xlabel(x)
+    plt.ylabel(y)
     plt.title(title)
     _savefig(fig_dir, fname, logger)
 
@@ -116,7 +167,6 @@ def plot_scatter(df: pd.DataFrame, x: str, y: str, title: str, fig_dir: Path, fn
 # ---------------------------------------------------------------------
 # CLI / Main
 # ---------------------------------------------------------------------
-
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Make plots for Proxy 2 (injury DiD) outputs.")
     p.add_argument("--injury-file", type=str, default=None, help="Path to proxy2_injury_final_named.csv")
@@ -135,9 +185,14 @@ def main() -> None:
     meta_path = write_run_metadata(cfg.metadata, "proxy2_injury_plots", extra={"dry_run": bool(args.dry_run)})
     logger.info("Run metadata saved to: %s", meta_path)
 
-    injury_file = Path(args.injury_file) if args.injury_file else (cfg.project_root / "results" / "proxy2_injury_final_named.csv")
-    fig_dir = Path(args.fig_dir) if args.fig_dir else (cfg.project_root / "results" / "figures")
-    fig_dir.mkdir(parents=True, exist_ok=True)
+    # Robust project_root fallback (cfg.project_root may not exist)
+    project_root = getattr(cfg, "project_root", None)
+    if project_root is None:
+        # cfg.processed is typically <root>/data/processed
+        project_root = cfg.processed.parent.parent
+
+    injury_file = Path(args.injury_file) if args.injury_file else (project_root / "results" / "proxy2_injury_final_named.csv")
+    fig_dir = Path(args.fig_dir) if args.fig_dir else (project_root / "results" / "figures")
 
     df = load_injury_data(injury_file, logger)
     print(f"Loaded {len(df)} player-seasons for plotting.")
@@ -146,6 +201,8 @@ def main() -> None:
         logger.info("Dry-run complete. Figures not written.")
         print("✅ dry-run complete | figures NOT written")
         return
+
+    fig_dir.mkdir(parents=True, exist_ok=True)
 
     plot_hist(
         df,

@@ -1,22 +1,20 @@
-# src/proxies/build_rotation_panel.py
-from __future__ import annotations
-
 """
 Build a player–team–match rotation panel by joining:
 
-  - team–match panel with xPts (from odds)   [matches_with_injuries_all_seasons.csv]
-  - Understat per-player match minutes/starts [understat_player_matches_master.csv]
+  - team–match panel with xPts (from odds)      [matches_with_injuries_all_seasons.csv]
+  - Understat per-player match minutes/starts  [understat_player_matches_master.csv]
 
 Output (one row per player–team–match):
-  - data/processed/panel_rotation.csv
-  - data/processed/panel_rotation.parquet   (optional; skipped if parquet engine missing)
+  - <cfg.processed>/panel_rotation.csv
+  - <cfg.processed>/panel_rotation.parquet   (optional; skipped if parquet engine missing)
 
 Notes:
-- This script is a preprocessing/proxy builder. Your main.py may choose to read
-  the already-produced CSVs rather than rebuilding from scratch.
-- Use --dry-run to validate everything without writing files.
+- This script is a preprocessing/proxy-builder step. main.py may read the already-produced
+  CSV rather than rebuilding from scratch.
+- Can use --dry-run to validate inputs, merges, and output schema without writing files.
 """
 
+from __future__ import annotations
 from pathlib import Path
 import argparse
 
@@ -34,7 +32,7 @@ from src.validation.checks import assert_non_empty, require_columns
 # ----------------------------
 
 def _normalize_date(s: pd.Series) -> pd.Series:
-    """Normalize datetimes to midnight to make joins robust."""
+    """Normalize timestamps to midnight (date-only) so joins are robust to time components."""
     return pd.to_datetime(s, errors="coerce").dt.normalize()
 
 
@@ -59,6 +57,12 @@ def load_matches(matches_path: Path, logger) -> pd.DataFrame:
 
     Expected input columns:
       Season, MatchID, Date, Team, Opponent, is_home, xPts
+
+    Returns (standardised schema):
+      season, season_label, date, team_id, opponent_id, match_id, is_home, xpts
+
+    Uniqueness:
+      Enforces uniqueness on (season, date, team_id), which should be one row per team per league match.
     """
     if not matches_path.exists():
         raise FileNotFoundError(
@@ -91,7 +95,6 @@ def load_matches(matches_path: Path, logger) -> pd.DataFrame:
     assert_non_empty(out, "matches_clean")
     require_columns(out, ["season", "date", "team_id", "match_id"], name="matches_clean")
 
-    # This should be unique: one (season,date,team) row per team per league match.
     _assert_unique_keys(out, ["season", "date", "team_id"], "matches_clean", logger)
 
     logger.info("Matches loaded: shape=%s", out.shape)
@@ -104,8 +107,12 @@ def load_understat_minutes(understat_path: Path, logger) -> pd.DataFrame:
 
     Required columns:
       team, player_id, player_name, Min, started
-    Plus one date column in {'match_date','Date','date'} and one season column
-    in {'season_start_year','season'}.
+    Plus:
+      - one date column in {'match_date','Date','date'}
+      - one season column in {'season_start_year','season'}
+
+    Returns (standardised schema):
+      season, date, team_id, player_id, player_name, minutes, started
     """
     if not understat_path.exists():
         raise FileNotFoundError(
@@ -154,7 +161,7 @@ def load_understat_minutes(understat_path: Path, logger) -> pd.DataFrame:
         }
     )
 
-    # Coerce started -> bool robustly
+    # Coerce started -> bool robustly (handles strings like "True"/"False"/"1"/"0")
     if out["started"].dtype == object:
         out["started"] = (
             out["started"]
@@ -178,12 +185,18 @@ def load_understat_minutes(understat_path: Path, logger) -> pd.DataFrame:
 
 def build_rotation_panel(matches: pd.DataFrame, under: pd.DataFrame, logger) -> pd.DataFrame:
     """
-    Join Understat player-match rows to the league match panel by (season, date, team_id),
-    then compute days_rest for each player.
+    Join Understat player-match rows to the league match panel by (season, date, team_id).
+
+    Notes:
+    - The merge is inner: Understat rows that do not match a league fixture are dropped
+      (these are typically cup matches, friendlies, or date mismatches).
+    - days_rest is computed as days since the player's previous Understat appearance
+      (player-level, regardless of team). Values are clipped to [0, 30] and missing is set to 30.
     """
     before = len(under)
 
-    # Validate join uniqueness on matches already; now perform many-to-one merge.
+    # matches was already validated as unique on (season,date,team_id),
+    # so this is many-to-one from Understat -> matches.
     panel = under.merge(
         matches,
         on=["season", "date", "team_id"],
@@ -201,12 +214,12 @@ def build_rotation_panel(matches: pd.DataFrame, under: pd.DataFrame, logger) -> 
 
     assert_non_empty(panel, "rotation_panel")
 
-    # days_rest per player: days since previous appearance (across all teams)
+    # days_rest per player: days since previous appearance (player-level)
     panel = panel.sort_values(["player_id", "date"])
     panel["days_rest"] = panel.groupby("player_id")["date"].diff().dt.days
     panel["days_rest"] = panel["days_rest"].fillna(30).astype(float).clip(lower=0, upper=30)
 
-    # Final schema
+    # Final schema / stable column order
     cols = [
         "match_id",
         "player_id",
@@ -249,7 +262,7 @@ def main() -> None:
     meta_path = write_run_metadata(cfg.metadata, "build_rotation_panel", extra={"dry_run": args.dry_run})
     logger.info("Run metadata saved to: %s", meta_path)
 
-    # Default paths from config (consistent with your other scripts)
+    # Default paths from config (consistent with other scripts)
     default_matches = cfg.processed / "matches" / "matches_with_injuries_all_seasons.csv"
     default_under = cfg.processed / "understat" / "understat_player_matches_master.csv"
     default_out_csv = cfg.processed / "panel_rotation.csv"
@@ -274,7 +287,7 @@ def main() -> None:
         print(f"✅ dry-run complete | panel shape: {panel.shape} | output NOT written")
         return
 
-    # Ensure output dir exists
+    # Ensure output dir exists and write CSV (required output)
     out_csv.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_csv(panel, out_csv, index=False)
 

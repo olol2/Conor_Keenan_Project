@@ -1,19 +1,18 @@
-# src/proxies/build_injury_panel.py
-from __future__ import annotations
-
 """
 Build a player–team–match injury panel dataset by combining:
   - team–match data with expected points (xPts) and squad injury counts
   - injury spells per player–team–season (already standardised)
-  - Understat per-player match minutes & starting info (already standardised)
+  - Understat per-player match minutes & starting info (cleaned/deduplicated here).
 
 Outputs (defaults):
   <cfg.processed>/panel_injury.parquet
   <cfg.processed>/panel_injury.csv
 
 One row per (match_id, team_id, player_name).
+Panel includes only player–team–seasons observed in the injury spells dataset (not the full squad).
 """
 
+from __future__ import annotations
 from pathlib import Path
 import argparse
 
@@ -190,12 +189,13 @@ def build_injury_panel(
 ) -> pd.DataFrame:
     """
     One row per (match_id, team_id, player_name), for players who appear in spells.
+    Panel includes only player–team–seasons observed in the injury spells dataset (not the full squad).
 
     Columns:
       match_id, season, season_label, date, team_id, opponent_id, player_name,
       xpts, n_injured_squad, unavailable, minutes, started
     """
-    # Restrict spells to team-season pairs that exist in matches (defensive)
+    # Restrict spells to team-season pairs that exist in matches
     spells2 = spells.merge(
         matches[["team_id", "season"]].drop_duplicates(),
         on=["team_id", "season"],
@@ -220,7 +220,7 @@ def build_injury_panel(
         how="left",
         suffixes=("", "_spell"),
     )
-
+    # Spell interval treated as inclusive on both endpoints.
     in_spell = (tmp["date"] >= tmp["start_date"]) & (tmp["date"] <= tmp["end_date"])
     tmp["unavailable_raw"] = in_spell.fillna(False).astype(int)
 
@@ -237,7 +237,7 @@ def build_injury_panel(
         )
     )
 
-    # Merge Understat minutes/starts (optional)
+    # Merge Understat minutes/starts 
     if understat is not None and len(understat) > 0:
         panel = panel.merge(
             understat,

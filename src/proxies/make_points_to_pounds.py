@@ -1,36 +1,77 @@
-# src/make_points_to_pounds.py
+"""
+Compute an approximate value of Premier League points in GBP using
+final league standings and total prize money.
+
+Method (per season):
+  pounds_per_point = total_prize_money_gbp / total_league_points
+
+Then create a linear mapping:
+  Money_gbp = Points * pounds_per_point
+
+Outputs (default):
+  <cfg.processed>/points_to_pounds/points_to_pounds_<season>.csv
+
+Inputs (defaults):
+  - <cfg.processed>/standings/standings_*.csv
+  - <cfg.raw>/pl_prize_money.csv
+
+Notes:
+- This is an approximation intended for interpretability (points → money scale).
+- If the merge produces fewer rows than expected, it usually indicates team-name
+  mismatches between standings files and the prize money file.
+- Standings files sometimes use different team-name columns; this script
+  standardises them to 'Team'.
+"""
+
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 import pandas as pd
 
-"""
-Compute an approximate value of Premier League points in GBP based on
-final league standings and total prize money.
-
-For each season:
-  pounds_per_point = total_money / total_points
-
-Then create a linear mapping:
-  Money_gbp = Points * pounds_per_point
-and save it to data/processed/points_to_pounds/points_to_pounds_<season>.csv
-"""
+from src.utils.config import Config
 
 
-# ---------- paths ----------
-# IMPORTANT: this file lives in /scripts, so parents[1] is the project root
-ROOT_DIR = Path(__file__).resolve().parents[1]
+def _standardise_standings_schema(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalise standings schema to at least:
+      Season, Team, Pts
 
-DEFAULT_STANDINGS_DIR = ROOT_DIR / "data" / "processed" / "standings"
-DEFAULT_PRIZE_FILE = ROOT_DIR / "data" / "raw" / "pl_prize_money.csv"
-DEFAULT_OUTPUT_DIR = ROOT_DIR / "data" / "processed" / "points_to_pounds"
-# ---------------------------
+    Accepts common variants:
+      - Team column may be named: Team / HomeTeam / Club
+    """
+    df = df.copy()
+    df.columns = [c.strip() for c in df.columns]
+
+    # Season must exist
+    if "Season" not in df.columns:
+        raise ValueError(f"[standings] Missing 'Season'. Columns: {list(df.columns)}")
+
+    # Team column may have different names in different pipelines
+    if "Team" not in df.columns:
+        for alt in ["HomeTeam", "Club"]:
+            if alt in df.columns:
+                df = df.rename(columns={alt: "Team"})
+                break
+
+    if "Team" not in df.columns:
+        raise ValueError(f"[standings] Missing team column (expected 'Team' or 'HomeTeam' or 'Club'). Columns: {list(df.columns)}")
+
+    if "Pts" not in df.columns:
+        raise ValueError(f"[standings] Missing 'Pts'. Columns: {list(df.columns)}")
+
+    # Basic cleaning
+    df["Season"] = df["Season"].astype(str).str.strip()
+    df["Team"] = df["Team"].astype(str).str.strip()
+    df["Pts"] = pd.to_numeric(df["Pts"], errors="coerce")
+
+    return df
 
 
 def load_standings(standings_dir: Path) -> pd.DataFrame:
-    """Load all per-season standings_*.csv into one DataFrame."""
-    frames = []
+    """Load all per-season standings_*.csv into one DataFrame (standardised to Season/Team/Pts)."""
+    frames: list[pd.DataFrame] = []
+
     for path in sorted(standings_dir.glob("standings_*.csv")):
         if "all_seasons" in path.name:
             continue
@@ -39,39 +80,42 @@ def load_standings(standings_dir: Path) -> pd.DataFrame:
     if not frames:
         raise FileNotFoundError(
             f"No per-season standings_*.csv files found in {standings_dir}. "
-            "Run make_standings.py first."
+            "If your standings are stored elsewhere, pass --standings-dir."
         )
 
     standings = pd.concat(frames, ignore_index=True)
-    standings.columns = [c.strip() for c in standings.columns]
-
-    # Ensure required columns exist
-    if "Season" not in standings.columns:
-        raise ValueError(f"'Season' column not found in standings. Columns: {list(standings.columns)}")
-    if "Team" not in standings.columns:
-        raise ValueError(f"'Team' column not found in standings. Columns: {list(standings.columns)}")
-    if "Pts" not in standings.columns:
-        raise ValueError(f"'Pts' column not found in standings. Columns: {list(standings.columns)}")
-
-    # Basic cleaning
-    standings["Season"] = standings["Season"].astype(str).str.strip()
-    standings["Team"] = standings["Team"].astype(str).str.strip()
-    standings["Pts"] = pd.to_numeric(standings["Pts"], errors="coerce")
-
+    standings = _standardise_standings_schema(standings)
     return standings
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(cfg: Config) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Build points-to-pounds mapping from standings + prize money.")
-    p.add_argument("--standings-dir", type=Path, default=DEFAULT_STANDINGS_DIR, help="Directory with standings_*.csv")
-    p.add_argument("--prize-file", type=Path, default=DEFAULT_PRIZE_FILE, help="Path to pl_prize_money.csv")
-    p.add_argument("--out-dir", type=Path, default=DEFAULT_OUTPUT_DIR, help="Output directory for points_to_pounds_*.csv")
+    p.add_argument(
+        "--standings-dir",
+        type=Path,
+        default=cfg.processed / "standings",
+        help="Directory with standings_*.csv (default: <cfg.processed>/standings)",
+    )
+    p.add_argument(
+        "--prize-file",
+        type=Path,
+        default=cfg.raw / "pl_prize_money.csv",
+        help="Path to pl_prize_money.csv (default: <cfg.raw>/pl_prize_money.csv)",
+    )
+    p.add_argument(
+        "--out-dir",
+        type=Path,
+        default=cfg.processed / "points_to_pounds",
+        help="Output directory (default: <cfg.processed>/points_to_pounds)",
+    )
     p.add_argument("--dry-run", action="store_true", help="Compute but do not write outputs")
     return p.parse_args()
 
 
 def main() -> None:
-    args = parse_args()
+    cfg = Config.load()
+    args = parse_args(cfg)
+
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
     standings = load_standings(args.standings_dir)
@@ -85,13 +129,16 @@ def main() -> None:
     required_cols = {"Season", "Team", "pl_total_gbp"}
     missing = required_cols - set(prize.columns)
     if missing:
-        raise ValueError(f"pl_prize_money.csv missing columns: {sorted(missing)}. Needs: {sorted(required_cols)}")
+        raise ValueError(
+            f"[pl_prize_money.csv] Missing columns: {sorted(missing)}. "
+            f"Needs: {sorted(required_cols)}"
+        )
 
     prize["Season"] = prize["Season"].astype(str).str.strip()
     prize["Team"] = prize["Team"].astype(str).str.strip()
     prize["pl_total_gbp"] = pd.to_numeric(prize["pl_total_gbp"], errors="coerce")
 
-    # Merge money onto standings
+    # Merge prize money onto standings
     df = standings.merge(
         prize[["Season", "Team", "pl_total_gbp"]],
         on=["Season", "Team"],
@@ -101,25 +148,24 @@ def main() -> None:
     if df.empty:
         raise ValueError(
             "Merge produced 0 rows. This usually means team names or Season labels "
-            "do not match between standings and pl_prize_money.csv."
+            "do not match between standings files and pl_prize_money.csv."
         )
 
     # Report merge coverage (useful for debugging)
     n_stand = len(standings)
     n_merged = len(df)
     if n_merged < n_stand:
-        print(f"⚠️ Merge coverage: {n_merged}/{n_stand} rows matched. Some teams/seasons may be missing in prize file.")
+        print(f"[WARN] Merge coverage: {n_merged}/{n_stand} rows matched. Some teams/seasons may be missing in prize file.")
 
     df = df.rename(columns={"pl_total_gbp": "money_gbp"})
 
-    # Build season mappings
     written = 0
     for season, df_season in df.groupby("Season"):
         total_money = df_season["money_gbp"].sum()
         total_points = df_season["Pts"].sum()
 
         if pd.isna(total_points) or total_points == 0:
-            print(f"Skipping {season}: total_points is invalid ({total_points})")
+            print(f"[WARN] Skipping {season}: total_points is invalid ({total_points})")
             continue
 
         pounds_per_point = float(total_money / total_points)
@@ -129,10 +175,7 @@ def main() -> None:
         max_pts = int(df_season["Pts"].max())
 
         mapping = pd.DataFrame(
-            {
-                "Season": [season] * (max_pts - min_pts + 1),
-                "Points": list(range(min_pts, max_pts + 1)),
-            }
+            {"Season": [season] * (max_pts - min_pts + 1), "Points": list(range(min_pts, max_pts + 1))}
         )
         mapping["Money_gbp"] = mapping["Points"] * pounds_per_point
 
@@ -142,13 +185,13 @@ def main() -> None:
             print(f"[dry-run] Would write {out_path} (rows={len(mapping)})")
         else:
             mapping.to_csv(out_path, index=False)
-            print(f"Saved {out_path}")
+            print(f"[OK] Saved {out_path}")
             written += 1
 
     if args.dry_run:
-        print("✅ dry-run complete | no files written")
+        print("[OK] dry-run complete | no files written")
     else:
-        print(f"✅ wrote {written} season mapping files to {args.out_dir}")
+        print(f"[OK] wrote {written} season mapping files to {args.out_dir}")
 
 
 if __name__ == "__main__":

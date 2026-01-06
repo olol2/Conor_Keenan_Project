@@ -1,4 +1,18 @@
-# src/proxies/proxy2_injury_summary.py
+"""
+Attach a consistent numeric Understat player_id to the Proxy 2 injury output
+(proxy2_injury_did_points_gbp.*) using the Understat master.
+
+Inputs (defaults):
+  - results/proxy2_injury_did_points_gbp.csv  (or .parquet)
+  - data/processed/understat/understat_player_matches_master.csv
+
+Output (default):
+  - results/proxy2_injury_final_named.csv
+
+Robust to two DiD schemas:
+  A) preferred: has player_name column
+  B) older: has player_id column but it is actually a player name (string)
+"""
 from __future__ import annotations
 
 from pathlib import Path
@@ -7,61 +21,51 @@ import argparse
 import pandas as pd
 
 
-"""
-Attach a consistent numeric Understat player_id to the Proxy 2 injury output
-(proxy2_injury_did_points_gbp.*) using the Understat master.
-
-Inputs (default):
-  - results/proxy2_injury_did_points_gbp.csv  (or .parquet)
-  - data/processed/understat/understat_player_matches_master.csv
-
-Output (default):
-  - results/proxy2_injury_final_named.csv
-
-Robust to two DiD schemas:
-  A) newer: has player_name column
-  B) older: has player_id column that is actually a player name
-"""
-
-
 # ---------------------------------------------------------------------
 # IO helpers
 # ---------------------------------------------------------------------
-
 def read_table(path: Path) -> pd.DataFrame:
+    """Read either CSV or Parquet into a DataFrame."""
     if not path.exists():
         raise FileNotFoundError(f"File not found: {path}")
+
     suf = path.suffix.lower()
     if suf == ".csv":
         return pd.read_csv(path)
     if suf in {".parquet", ".pq"}:
         return pd.read_parquet(path)
+
     raise ValueError(f"Unsupported file type: {path.suffix} (expected .csv or .parquet)")
 
 
 # ---------------------------------------------------------------------
 # Load DiD + points + £ results
 # ---------------------------------------------------------------------
-
 def load_did(path: Path) -> pd.DataFrame:
+    """
+    Load Proxy 2 output and ensure a usable 'player_name' column exists.
+
+    - If file has player_name: it is used.
+    - Else if file has player_id but it is actually a name (older schema): treat it as player_name.
+    """
     df = read_table(path)
     df.columns = [c.strip() for c in df.columns]
 
-    # Prefer explicit player_name; fallback to older convention where player_id is a name
     if "player_name" in df.columns:
         df["player_name"] = df["player_name"].astype(str).str.strip()
         df["injury_player_name_raw"] = df["player_name"]
     elif "player_id" in df.columns:
+        # Older schema: player_id contains a name-like string
         df["player_id"] = df["player_id"].astype(str).str.strip()
         df["player_name"] = df["player_id"]
         df["injury_player_name_raw"] = df["player_id"]
     else:
         raise ValueError(
-            f"DiD file must contain either player_name or player_id. Columns: {df.columns.tolist()}"
+            f"DiD file must contain either player_name or player_id. Columns={df.columns.tolist()}"
         )
 
     if "team_id" not in df.columns:
-        raise ValueError(f"DiD file missing team_id. Columns: {df.columns.tolist()}")
+        raise ValueError(f"DiD file missing team_id. Columns={df.columns.tolist()}")
 
     df["team_id"] = df["team_id"].astype(str).str.strip()
 
@@ -74,8 +78,17 @@ def load_did(path: Path) -> pd.DataFrame:
 # ---------------------------------------------------------------------
 # Build lookup(s) from Understat master
 # ---------------------------------------------------------------------
-
 def load_understat_lookups(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Build two lookup tables from Understat master:
+      (A) (player_name, team_id) -> player_id  (best)
+      (B) (player_name)          -> player_id  (fallback)
+
+    We choose the most common player_id observed for each key.
+    """
+    if not path.exists():
+        raise FileNotFoundError(f"Understat master not found: {path}")
+
     df = pd.read_csv(path)
     df.columns = [c.strip() for c in df.columns]
 
@@ -90,27 +103,25 @@ def load_understat_lookups(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
         {
             "player_name": df["player_name"].astype(str).str.strip(),
             "team_id": df["team"].astype(str).str.strip(),
-            "understat_player_id": pd.to_numeric(df["player_id"], errors="coerce").astype("Int64"),
+            "player_id": pd.to_numeric(df["player_id"], errors="coerce").astype("Int64"),
         }
-    ).dropna(subset=["understat_player_id"])
+    ).dropna(subset=["player_id"])
 
-    # (A) Best lookup: (player_name, team_id) -> most common understat_player_id
+    # (A) Best lookup: (player_name, team_id) -> most common player_id
     by_team = (
-        tmp.groupby(["player_name", "team_id", "understat_player_id"], as_index=False)
+        tmp.groupby(["player_name", "team_id", "player_id"], as_index=False)
         .size()
         .sort_values(["player_name", "team_id", "size"], ascending=[True, True, False])
-        .drop_duplicates(subset=["player_name", "team_id"])[["player_name", "team_id", "understat_player_id"]]
-        .rename(columns={"understat_player_id": "player_id"})
+        .drop_duplicates(subset=["player_name", "team_id"])[["player_name", "team_id", "player_id"]]
         .reset_index(drop=True)
     )
 
-    # (B) Fallback lookup: player_name -> most common understat_player_id
+    # (B) Fallback lookup: player_name -> most common player_id
     by_name = (
-        tmp.groupby(["player_name", "understat_player_id"], as_index=False)
+        tmp.groupby(["player_name", "player_id"], as_index=False)
         .size()
         .sort_values(["player_name", "size"], ascending=[True, False])
-        .drop_duplicates(subset=["player_name"])[["player_name", "understat_player_id"]]
-        .rename(columns={"understat_player_id": "player_id"})
+        .drop_duplicates(subset=["player_name"])[["player_name", "player_id"]]
         .reset_index(drop=True)
     )
 
@@ -120,12 +131,18 @@ def load_understat_lookups(path: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
 # ---------------------------------------------------------------------
 # Main transform
 # ---------------------------------------------------------------------
-
 def attach_understat_id(did: pd.DataFrame, lookup_team: pd.DataFrame, lookup_name: pd.DataFrame) -> pd.DataFrame:
+    """
+    Attach numeric Understat player_id to the DiD output.
+
+    Strategy:
+      1) Merge on (player_name, team_id)
+      2) For remaining missing IDs, merge on (player_name) only
+    """
     out = did.copy()
 
     # Pass 1: (player_name, team_id)
-    out = out.merge(lookup_team, on=["player_name", "team_id"], how="left", suffixes=("", "_lk1"))
+    out = out.merge(lookup_team, on=["player_name", "team_id"], how="left")
 
     # Pass 2: fill missing ids by player_name only
     missing_before = int(out["player_id"].isna().sum())
@@ -139,10 +156,12 @@ def attach_understat_id(did: pd.DataFrame, lookup_team: pd.DataFrame, lookup_nam
         out = out.drop(columns=["player_id_name_only"])
 
     out["player_id"] = pd.to_numeric(out["player_id"], errors="coerce").astype("Int64")
-
     return out
 
 
+# ---------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Attach Understat numeric player_id to Proxy 2 injury outputs.")
     p.add_argument("--did", type=str, default=None, help="Path to proxy2_injury_did_points_gbp.csv or .parquet")
@@ -169,14 +188,14 @@ def main() -> None:
     lookup_team, lookup_name = load_understat_lookups(understat_path)
     out = attach_understat_id(did, lookup_team, lookup_name)
 
-    # Quick linkage diagnostics
+    # Diagnostics
     n_total = len(out)
     n_missing = int(out["player_id"].isna().sum())
     match_rate = 1.0 - (n_missing / n_total if n_total else 0.0)
     print(f"Loaded DiD: {did_path} | rows={n_total}")
     print(f"Understat ID match rate: {match_rate:.3%} | missing={n_missing}")
 
-    # Keep a stable, readable column order (don’t drop any columns you already have)
+    # Stable, readable column order
     front = ["season", "team_id", "player_id", "player_name", "injury_player_name_raw"]
     front = [c for c in front if c in out.columns]
     rest = [c for c in out.columns if c not in front]
@@ -188,6 +207,7 @@ def main() -> None:
 
     if args.dry_run:
         print(f"✅ dry-run complete | output shape={out.shape} | output NOT written")
+        print(out.head(10))
         return
 
     out_path.parent.mkdir(parents=True, exist_ok=True)

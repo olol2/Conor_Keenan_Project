@@ -1,18 +1,19 @@
-# src/analysis/proxies_combined_plots.py
-from __future__ import annotations
-
 """
-Plot the relationship between the rotation proxy (proxy 1)
-and the injury proxy in xPts (proxy 2), using the combined
-proxies file.
+Plot the relationship between Proxy 1 (rotation elasticity) and Proxy 2 (injury impact in xPts)
+using the merged player-season dataset.
 
-Default input:
+Input (default):
     results/proxies_combined.csv
 
-Default output:
+Output (default):
     results/figures/proxies_scatter_rotation_vs_injury_xpts.png
+
+Notes:
+- X-axis: rotation_elasticity = start_rate_hard - start_rate_easy
+- Y-axis: injury impact in xPts (auto-chosen column; see _pick_y_col)
 """
 
+from __future__ import annotations
 from pathlib import Path
 import argparse
 
@@ -26,21 +27,49 @@ from src.utils.run_metadata import write_run_metadata
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Plot Proxy 1 vs Proxy 2 relationship from combined proxies file.")
-    p.add_argument("--combined", type=str, default=None, help="Path to combined proxies CSV (default: results/proxies_combined.csv)")
-    p.add_argument("--fig-dir", type=str, default=None, help="Directory to write figures into (default: results/figures)")
-    p.add_argument("--out", type=str, default=None, help="Output PNG path (default: <fig-dir>/proxies_scatter_rotation_vs_injury_xpts.png)")
-    p.add_argument("--y-col", type=str, default=None, help="Override injury column for y-axis (else auto: inj_xpts then xpts_season_total)")
+    p.add_argument(
+        "--combined",
+        type=str,
+        default=None,
+        help="Path to combined proxies CSV (default: results/proxies_combined.csv)",
+    )
+    p.add_argument(
+        "--fig-dir",
+        type=str,
+        default=None,
+        help="Directory to write figures into (default: results/figures)",
+    )
+    p.add_argument(
+        "--out",
+        type=str,
+        default=None,
+        help="Output PNG path (default: <fig-dir>/proxies_scatter_rotation_vs_injury_xpts.png)",
+    )
+    p.add_argument(
+        "--y-col",
+        type=str,
+        default=None,
+        help="Override injury column for y-axis (else auto: inj_xpts then xpts_season_total)",
+    )
     p.add_argument("--dry-run", action="store_true", help="Load + validate only; do not write figure")
     return p.parse_args()
 
 
 def _pick_y_col(df: pd.DataFrame, override: str | None) -> str:
+    """
+    Choose the injury xPts column.
+
+    Priority:
+      1) user override 
+      2) inj_xpts 
+      3) xpts_season_total 
+      4) other common fallbacks
+    """
     if override:
         if override not in df.columns:
             raise ValueError(f"--y-col='{override}' not found in columns: {list(df.columns)}")
         return override
 
-    # Prefer common names (keep this ordered)
     candidates = [
         "inj_xpts",
         "xpts_season_total",
@@ -61,19 +90,20 @@ def _pick_y_col(df: pd.DataFrame, override: str | None) -> str:
 def main() -> None:
     args = parse_args()
 
-    # Use Config if available; fall back to ROOT-based paths safely
+    # Use Config if available; fall back to repo-root derived paths.
     cfg = Config.load()
     root = Path(__file__).resolve().parents[2]
-    results_dir = getattr(cfg, "results", root / "results")
-    logs_dir = getattr(cfg, "logs", root / "logs")
-    meta_dir = getattr(cfg, "metadata", results_dir / "metadata")
+
+    results_dir = Path(getattr(cfg, "results", root / "results"))
+    logs_dir = Path(getattr(cfg, "logs", root / "logs"))
+    meta_dir = Path(getattr(cfg, "metadata", results_dir / "metadata"))
 
     logger = setup_logger("proxies_combined_plots", logs_dir, "proxies_combined_plots.log")
     meta_path = write_run_metadata(meta_dir, "proxies_combined_plots", extra={"dry_run": bool(args.dry_run)})
     logger.info("Run metadata saved to: %s", meta_path)
 
-    combined_path = Path(args.combined) if args.combined else (Path(results_dir) / "proxies_combined.csv")
-    fig_dir = Path(args.fig_dir) if args.fig_dir else (Path(results_dir) / "figures")
+    combined_path = Path(args.combined) if args.combined else (results_dir / "proxies_combined.csv")
+    fig_dir = Path(args.fig_dir) if args.fig_dir else (results_dir / "figures")
     out_path = Path(args.out) if args.out else (fig_dir / "proxies_scatter_rotation_vs_injury_xpts.png")
 
     logger.info("Reading combined proxies from: %s", combined_path)
@@ -89,8 +119,9 @@ def main() -> None:
         raise ValueError(f"'rotation_elasticity' not found in combined file. Columns: {list(df.columns)}")
 
     y_col = _pick_y_col(df, args.y_col)
+    logger.info("Using y-axis column: %s", y_col)
 
-    # Coerce numeric
+    # Coerce numeric for correlation/plotting
     df["rotation_elasticity"] = pd.to_numeric(df["rotation_elasticity"], errors="coerce")
     df[y_col] = pd.to_numeric(df[y_col], errors="coerce")
 
@@ -116,6 +147,7 @@ def main() -> None:
         return
 
     fig_dir.mkdir(parents=True, exist_ok=True)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.figure(figsize=(7, 5))
     plt.scatter(sub["rotation_elasticity"], sub[y_col])
