@@ -1,12 +1,22 @@
 """
-Fetch injury and suspension spells from Transfermarkt and save one CSV per season.
+Fetch injury/suspension spells from Transfermarkt and save one CSV per season.
 
 Why:
 - Upstream data source for the injury proxy.
-- Treated as optional data-collection; the analysis pipeline uses the saved CSVs.
+- This is an optional data-collection script; the main analysis pipeline reads the saved CSVs.
+
+Modes:
+- players: reads pre-built player injury-history URLs from CSV lists (recommended when available)
+- clubs:  scrapes club-level injuries and suspensions tables for given club URLs
+- squad:  scrapes a club squad page to discover players, then scrapes each player's injury page
 
 Output:
-- data/processed/injuries_<season_end_year>.csv (path controlled by config.json)
+- <cfg.processed>/injuries/injuries_<season_end_year>.csv
+  (e.g., injuries_2020.csv corresponds to the 2019–2020 season; end_year=2020)
+
+Notes:
+- Transfermarkt may throttle requests (403/429/503). This script uses basic retry + backoff and polite delays.
+- Recommended execution (from repo root): python -m src.data_collection.fetch_injuries_tm --season 2020 --mode players
 """
 
 from __future__ import annotations
@@ -24,11 +34,11 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from dateutil.parser import parse as dtparse
 
-# Grader-proof: allow direct execution even when using "from src..." imports.
-# Works for:
-#   python src/data_collection/fetch_injuries_tm_py.py ...
-# and does not affect:
-#   python -m src.data_collection.fetch_injuries_tm_py ...
+# ---------------------------------------------------------------------
+# Execution convenience
+# Preferred usage remains:
+#   python -m src.data_collection.fetch_injuries_tm --season 2020 ...
+# ---------------------------------------------------------------------
 if __name__ == "__main__" and __package__ is None:
     import sys
     sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -38,13 +48,16 @@ from src.utils.io import atomic_write_csv
 from src.utils.logging_setup import setup_logger
 from src.utils.run_metadata import write_run_metadata
 
+# ---------------- Configuration ----------------
 
 cfg = Config.load()
 
+# Output directory: processed/injuries
 OUT_DIR = cfg.processed
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Where your *_tm_urls.csv files live
+# Where your per-club URL lists live (pre-built, if you use players mode)
+# Example: data/raw/injuries/urls/<season_end_year>/<club>_tm_urls.csv
 URL_DIR = cfg.raw / "injuries" / "urls"
 
 HEADERS = {
@@ -56,7 +69,7 @@ HEADERS = {
 REQUIRED_OUT_COLS = {"player_name", "team", "start_date", "end_date", "type", "source"}
 
 
-# ---------------- helpers ----------------
+# ---------------- Helpers ----------------
 
 def _season_window(season_end_year: int) -> tuple[date, date]:
     """Premier League season window: Jul 1 of start year to Jun 30 of end year."""
@@ -67,7 +80,9 @@ def _request(url: str, max_retries: int = 5) -> str:
     """
     HTTP GET with basic backoff for common Transfermarkt throttling responses.
 
-    Note: This keeps your existing behavior (fresh session per request).
+    Notes:
+    - Uses a fresh Session per request for simplicity.
+    - Retries on typical throttle/temporary errors (403/429/503).
     """
     s = requests.Session()
     s.headers.update(HEADERS)
@@ -100,7 +115,8 @@ def _clean_type(s: str) -> str:
 def _clip(df: pd.DataFrame, season_end_year: int) -> pd.DataFrame:
     """
     Clip spells to the target season window.
-    Keeps only spells intersecting the season window and clamps edges.
+    Keeps only spells intersecting the season window and clamps edges to:
+    [Jul 1 (start year), Jun 30 (end year)].
     """
     start, end = _season_window(season_end_year)
     m = df.copy()
@@ -138,7 +154,7 @@ def _validate_output_schema(df: pd.DataFrame) -> None:
         raise ValueError(f"Output missing required columns: {sorted(missing)}")
 
 
-# ------------- parsers -------------------
+# ------------- Parsers -------------------
 
 def fetch_player_injury_history(player_name: str, tm_inj_url: str, team: str) -> pd.DataFrame:
     """
@@ -254,9 +270,13 @@ def fetch_squad_player_urls(squad_base_url: str, season_start_year: int, team_la
     return pd.DataFrame(players).drop_duplicates(subset=["tm_url"])
 
 
-# ------------- builders -------------------
+# ------------- Builders -------------------
 
 def build_from_player_url_df(season_end_year: int, url_df: pd.DataFrame, logger) -> Path:
+    """
+    Build injuries_<season_end_year>.csv by iterating player injury-history URLs.
+    url_df columns: player_name, tm_url, team
+    """
     rows = []
     for _, r in url_df.iterrows():
         nm, url, team = r["player_name"], r["tm_url"], r["team"]
@@ -286,6 +306,9 @@ def build_from_player_url_df(season_end_year: int, url_df: pd.DataFrame, logger)
 
 
 def build_from_player_url_lists(season_end_year: int, club_files: list[Path], logger) -> Path:
+    """
+    Load multiple <club>_tm_urls.csv files (if present) and build a season injuries file.
+    """
     frames = []
     for f in club_files:
         if f.exists():
@@ -300,12 +323,16 @@ def build_from_player_url_lists(season_end_year: int, club_files: list[Path], lo
     if url_df.empty:
         logger.warning("No player URL CSVs found for season=%s (mode=players).", season_end_year)
         print("No player URL CSVs found.")
+        # Return the expected output path, even though nothing was written
         return OUT_DIR / f"injuries_{season_end_year}.csv"
 
     return build_from_player_url_df(season_end_year, url_df, logger)
 
 
 def build_from_club_pages(season_end_year: int, club_injury_urls: list[str], club_susp_urls: list[str], logger) -> Path:
+    """
+    Build injuries_<season_end_year>.csv by scraping club injuries + suspensions pages.
+    """
     rows = []
 
     for u in club_injury_urls:
@@ -346,20 +373,28 @@ def build_from_club_pages(season_end_year: int, club_injury_urls: list[str], clu
 # ------------- CLI ------------------------
 
 def main() -> None:
+    """
+    CLI entrypoint.
+
+    Example usage:
+      python -m src.data_collection.fetch_injuries_tm --season 2020 --mode players
+      python -m src.data_collection.fetch_injuries_tm --season 2020 --mode clubs --injury-url <...> --susp-url <...>
+      python -m src.data_collection.fetch_injuries_tm --season 2020 --mode squad --squad-url <...>
+    """
     import argparse
 
     p = argparse.ArgumentParser()
     p.add_argument("--season", type=int, required=True, help="Season end year, e.g. 2024 for 2024/25")
     p.add_argument("--mode", choices=["players", "clubs", "squad"], default="players")
 
-    # players mode
+    # players mode: read URL lists from CSV files
     p.add_argument(
         "--club",
         action="append",
         help="Club slug for URL CSVs: data/raw/injuries/urls/<season>/<club>_tm_urls.csv",
     )
 
-    # clubs mode
+    # clubs mode: user provides club base URLs directly
     p.add_argument(
         "--injury-url",
         action="append",
@@ -371,7 +406,7 @@ def main() -> None:
         help="Club suspensions base URL(s), e.g. https://www.transfermarkt.com/arsenal-fc/sperren/verein/11",
     )
 
-    # squad mode
+    # squad mode: discover players from squad page, then scrape player injury pages
     p.add_argument(
         "--squad-url",
         action="append",

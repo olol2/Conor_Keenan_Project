@@ -1,6 +1,3 @@
-# src/data_collection/build_understat_master.py
-from __future__ import annotations
-
 """
 Build a single Understat master file from per-season understat_player_matches_YYYY.csv files.
 
@@ -10,8 +7,11 @@ Why:
 
 Inputs (expected; already in this project):
 - <cfg.raw>/understat_player_matches/understat_player_matches_2019.csv
-- ...
-- <cfg.raw>/understat_player_matches/understat_player_matches_2024.csv (or 2025 depending on your data)
+- <cfg.raw>/understat_player_matches/understat_player_matches_2020.csv
+- <cfg.raw>/understat_player_matches/understat_player_matches_2021.csv
+- <cfg.raw>/understat_player_matches/understat_player_matches_2022.csv
+- <cfg.raw>/understat_player_matches/understat_player_matches_2023.csv
+- <cfg.raw>/understat_player_matches/understat_player_matches_2024.csv
 
 Output (default):
 - <cfg.processed>/understat/understat_player_matches_master.csv
@@ -21,6 +21,7 @@ Safe checks:
 - --dry-run reads/combines/validates but does not write output
 """
 
+from __future__ import annotations
 from pathlib import Path
 import argparse
 
@@ -65,7 +66,7 @@ def standardise_team_name_understat(name: str) -> str:
 
 def load_one_file(path: Path, logger) -> pd.DataFrame:
     """
-    Load one per-season Understat CSV and apply minimal cleaning/standardisation.
+    Load one per-season Understat CSV and apply minimal cleaning/standardisation. Unmapped team names are left as-is.
 
     Adds:
     - match_date (datetime from Date)
@@ -78,10 +79,10 @@ def load_one_file(path: Path, logger) -> pd.DataFrame:
     if missing:
         raise ValueError(f"[{path.name}] Missing required columns: {sorted(missing)}")
 
-    # Ensure date is datetime (keeps later filtering/ordering robust)
+    # Understat dates are typically ISO format; default pandas parsing is sufficient.
     df["match_date"] = pd.to_datetime(df["Date"], errors="coerce")
 
-    # Understat 'season' is the starting year (2019 => 2019-2020)
+    # In these exports, Understat 'season' is the starting year (2019 => 2019-2020)
     df["season_start_year"] = pd.to_numeric(df["season"], errors="coerce").astype("Int64")
 
     # Drop rows where key fields could not be parsed

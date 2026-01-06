@@ -1,6 +1,3 @@
-# src/data_collection/build_odds_master.py
-from __future__ import annotations
-
 """
 Build a single odds_master.csv from all Football-Data (E0) season CSVs.
 
@@ -24,6 +21,7 @@ Safe checks:
 - --dry-run reads/combines/validates but does not write output
 """
 
+from __future__ import annotations
 from pathlib import Path
 import argparse
 
@@ -54,8 +52,9 @@ def load_one_season(raw_odds_dir: Path, folder: str, season_start_year: int, log
     Load one E0.csv file and attach season + standard team/date columns.
 
     Notes:
-    - Football-Data HomeTeam/AwayTeam are assumed to match the project's canonical team names.
+    - HomeTeam/AwayTeam are used as-is; downstream merges may require name standardisation.
     - Date parsing uses dayfirst=True, consistent with football-data.co.uk formatting.
+    - Folder naming follows football-data.co.uk conventions (e.g., 1920, 2021, 2122…).
     """
     path = raw_odds_dir / folder / "E0.csv"
     if not path.exists():
@@ -127,7 +126,7 @@ def build_odds_master(raw_odds_dir: Path, logger) -> pd.DataFrame:
     # Construct match_id for optional merges
     odds_all["match_id"] = build_match_id(odds_all)
 
-    # Keep only the columns you actually need (robust to missing bookmaker columns)
+    # Keep only the columns needed (robust to missing bookmaker columns)
     cols_keep = [
         "season_start_year",
         "season",
@@ -147,7 +146,7 @@ def build_odds_master(raw_odds_dir: Path, logger) -> pd.DataFrame:
     cols_keep = [c for c in cols_keep if c in odds_all.columns]
     odds_all = odds_all[cols_keep]
 
-    # Drop any duplicate match_ids (defensive; shouldn't typically occur)
+    # Drop any duplicate match_ids
     odds_all = odds_all.drop_duplicates(subset=["match_id"])
 
     # Stable ordering

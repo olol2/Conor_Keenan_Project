@@ -1,6 +1,3 @@
-# src/data_collection/build_injuries_all_seasons.py
-from __future__ import annotations
-
 """
 Combine per-season Transfermarkt injury CSVs into a single all-seasons file and standardise team names.
 
@@ -24,6 +21,7 @@ Safe checks:
 - --dry-run reads/combines/validates but does not write output
 """
 
+from __future__ import annotations
 from pathlib import Path
 import argparse
 import pandas as pd

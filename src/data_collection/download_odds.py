@@ -1,5 +1,3 @@
-# src/data_collection/download_odds.py
-
 """
 Download football match odds data from football-data.co.uk for specified seasons.
 
