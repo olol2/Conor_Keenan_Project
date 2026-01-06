@@ -1,17 +1,22 @@
-from __future__ import annotations
-
 """
-Build a consolidated player value table from the combined proxies:
+Build a consolidated player value table from the combined proxies.
 
-- Rotation proxy (rotation_elasticity + usage rates)
-- Injury proxy in points (inj_xpts) and £ (inj_gbp)
-- Z-scores for each proxy
-- A simple combined index: average of rot_z and inj_xpts_z
+Unit of observation:
+- One row per player–team–season (as provided by results/proxies_combined.csv).
+
+What this computes:
+- Rotation proxy: rotation_elasticity + usage rates (already computed upstream)
+- Injury proxy: injury impact in xPts (inj_xpts) and GBP (inj_gbp)
+- Global z-scores (standardized across ALL rows in the combined file)
+- A simple combined index: mean(rot_z, inj_xpts_z)
+  - Uses NaN-skipping mean: if only one proxy exists, combined_value_z equals that proxy’s z-score.
 
 Default inputs/outputs:
-  results/proxies_combined.csv
-  results/player_value_table.csv
+  <repo>/results/proxies_combined.csv
+  <repo>/results/player_value_table.csv
 """
+
+from __future__ import annotations
 
 from pathlib import Path
 import argparse
@@ -26,28 +31,44 @@ from src.utils.io import atomic_write_csv
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Build consolidated player value table from combined proxies.")
-    p.add_argument("--combined", type=str, default=None,
-                   help="Path to combined proxies CSV (default: results/proxies_combined.csv)")
-    p.add_argument("--out", type=str, default=None,
-                   help="Output CSV path (default: results/player_value_table.csv)")
-    p.add_argument("--dry-run", action="store_true",
-                   help="Compute + validate but do not write output")
+    p.add_argument(
+        "--combined",
+        type=str,
+        default=None,
+        help="Path to combined proxies CSV (default: results/proxies_combined.csv)",
+    )
+    p.add_argument(
+        "--out",
+        type=str,
+        default=None,
+        help="Output CSV path (default: results/player_value_table.csv)",
+    )
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Compute + validate but do not write output",
+    )
     return p.parse_args()
 
 
 def zscore(x: pd.Series) -> pd.Series:
+    """
+    Compute a standard z-score: (x - mean) / std with numeric coercion.
+    Returns all-NaN if the series has no variance or cannot be computed safely.
+    """
     s = pd.to_numeric(x, errors="coerce")
-    mu = s.mean(skipna=True)
-    sd = s.std(skipna=True)
-    if not np.isfinite(sd) or sd <= 0:
+    mu = float(s.mean(skipna=True)) if s.notna().any() else np.nan
+    sd = float(s.std(skipna=True)) if s.notna().any() else np.nan
+
+    if not np.isfinite(mu) or not np.isfinite(sd) or sd <= 0:
         return pd.Series([np.nan] * len(s), index=s.index)
+
     return (s - mu) / sd
 
 
 def main() -> None:
     args = parse_args()
 
-    # Project root from this file location: <root>/src/analysis/...
     root = Path(__file__).resolve().parents[2]
     results_dir = root / "results"
 
@@ -69,29 +90,34 @@ def main() -> None:
     df.columns = [c.strip() for c in df.columns]
     useful = df.copy()
 
-    # Standard names
+    # Fail fast on essential identifiers (helps catch upstream schema drift)
+    required_ids = {"player_name", "team_id", "season"}
+    missing_ids = required_ids - set(useful.columns)
+    if missing_ids:
+        raise ValueError(f"Combined proxies missing required columns: {sorted(missing_ids)}")
+
+    # Standard injury column aliases (combine_proxies often creates inj_xpts)
     if "inj_xpts" not in useful.columns and "xpts_season_total" in useful.columns:
         useful["inj_xpts"] = useful["xpts_season_total"]
     if "inj_gbp" not in useful.columns and "value_gbp_season_total" in useful.columns:
         useful["inj_gbp"] = useful["value_gbp_season_total"]
 
     # Types
-    if "season" in useful.columns:
-        useful["season"] = pd.to_numeric(useful["season"], errors="coerce").astype("Int64")
-    for c in ["player_name", "team_id"]:
-        if c in useful.columns:
-            useful[c] = useful[c].astype(str)
+    useful["season"] = pd.to_numeric(useful["season"], errors="coerce").astype("Int64")
+    useful["player_name"] = useful["player_name"].astype(str)
+    useful["team_id"] = useful["team_id"].astype(str)
+
     for c in ["rotation_elasticity", "inj_xpts", "inj_gbp"]:
         if c in useful.columns:
             useful[c] = pd.to_numeric(useful[c], errors="coerce")
 
-    # Keep rows with at least one proxy
+    # Keep rows with at least one proxy present
     has_rot = useful["rotation_elasticity"].notna() if "rotation_elasticity" in useful.columns else pd.Series(False, index=useful.index)
     has_inj_pts = useful["inj_xpts"].notna() if "inj_xpts" in useful.columns else pd.Series(False, index=useful.index)
     has_inj_gbp = useful["inj_gbp"].notna() if "inj_gbp" in useful.columns else pd.Series(False, index=useful.index)
     useful = useful[has_rot | has_inj_pts | has_inj_gbp].copy()
 
-    # Z-scores
+    # Z-scores (global across the full file)
     if "rotation_elasticity" in useful.columns:
         useful["rot_z"] = zscore(useful["rotation_elasticity"])
     if "inj_xpts" in useful.columns:
@@ -99,11 +125,11 @@ def main() -> None:
     if "inj_gbp" in useful.columns:
         useful["inj_gbp_z"] = zscore(useful["inj_gbp"])
 
-    # Combined index (mean of available z-scores)
+    # Combined index = mean(rot_z, inj_xpts_z) skipping missing values
     z_cols = [c for c in ["rot_z", "inj_xpts_z"] if c in useful.columns]
     useful["combined_value_z"] = useful[z_cols].mean(axis=1) if z_cols else np.nan
 
-    # Output columns (only keep those that exist)
+    # Output columns (keeps only those present)
     cols = [
         "player_id",
         "player_name",
@@ -124,10 +150,8 @@ def main() -> None:
     ]
     cols = [c for c in cols if c in useful.columns]
 
-    sort_cols = [c for c in ["season", "team_id", "player_name"] if c in useful.columns]
     out = useful[cols].copy()
-    if sort_cols:
-        out = out.sort_values(sort_cols)
+    out = out.sort_values(["season", "team_id", "player_name"], kind="mergesort")  # stable sort
 
     logger.info("Value table built: shape=%s", out.shape)
 
@@ -138,6 +162,7 @@ def main() -> None:
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_csv(out, out_path, index=False)
+
     logger.info("Saved player value table: %s (rows=%d)", out_path, len(out))
     print(f"✅ Saved player value table to {out_path} | rows={len(out)} | cols={len(out.columns)}")
 

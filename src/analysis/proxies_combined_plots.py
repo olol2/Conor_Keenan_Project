@@ -1,16 +1,15 @@
-from __future__ import annotations
-
 """
-Plot the relationship between Proxy 1 (rotation elasticity)
+Plots the relationship between Proxy 1 (rotation elasticity)
 and Proxy 2 (injury impact in xPts) using the combined proxies file.
 
-Default input:
+Input:
   results/proxies_combined.csv
 
-Default output:
+Output:
   results/figures/proxies_scatter_rotation_vs_injury_xpts.png
 """
 
+from __future__ import annotations
 from pathlib import Path
 import argparse
 
@@ -22,52 +21,96 @@ from src.utils.logging_setup import setup_logger
 from src.utils.run_metadata import write_run_metadata
 
 
+# ---------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Plot Proxy 1 vs Proxy 2 relationship from combined proxies file.")
-    p.add_argument("--combined", type=str, default=None,
-                   help="Path to combined proxies CSV (default: results/proxies_combined.csv)")
-    p.add_argument("--fig-dir", type=str, default=None,
-                   help="Directory to write figures into (default: results/figures)")
-    p.add_argument("--out", type=str, default=None,
-                   help="Output PNG path (default: <fig-dir>/proxies_scatter_rotation_vs_injury_xpts.png)")
-    p.add_argument("--y-col", type=str, default=None,
-                   help="Override injury column for y-axis (else auto: inj_xpts then xpts_season_total)")
-    p.add_argument("--dry-run", action="store_true",
-                   help="Load + validate only; do not write figure")
+    p = argparse.ArgumentParser(
+        description="Plot Proxy 1 vs Proxy 2 relationship from combined proxies file."
+    )
+    p.add_argument(
+        "--combined",
+        type=str,
+        default=None,
+        help="Path to combined proxies CSV (default: results/proxies_combined.csv)",
+    )
+    p.add_argument(
+        "--fig-dir",
+        type=str,
+        default=None,
+        help="Directory to write figures into (default: results/figures)",
+    )
+    p.add_argument(
+        "--out",
+        type=str,
+        default=None,
+        help="Output PNG path (default: <fig-dir>/proxies_scatter_rotation_vs_injury_xpts.png)",
+    )
+    p.add_argument(
+        "--y-col",
+        type=str,
+        default=None,
+        help="Override injury column for y-axis (else auto: inj_xpts then xpts_season_total)",
+    )
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Load + validate only; do not write figure",
+    )
     return p.parse_args()
 
 
+# ---------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------
 def pick_y_col(df: pd.DataFrame, override: str | None) -> str:
+    """Pick an injury xPts column for the y-axis, with sensible fallbacks."""
     if override:
         if override not in df.columns:
             raise ValueError(f"--y-col='{override}' not found. Columns: {list(df.columns)}")
         return override
 
-    for c in ["inj_xpts", "xpts_season_total", "injury_xpts", "inj_xpts_season_total"]:
+    candidates = ["inj_xpts", "xpts_season_total", "injury_xpts", "inj_xpts_season_total"]
+    for c in candidates:
         if c in df.columns:
             return c
 
     raise ValueError(
-        "Could not find injury xPts column. Tried: inj_xpts, xpts_season_total, injury_xpts, inj_xpts_season_total. "
-        f"Columns found: {list(df.columns)}"
+        "Could not find injury xPts column. Tried: "
+        + ", ".join(candidates)
+        + f". Columns found: {list(df.columns)}"
     )
 
 
+# ---------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------
 def main() -> None:
     args = parse_args()
 
-    cfg = Config.load()
+    # Robust path resolution
     root = Path(__file__).resolve().parents[2]
-    results_dir = getattr(cfg, "results", root / "results")
-    logs_dir = getattr(cfg, "logs", root / "logs")
-    meta_dir = getattr(cfg, "metadata", Path(results_dir) / "metadata")
+    results_dir = root / "results"
+    logs_dir = root / "logs"
+    meta_dir = results_dir / "metadata"
 
-    logger = setup_logger("proxies_combined_plots", logs_dir, "proxies_combined_plots.log")
-    meta_path = write_run_metadata(meta_dir, "proxies_combined_plots", extra={"dry_run": bool(args.dry_run)})
+    # Create dirs early (logger + metadata writer may need them)
+    results_dir.mkdir(parents=True, exist_ok=True)
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    meta_dir.mkdir(parents=True, exist_ok=True)
+
+    cfg = Config.load()
+
+    logger = setup_logger("proxies_combined_plots", cfg.logs if hasattr(cfg, "logs") else logs_dir, "proxies_combined_plots.log")
+    meta_path = write_run_metadata(
+        cfg.metadata if hasattr(cfg, "metadata") else meta_dir,
+        "proxies_combined_plots",
+        extra={"dry_run": bool(args.dry_run)},
+    )
     logger.info("Run metadata saved to: %s", meta_path)
 
-    combined_path = Path(args.combined) if args.combined else (Path(results_dir) / "proxies_combined.csv")
-    fig_dir = Path(args.fig_dir) if args.fig_dir else (Path(results_dir) / "figures")
+    combined_path = Path(args.combined) if args.combined else (results_dir / "proxies_combined.csv")
+    fig_dir = Path(args.fig_dir) if args.fig_dir else (results_dir / "figures")
     out_path = Path(args.out) if args.out else (fig_dir / "proxies_scatter_rotation_vs_injury_xpts.png")
 
     logger.info("Reading combined proxies from: %s", combined_path)
@@ -84,18 +127,27 @@ def main() -> None:
 
     y_col = pick_y_col(df, args.y_col)
 
+    # Coerce numeric
     df["rotation_elasticity"] = pd.to_numeric(df["rotation_elasticity"], errors="coerce")
     df[y_col] = pd.to_numeric(df[y_col], errors="coerce")
 
     sub = df.dropna(subset=["rotation_elasticity", y_col]).copy()
-    print("Rows with both proxies:", len(sub))
+    n = len(sub)
 
-    if len(sub) == 0:
+    logger.info("Rows with both proxies (after coercion): %d", n)
+    print("Rows with both proxies:", n)
+
+    if n == 0:
         print("No overlap between proxies after numeric coercion; skipping plot.")
         return
 
     corr = sub["rotation_elasticity"].corr(sub[y_col])
-    print(f"Correlation (rotation_elasticity vs {y_col}): {corr if pd.notna(corr) else 'NaN'}")
+    if pd.isna(corr):
+        print(f"Correlation (rotation_elasticity vs {y_col}): NaN")
+        logger.info("Correlation is NaN (likely constant series or insufficient variation).")
+    else:
+        print(f"Correlation (rotation_elasticity vs {y_col}): {float(corr):.3f}")
+        logger.info("Correlation(rotation_elasticity, %s)=%.4f", y_col, float(corr))
 
     if args.dry_run:
         print("✅ dry-run complete | figure NOT written")
@@ -116,6 +168,7 @@ def main() -> None:
     plt.close()
 
     print(f"Saved {out_path}")
+    logger.info("Saved figure: %s", out_path)
 
 
 if __name__ == "__main__":
