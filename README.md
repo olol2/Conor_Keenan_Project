@@ -1,4 +1,7 @@
-# Conor_Keenan_Project
+# Fair Value In The English Premier League
+
+_Repository: `Conor_Keenan_Project`_
+
 **Fair Value in the English Premier League** — MSc Finance  
 Course: **Data Science and Advanced Programming (Capstone Project)**  
 Author: **Conor Keenan**  
