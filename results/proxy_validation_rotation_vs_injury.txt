@@ -1,0 +1,30 @@
+Validation: rotation proxy vs injury/player-value proxy
+Outcome column: inj_xpts
+Number of merged player-seasons: 1420
+Correlation: -0.010
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:               inj_xpts   R-squared:                       0.000
+Model:                            OLS   Adj. R-squared:                 -0.001
+Method:                 Least Squares   F-statistic:                    0.1564
+Date:                Tue, 06 Jan 2026   Prob (F-statistic):              0.693
+Time:                        17:47:57   Log-Likelihood:                -5051.2
+No. Observations:                1420   AIC:                         1.011e+04
+Df Residuals:                    1418   BIC:                         1.012e+04
+Df Model:                           1                                         
+Covariance Type:                  HC1                                         
+=======================================================================================
+                          coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------
+const                   0.1561      0.225      0.693      0.488      -0.285       0.598
+rotation_elasticity    -0.3650      0.923     -0.395      0.692      -2.174       1.444
+==============================================================================
+Omnibus:                      179.986   Durbin-Watson:                   1.911
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             1194.702
+Skew:                          -0.375   Prob(JB):                    3.75e-260
+Kurtosis:                       7.431   Cond. No.                         4.19
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC1)

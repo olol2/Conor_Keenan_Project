@@ -7,3 +7,6 @@ requests
 beautifulsoup4
 python-dateutil
 pyarrow>=14
+aiohttp
+understat
+
