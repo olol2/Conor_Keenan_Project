@@ -55,24 +55,25 @@ Conor_Keenan_Project/
 ├── main.py                      # single entrypoint
 ├── README.md
 ├── PROPOSAL.md
+├── AI_USAGE.md
 ├── environment.yml              # conda environment
 ├── requirements.txt             # grading/runtime dependencies
-├── requirements-scrape.txt      # optional scraping dependencies
 │
 ├── data/
 │   ├── raw/                     # optional (not required for main.py)
-│   └── processed/               # required inputs/outputs for pipeline
+│   └── processed/               # required inputs for pipeline
 │
 ├── results/                     # pipeline outputs (figures/tables/metadata)
 │
 └── src/
-    ├── data_collection/         # parts are optional: scraping/build-from-scratch scripts
+    ├── data_collection/         # optional: scraping/build-from-scratch scripts
     ├── proxies/                 # proxy construction (rotation/injury)
     ├── analysis/                # validation, tables, figures
     ├── data_loader.py           # convenience loader for processed panels (optional)
     ├── models.py                # optional: template wrapper
     └── evaluation.py            # evaluation shim (optional)
 ```
+
 ## 5. Quickstart (How to Run)
 
 ### 5.1 Environment Setup
@@ -80,10 +81,15 @@ Conor_Keenan_Project/
 From the repository root:
 
 ```bash 
-python install -r requirements.txt
+conda env create -f environment.yml
+conda activate Conor_Keenan_Project
+```
+(or with pip):
+```bash 
+pip install -r requirements.txt
 ```
 
-### 5.2 Run the Full Pipeline (Grading Entry Point)
+### 5.2 Run the Full Pipeline
  
  From the repository root:
 ```bash
@@ -91,23 +97,25 @@ python main.py
 ```
 This will run the full pipeline end-to-end using processed inputs in data/processed/ and will write outputs to results/.
 
+Runtime note: starting from data/processed/, the pipeline should complete in a few minutes on a typical laptop.
+
 ### 5.3 Expected Outputs
 
 ### Notes on outputs (generated at runtime)
 
 Running `python main.py` writes results to `results/` and creates lightweight run artifacts:
 
-- `results/figures/`: figures regenerated each run (not tracked in Git).
+- `results/figures/`: figures regenerated each run.
 - `results/metadata/`: JSON metadata per step (inputs, parameters, timestamps) for reproducibility/debugging (not tracked in Git).
 - `results/logs/` (if present): execution logs for traceability (not tracked in Git).
+- `results/`: CSV outputs regenerated each run.
 
-Core deliverables used in the report (tracked in Git) include:
+Core deliverables used in the report include:
 - `results/proxy1_rotation_elasticity.csv`
 - `results/proxy2_injury_final_named.csv`
 - `results/summary_rotation_proxy.csv`
 - `results/summary_injury_proxy.csv`
 - `results/proxies_combined.csv`
-
 
 ## 6. Methodology
 
@@ -119,16 +127,14 @@ Implementation (high level):
   - Classify matches into difficulty bins "easy" vs "hard" contexts using team-season difficulty signal.
   - Compute a player's start rates in each context.
   - Define:
-$$
-\text{rotation\_elasticity} = \text{start\_rate}_{\text{hard}} - \text{start\_rate}_{\text{easy}}
-$$
+          rotation_elasticity = start_rate_hard - start_rate_easy
 
 
 **Key output**: results/proxy1_rotation_elasticity.csv
 
 Interpretation: 
-  - Positive values: player starts relatively more in hard matches than easy ones.
-  - Negative values: player starts relatively more in easy matches than hard ones.
+  - Positive values: player starts relatively more in hard matches rather than easy ones.
+  - Negative values: player starts relatively more in easy matches rather than hard ones.
   - Near zero: player usage is comparatively stable across contexts.
 
 ### 6.2 Proxy 2 - Injury impact via DiD (Expected Points)
@@ -136,17 +142,19 @@ Interpretation:
 **Goal**: estimate the marginal effect of a player being unavailable on team expected points.
 
 Implementation (high level):
-   - Build a player-match panel with team xPts, player availability, and match controls.
-   - Estimate within player-team-season, comparing "available vs unavailable" periods (DiD style logic).
-   - Aggregate to player-season total impact in xPts and optionally convert to £ using a season-specific £ per point mapping.
+- Build a player-match panel with team xPts, player availability, and match controls.
+- Estimate within player-team-season, comparing "available vs unavailable" periods (DiD-style logic).
+- Aggregate to player-season total impact in xPts and optionally convert to £ using a season-specific £ per point mapping.
 
-**Key output**: results/proxy2_injury_final_named.csv
+**Key output**: `results/proxy2_injury_final_named.csv`
 
 **Interpretation note:** Effects are interpreted as marginal impacts within the realized injury environment. Matches may contain multiple absences.
 
+---
+
 ## 7. Running Individual Components (Optional/Development)
 
-Run from the repository root.
+Run all commands from the **repository root**.
 
 ### 7.1 Build Panels
 
@@ -176,55 +184,44 @@ python -m src.analysis.fig_combined_proxies
 ```
 
 ## 8. Optional: Data Acquisition (Scraping)
-The main.py pipeline does not scrape as for solely the data from transfermarkt would take multiple hours and in a different environment (footy311), so this is why all required inputs are already committed under data/processed/.
 
-Scraping scripts are provided for documentation/reproducibility under src/data_collection/, but they may be slower and less stable due to external website constraints.
+The `main.py` pipeline does not scrape (Transfermarkt scraping can take multiple hours), which is why all required inputs are already committed under `data/processed/`.
+
+Scraping scripts are provided for documentation/reproducibility under `src/data_collection/`, but they may be slower and less stable due to external website constraints and typically require internet access.
+
 > Note: Scripts in `src/data_collection/` are optional and not used by `main.py`. Depending on your local VS Code interpreter/linter configuration, you may see lint warnings for these files even though they run correctly.
 
-### 8.1 Seperate scraping environment
-Scraping was performed in a separate environment (footy311, Python 3.11) because some scraping dependencies are more stable on Python 3.11 than on Python 3.13.
-
-```bash 
-conda activate footy311
-pip install -r requirements-scrape.txt
-python src/data_collection/understat_fetch_players.py
-```
-Notes: 
-  - Transfermarkt scraping can take ~25 minutes per season depending on the connection and site rate-limiting.
-  - For these reasons scraping is not included in the main.py pipeline.
+---
 
 ## 9. Known Data Issues / Limitations
 
-  - **Transfermarkt return dates vs actual returns**: listed return dates may differ from true return-to-play dates, creating occasional availability inconsistencies.
-  - **Cross-source name matching**: Understat / Transfermarkt / Football-Data use different naming conventions; standardized mappings are used but some mismatches remain.
-  - **Match join drops**: a small number of Understat rows may not match the match panel (e.g., date discrepancies) and are dropped from the rotation panel build.
-  -**Player-ID coverage**: some injury player names cannot be matched to Understat numeric IDs; these observations may be excluded in cross-proxy merges.
+- **Transfermarkt return dates vs actual returns**: listed return dates may differ from true return-to-play dates, creating occasional availability inconsistencies.
+- **Cross-source name matching**: Understat / Transfermarkt / Football-Data use different naming conventions; standardized mappings are used but some mismatches remain.
+- **Match join drops**: a small number of Understat rows may not match the match panel (e.g., date discrepancies) and are dropped from the rotation panel build.
+- **Player-ID coverage**: some injury player names cannot be matched to Understat numeric IDs; these observations may be excluded in cross-proxy merges.
 
-  ## 10. Reproducibility Notes
-  - **Grading entry point:** python main.py
-  - **No internet required for grading:** the pipeline starts from data/processed/.
-  - **Python version:** developed and tested on Python 3.13.5 for the main.py pipeline.
-  -**Scraping (Optional):** tested on python 3.11 in the footy311 environment
-  
-  ## 11. References/acknowledgements
-  - Football-Data (EPL odds/results): football-data.co.uk
-  - Understat player-match statistics (via community tooling)
-  - Transfermarkt injury histories (scraped responsibly)
-  - Premier League prize money tables (manually curated for points-to-£ mapping)
+---
+
+## 10. Reproducibility Notes
+
+- **Grading entry point:** `python main.py`
+- **No internet required for grading:** the pipeline starts from `data/processed/`.
+- **Python version:** developed and tested on Python 3.11+ for the `main.py` pipeline.
+
+---
+
+## 11. References / Acknowledgements
+
+- Football-Data (EPL odds/results): football-data.co.uk
+- Understat player-match statistics (via community tooling)
+- Transfermarkt injury histories (scraped responsibly)
+- Premier League prize money tables (manually curated for points-to-£ mapping)
+
+---
 
 ## 12. Contact
 
-Author: **Conor Keenan**
+Author: **Conor Keenan**  
 E-mail: ***conor.keenan@unil.ch***
 
-## 13.  Project Timeline
-
-  - **06.11** Proposal Accepted
-  - **11.11** Repository created
-  - **14-19.11** Data collected (Football-Data, Understat, Transfermarkt, Premier League)
-  - **27.11** Initial injury-cost processing and exploratory regressions
-  - **01.12** Proxy 2 (injury DiD) and Proxy1 (Rotation Elasticity)
-  - **05.12** Analysis
-  - **08.12** 
-  - **14-20.12** Final Phase: Validation, combined plots, and report-ready outputs
-
+---
