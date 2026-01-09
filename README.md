@@ -87,10 +87,6 @@ From the repository root:
 conda env create -f environment.yml
 conda activate Conor_Keenan_Project
 ```
-(or with pip):
-```bash 
-pip install -r requirements.txt
-```
 
 ### 5.2 Run the Full Pipeline
  

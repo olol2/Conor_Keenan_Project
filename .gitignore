@@ -44,3 +44,4 @@ data/processed/**/*.parquet
 logs/
 results/logs/
 results/metadata/
+requirements-scrape.txt
