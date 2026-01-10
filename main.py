@@ -3,9 +3,9 @@
 Minimal project orchestrator.
 
 Purpose:
-- Provide a single entrypoint for graders to reproduce the key outputs.
-- Keep orchestration thin: run your existing modules in a sensible order.
-- Be robust to where certain scripts live (src.proxies vs src.analysis).
+- Provide a single entrypoint to reproduce the key outputs.
+- Keep orchestration thin: run existing modules in a sensible order.
+- Robust to where certain scripts live (src.proxies vs src.analysis).
 """
 
 from __future__ import annotations
