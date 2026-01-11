@@ -1,4 +1,4 @@
-# Fair Value In The English Premier League
+# Fair Value in the English Premier League
 
 _Repository: `Conor_Keenan_Project`_
 
@@ -19,7 +19,7 @@ The core deliverables are two player-season proxy measures:
 - **Proxy 1 — Rotation Elasticity:** captures how selectively a player is used across match contexts (e.g., higher-stakes vs lower-stakes matches).
 - **Proxy 2 — Injury Impact (DiD on xPts):** estimates the expected points impact of a player’s unavailability, aggregated to player-season level; optionally mapped to **£** using a **£ per point** schedule.
 
-### Reproducibility / Grading Contract (Important)
+### Reproducibility and grading notes
 - The grading entry point is **`main.py`**.
 - **`main.py` does not scrape** external websites and is designed to run **without internet access**.
 - The pipeline starts from **pre-generated processed inputs** committed under **`data/processed/`** and writes outputs to **`results/`**.
@@ -41,7 +41,7 @@ Raw data originally came from public football sources:
 - **Football-Data (football-data.co.uk):** match results and bookmaker odds (Premier League)
 - **Understat:** player-match statistics (minutes, starts, xG/xA, etc.)
 - **Transfermarkt:** injury spells (start/end dates, injury type)
-- **Premier League prize money tables / points value:** mapping points to £ by season (used for conversion)
+- **Premier League prize money tables (points-to-£ mapping):** mapping points to £ by season (used for conversion)
 
 ### 3.2 Repository Convention
 To ensure the project runs reliably for grading:
@@ -55,7 +55,7 @@ To ensure the project runs reliably for grading:
 
 ```text
 Conor_Keenan_Project/
-├── main.py                      # single entrypoint
+├── main.py                      # single entry point
 ├── README.md
 ├── PROPOSAL.md
 ├── AI_USAGE.md
@@ -79,7 +79,7 @@ Conor_Keenan_Project/
 
 ## 5. Quickstart (How to Run)
 
-### 5.1 Clone Repo and Environment Setup
+### 5.1 Clone Repository and Environment Setup
 
 Clone the repository:
 ```bash
@@ -94,7 +94,7 @@ conda env create -f environment.yml
 conda activate Conor_Keenan_Project
 ```
 
-### 5.2 Run the Full Pipeliney
+### 5.2 Run the Full Pipeline
  
  From the repository root:
 ```bash
@@ -227,6 +227,6 @@ Scraping scripts are provided for documentation/reproducibility under `src/data_
 ## 12. Contact
 
 Author: **Conor Keenan**  
-E-mail: ***conor.keenan@unil.ch***
+Email: ***conor.keenan@unil.ch***
 
 ---
