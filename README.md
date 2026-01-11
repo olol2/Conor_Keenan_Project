@@ -79,7 +79,13 @@ Conor_Keenan_Project/
 
 ## 5. Quickstart (How to Run)
 
-### 5.1 Environment Setup
+### 5.1 Clone Repo and Environment Setup
+
+Clone the repository:
+```bash
+git clone https://github.com/olol2/Conor_Keenan_Project
+cd Conor_Keenan_Project
+```
 
 From the repository root:
 
@@ -88,7 +94,7 @@ conda env create -f environment.yml
 conda activate Conor_Keenan_Project
 ```
 
-### 5.2 Run the Full Pipeline
+### 5.2 Run the Full Pipeliney
  
  From the repository root:
 ```bash
